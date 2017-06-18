@@ -1,0 +1,36 @@
+{
+    "css": {
+        "actual": "assets/css/fonts.css",
+        "webpack": "/assets/fonts.css"
+    },
+    "fonts": {
+        "arcade": {
+            "font": {
+                "actual": "assets/fonts/arcade/ARCADE.TTF",
+                "webpack": "/assets/ARCADE.TTF"
+            },
+            "familyName": "Arcade"
+        },
+        "arcade-classic": {
+            "font": {
+                "actual": "assets/fonts/arcade-classic/ARCADECLASSIC.TTF",
+                "webpack": "/assets/ARCADECLASSIC.TTF"
+            },
+            "familyName": "ArcadeClassic"
+        },
+        "atarian-system": {
+            "font": {
+                "actual": "assets/fonts/atarian-system/SF Atarian System.ttf",
+                "webpack": "/assets/SF Atarian System.ttf"
+            },
+            "familyName": "SF Atarian System"
+        },
+        "rubik": {
+            "font": {
+                "actual": "assets/fonts/rubik/Rubik-Regular.ttf",
+                "webpack": "/assets/Rubik-Regular.ttf"
+            },
+            "familyName": "Rubik"
+        }
+    }
+}

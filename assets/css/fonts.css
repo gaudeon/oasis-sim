@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'ArcadeClassic';
+  src: url("/assets/ARCADECLASSIC.TTF");
+}
+
+@font-face {
+  font-family: 'Arcade';
+  src: url("/assets/ARCADE.TTF");
+}
+
+@font-face {
+  font-family: 'SF Atarian System';
+  src: url("/assets/SF Atarian System.ttf");
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url("/assets/Rubik-Regular.ttf");
+}
