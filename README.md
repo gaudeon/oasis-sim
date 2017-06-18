@@ -11,10 +11,10 @@ The map is stored as json in assets/json/map.json. It is generated from Twine 2 
 - npm start
 
 ## Testing with Watcher
-- npm test
+- npm run test-watch
 
 ## Testing without Watcher
-- npm run test-nowatch
+- npm test
 
 ## lint
 - npm run eslint
