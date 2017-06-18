@@ -10,4 +10,12 @@ describe('Map', () => {
             assert.isObject(map);
         });
     });
+
+    describe('currentRoom', () => {
+        it('returns a room', () => {
+            let room = map.currentRoom;
+
+            assert.isObject(room);
+        })
+    });
 });
