@@ -1,6 +1,6 @@
 // import states
 import BootState from './states/boot';
-import MainMenuState from './states/main-menu';
+import RoomState from './states/room';
 
 require('./index.html');
 
@@ -18,7 +18,7 @@ Phaser.Device.whenReady(function () {
 
     // states
     game.state.add('Boot', BootState);
-    game.state.add('MainMenu', MainMenuState);
+    game.state.add('Room', RoomState);
 
     game.state.start('Boot');
 });
