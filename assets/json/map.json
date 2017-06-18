@@ -1,0 +1,18 @@
+﻿[
+    {
+        "pid": 1,
+        "position": {
+            "x": 412,
+            "y": 200
+        },
+        "name": "Wade's Trailer - Laundry Room",
+        "tags": [
+            ""
+        ],
+        "content": "{{key}}wades-trailer-laundry-room{{/key}} {{description}}You are in a Tiny Laundry Room. There is an beat up but functional washer and dry set against one of the walls. There is an old sleeping bag sprawled in a space between the washer and the adjacent wall. This room smells of liquid detergent and fabric softener.{{/description}}",
+        "childrenNames": [],
+        "key": "wades-trailer-laundry-room",
+        "description": "You are in a Tiny Laundry Room. There is an beat up but functional washer and dry set against one of the walls. There is an old sleeping bag sprawled in a space between the washer and the adjacent wall. This room smells of liquid detergent and fabric softener.",
+        "children": []
+    }
+]

@@ -3,7 +3,6 @@ import fontConfig from '../../assets/json/fonts.json';
 
 // web fonts
 import WebFont from 'webfontloader';
-require('../imports/fonts');
 
 // require in other assets to be included but not added to cache at this time
 // require('../../assets/sounds/sound.wav');
@@ -93,8 +92,6 @@ export default class LoadingState extends Phaser.State {
 
     areWebfontsLoaded () {
         this.webfonts = this.webfonts || {};
-
-        console.log(this.webfonts);
 
         for (let fontKey in this.webfonts) {
             if (!this.webfonts[fontKey]) {

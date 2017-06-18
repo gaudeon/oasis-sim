@@ -1,11 +1,8 @@
-# new-phaser-project
-My ongoing effort to create a nice starting point for Phaser.js games...
+# rpo
+Three hidden keys open three secret gates...
 
-Supports:
-- webpack, webpack dev server, es6 via babel
-- travis ci integration
-- unit testing using mocha chai
-- pc distribution using electron
+## Map
+The map is stored as json in assets/json/map.json. It is generated from Twine 2 using the TwineJSON formatter (https://github.com/cauli/TwineJson)
 
 ## Setup
 - npm install

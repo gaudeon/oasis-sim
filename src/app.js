@@ -2,7 +2,9 @@
 import BootState from './states/boot';
 import RoomState from './states/room';
 
+// import of non-js / non-json files
 require('./index.html');
+require('./imports/fonts');
 
 let game = new Phaser.Game(800, 600);
 
