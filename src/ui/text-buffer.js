@@ -10,6 +10,7 @@ export default class TextBuffer extends Phaser.Group {
         this._fillColor = 'white';
         this._strokeColor = 'white';
         this._lineSpacing = 1.5;
+        this.y = this.bottomY - this.lineHeight;
     }
 
     lineStyle (fontKey, overrideStyle = {}) {
@@ -34,7 +35,7 @@ export default class TextBuffer extends Phaser.Group {
     addNextTextLine (lines, style) {
         this.y -= this.lineHeight;
         let x = this.paddingLeft;
-        let y = this.bottomY - this.lineHeight + this.children.length * this.lineHeight;
+        let y = this.lineHeight + this.children.length * this.lineHeight;
         let line = lines.shift();
 
         let textLine = new TextLine(this.game, x, y, line, style);
