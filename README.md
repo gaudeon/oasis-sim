@@ -1,6 +1,8 @@
 # rpo
 Three hidden keys open three secret gates...
 
+An homage to the Novel "Ready Player One" by Ernest Cline. This is basically a text adventure where a knowledge of 80s trivial will come in handy :)
+
 ## Map
 The map is stored as json in assets/json/map.json. It is generated from Twine 2 using the TwineJSON formatter (https://github.com/cauli/TwineJson)
 

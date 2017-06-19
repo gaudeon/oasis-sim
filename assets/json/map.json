@@ -9,10 +9,12 @@
         "tags": [
             ""
         ],
-        "content": "{{key}}wades-trailer-laundry-room{{/key}} {{description}}You are in a Tiny Laundry Room. There is an beat up but functional washer and dry set against one of the walls. There is an old sleeping bag sprawled in a space between the washer and the adjacent wall. This room smells of liquid detergent and fabric softener.{{/description}}",
+        "content": "{{key}}wades-trailer-laundry-room{{/key}} {{description}}a tiny laundry room{{/description}} {{flavorText}}This room smells of liquid detergent and fabric softener.{{/flavorText}} {{inventory}} [ \t{ \t\t'key': 'rusted-washer-dryer', \t\t'quantity': 1, \t\t'description': 'a mismatched washer and dryer set peppered with rust spots', \t\t'can': { \t\t\t'pickup': false \t\t} \t}, \t{ \t\t'key': 'old-sleeping-bag', \t\t'quantity': 1, \t\t'description': { \t\t\t'default': 'an old sleeping bag on the ground', \t\t\t'wades-trailer-laundry-room': 'an old sleeping bag sprawled in a space between the washer and the adjacent wall' \t\t}, \t\t'can': { \t\t\t'pickup': true \t\t} \t} ] {{/inventory}}",
         "childrenNames": [],
         "key": "wades-trailer-laundry-room",
-        "description": "You are in a Tiny Laundry Room. There is an beat up but functional washer and dry set against one of the walls. There is an old sleeping bag sprawled in a space between the washer and the adjacent wall. This room smells of liquid detergent and fabric softener.",
+        "description": "a tiny laundry room",
+        "flavorText": "This room smells of liquid detergent and fabric softener.",
+        "inventory": "[\r\n\t{\r\n\t\t\"key\": \"rusted-washer-dryer\",\r\n\t\t\"quantity\": 1,\r\n\t\t\"description\": \"a mismatched washer and dryer set peppered with rust spots\",\r\n\t\t\"can\": {\r\n\t\t\t\"pickup\": false\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"key\": \"old-sleeping-bag\",\r\n\t\t\"quantity\": 1,\r\n\t\t\"description\": {\r\n\t\t\t\"default\": \"an old sleeping bag on the ground\",\r\n\t\t\t\"wades-trailer-laundry-room\": \"an old sleeping bag sprawled in a space between the washer and the adjacent wall\"\r\n\t\t},\r\n\t\t\"can\": {\r\n\t\t\t\"pickup\": true\r\n\t\t}\r\n\t}\r\n]",
         "children": []
     }
 ]

@@ -11,6 +11,10 @@ export default class TextBuffer extends Phaser.Group {
         this._strokeColor = 'white';
         this._lineSpacing = 1.5;
         this.y = this.bottomY - this.lineHeight;
+        this.events = {
+            onStartAddingLines: new Phaser.Signal(),
+            onDoneAddingLines: new Phaser.Signal()
+        };
     }
 
     lineStyle (fontKey, overrideStyle = {}) {
@@ -26,13 +30,15 @@ export default class TextBuffer extends Phaser.Group {
         return lineStyle;
     }
 
-    addText (text, fontKey = 'rubik', overrideStyle = {}) {
+    addText (text, overrideStyle = {}, fontKey = 'rubik') {
         let displayLines = this.splitTextIntoLines(text);
 
         this.addNextTextLine(displayLines, this.lineStyle(fontKey, overrideStyle));
     }
 
     addNextTextLine (lines, style) {
+        this.events.onStartAddingLines.dispatch();
+
         this.y -= this.lineHeight;
         let x = this.paddingLeft;
         let y = this.lineHeight + this.children.length * this.lineHeight;
@@ -44,6 +50,8 @@ export default class TextBuffer extends Phaser.Group {
             textLine.events.onTextAnimationComplete.add(() => {
                 this.addNextTextLine(lines, style);
             })
+        } else {
+            this.events.onDoneAddingLines.dispatch();
         }
 
         this.add(textLine);
