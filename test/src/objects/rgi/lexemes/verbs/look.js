@@ -1,11 +1,11 @@
-import LookCommand from '../../../../src/objects/commands/look';
+import LookVerb from '../../../../../../src/objects/rgi/lexemes/verbs/look';
 
 describe('LookCommand', () => {
     let lookCommand;
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            lookCommand = new LookCommand();
+            lookCommand = new LookVerb();
 
             assert.isObject(lookCommand);
         });
