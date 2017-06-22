@@ -1,14 +1,14 @@
 export default class Verb {
     constructor () {
-        this._buffer = null;
-        this._room = null;
-        this._word = null; // each child should set their word
-        this._aliases = null; // set aliases list for multiple aliases otherwise default to word
+        this._buffer = undefined;
+        this._room = undefined;
+        this._word = undefined; // each child should set their word
+        this._aliases = []; // set aliases list for multiple aliases otherwise default to word
     }
 
     setContext (textBuffer, currentRoom) {
-        this.buffer = textBuffer;
-        this.room = currentRoom;
+        this._buffer = textBuffer;
+        this._room = currentRoom;
     }
 
     get buffer () { return this._buffer; }

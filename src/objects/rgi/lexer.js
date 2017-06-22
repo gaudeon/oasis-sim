@@ -1,8 +1,9 @@
-import LookVerb from './lexemes/verbs/look';
+import AllVerbs from './lexemes/all-verbs';
+import PhraseVerb from './phrases/phrase-verb';
 
 export default class Lexer {
     constructor () {
-        this.verbMap = this._buildLexemeVerbMap();
+        this.verbs = new AllVerbs();
     }
 
     tokenize (command) {
@@ -13,7 +14,7 @@ export default class Lexer {
         }
 
         let found = false;
-        let lexemePhrase = [];
+        let lexemePhrase = null;
 
         // run through each phrase pattern and see if the command submitted matches one of them
         for (let lexemePhraseIndex = 0; lexemePhraseIndex < this.lexemePhrases.length; lexemePhraseIndex++) {
@@ -22,10 +23,10 @@ export default class Lexer {
             let phrase = this.lexemePhrases[lexemePhraseIndex];
 
             // run through each lexeme in a phrase and attempt to match each word in command to it's lexeme counterpart
-            for (let lexemeIndex = 0; lexemeIndex < phrase.length; phrase++) {
+            for (let lexemeIndex = 0; lexemeIndex < phrase.phraseTemplate.length; lexemeIndex++) {
                 let word = wordsCopy.shift();
-                let findMethod = this.lexemeToFindMethod[phrase[lexemeIndex]];
-                let lexeme = findMethod.call(this, word);
+                let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
+                let lexeme = findMethod.fn.call(findMethod.context, word);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
@@ -34,9 +35,10 @@ export default class Lexer {
                 }
             }
 
-            if (foundPhrase.length === phrase.length) {
+            if (foundPhrase.length === phrase.phraseTemplate.length) { // we found a valid phrase pattern with the command the user entered
                 found = true;
-                lexemePhrase = foundPhrase;
+                lexemePhrase = phrase;
+                lexemePhrase.tokenSentence = foundPhrase;
                 break;
             }
         }
@@ -48,48 +50,18 @@ export default class Lexer {
         return lexemePhrase;
     }
 
-    findVerb (word) {
-        let letters = word.toLowerCase().splt('');
-        let key = '';
-
-        letters.forEach((letter) => {
-            key += letter;
-
-            if (_.has(this.verbMap, key)) {
-                return this.verbMap[key];
-            }
-        });
-
-        return null;
-    }
-
     get lexemePhrases () {
         return [
-            ['verb']
+            new PhraseVerb()
         ];
     }
 
     get lexemeToFindMethod () {
         return {
-            verb: this.findVerb
+            verb: {
+                fn: this.verbs.findVerb,
+                context: this.verbs
+            }
         }
-    }
-
-    get lexemeVerbs () {
-        return [
-            new LookVerb()
-        ]
-    }
-
-    _buildLexemeVerbMap () {
-        let map = {};
-
-        this.lexemeVerbs.forEach((verb) => {
-            verb.aliases.forEach((alias) => {
-                map[alias] = verb;
-            });
-        });
-
-        return map;
     }
 }

@@ -1,27 +1,23 @@
 export default class Room {
     constructor (data) {
-        if (typeof data !== 'object') {
-            throw new Error('room data provided is not an object');
-        }
-
-        this._data = data;
+        this._name = 'Generic Room'
+        this._description = '';
+        this._flavorText = '';
     }
 
-    get key () { return this._data.key; }
+    get key () { return this.constructor.name; }
 
-    get name () { return this._data.name; }
+    get name () { return this._name; }
 
-    get description () { return this._data.description; }
+    get description () { return this._description; }
 
-    get flavorText () { return this._data.flavorText; }
+    get flavorText () { return this._flavorText; }
 
-    get inventory () {
-        let json = this._data.inventory;
+    look () {
+        let description = 'You are in ' + this.description + '.';
 
-        json.replace('\n', "\n");
-        json.replace('\r', "\r");
-        json.replace('\t', "\t");
+        description = description + ' ' + this.flavorText;
 
-        return JSON.parse(this._data.inventory);
-    }
+        return description;
+    };
 }

@@ -9,8 +9,13 @@ export default class RGI {
         this.parser = new Parser();
     }
 
-    exec (command, room) {
+    exec (command, room, outputCommand = true) {
         let lexemePhrase;
+
+        if (outputCommand) {
+            this.textBuffer.addText('');
+            this.textBuffer.addText('> ' + command);
+        }
 
         try {
             lexemePhrase = this.lexer.tokenize(command);
@@ -18,24 +23,11 @@ export default class RGI {
             return error;
         }
 
-        this.parser.parse(lexemePhrase);
-    }
+        let commands = this.parser.parse(lexemePhrase);
 
-    findCommands (word) {
-        let lcWord = word.toLowerCase();
-        let possibleCommands = [];
-
-        Object.keys(this.commands).forEach((command) => {
-            if (command.match(lcWord)) {
-                possibleCommands.push(command);
-            }
+        commands.forEach((command) => {
+            command.setContext(this.textBuffer, room);
+            command.exec();
         });
-
-        return possibleCommands;
-    }
-
-    get commands () {
-        return {
-        };
     }
 }

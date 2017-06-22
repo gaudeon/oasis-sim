@@ -5,6 +5,9 @@ export default class TextBuffer extends Phaser.Group {
     constructor (game) {
         super(game);
 
+        this._lineQueue = []; // all lines get added here
+        this._queueProcessing = false; // used to make sure addNextTextLine isn't called multiple times
+
         this._paddingLeft = 20;
         this._fontSize = 20;
         this._fillColor = 'white';
@@ -32,29 +35,41 @@ export default class TextBuffer extends Phaser.Group {
 
     addText (text, overrideStyle = {}, fontKey = 'rubik') {
         let displayLines = this.splitTextIntoLines(text);
+        let style = this.lineStyle(fontKey, overrideStyle);
 
-        this.addNextTextLine(displayLines, this.lineStyle(fontKey, overrideStyle));
+        displayLines.forEach((line) => {
+            this._lineQueue.push({
+                line: line,
+                style: style
+            });
+        });
+
+        if (!this._queueProcessing) {
+            this._queueProcessing = true;
+            this.addNextTextLine();
+        }
     }
 
-    addNextTextLine (lines, style) {
+    addNextTextLine () {
         this.events.onStartAddingLines.dispatch();
 
         this.y -= this.lineHeight;
         let x = this.paddingLeft;
         let y = this.lineHeight + this.children.length * this.lineHeight;
-        let line = lines.shift();
+        let queueItem = this._lineQueue.shift();
 
-        let textLine = new TextLine(this.game, x, y, line, style);
+        let textLine = new TextLine(this.game, x, y, queueItem.line, queueItem.style);
 
-        if (lines.length) {
+        this.add(textLine);
+
+        if (this._lineQueue.length) {
             textLine.events.onTextAnimationComplete.add(() => {
-                this.addNextTextLine(lines, style);
+                this.addNextTextLine();
             })
         } else {
             this.events.onDoneAddingLines.dispatch();
+            this._queueProcessing = false;
         }
-
-        this.add(textLine);
     };
 
     get fontSize () { return this._fontSize; }
@@ -79,8 +94,10 @@ export default class TextBuffer extends Phaser.Group {
     get bottomY () { return this.game.height - this.lineHeight; }
 
     splitTextIntoLines (text) {
-        let words = text.split(' ');
+        text.replace('\n', ''); // no actual newlines
+
         let lines = [''];
+        let words = text.split(' ');
 
         words.forEach((word) => {
             let currentLine = lines.length - 1;
