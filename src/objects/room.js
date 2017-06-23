@@ -81,9 +81,10 @@ export default class Room {
     };
 
     look () {
-        let description = this.brief();
+        let description = {};
+        description.brief = this.brief();
 
-        description = description + '\n';
+        description.exits = '';
 
         this.exits.forEach((door) => {
             let preposition;
@@ -100,7 +101,7 @@ export default class Room {
                     break;
             };
 
-            description = description + '\nThere is ' + door.description + ' ' + preposition + '.';
+            description.exits = description.exits + '\nThere is ' + door.description + ' ' + preposition + '.';
         });
 
         return description;

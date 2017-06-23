@@ -5,7 +5,8 @@ export default class LookVerb extends Verb {
         super();
 
         this._word = 'look';
-        this.color = '#87CEEB'; // SkyBlue
+        this.colorBrief = '#87CEEB'; // SkyBlue
+        this.colorExits = '#90EE90'; // LightGreen
         this._aliases = ['l'];
     }
 
@@ -14,6 +15,7 @@ export default class LookVerb extends Verb {
 
         let description = this.room.look();
 
-        this.buffer.addText(description, {fill: this.color, stroke: this.color});
+        this.buffer.addText(description.brief, {fill: this.colorBrief, stroke: this.colorBrief});
+        this.buffer.addText(description.exits, {fill: this.colorExits, stroke: this.colorExits});
     }
 }
