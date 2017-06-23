@@ -1,4 +1,5 @@
 import WadesTrailerLaundryRoom from './rooms/wades-trailer-laundry-room';
+import WadesTrailerOutside from './rooms/wades-trailer-outside';
 
 export default class AllRooms {
     constructor () {
@@ -11,7 +12,8 @@ export default class AllRooms {
 
     get roomList () {
         return [
-            new WadesTrailerLaundryRoom()
+            new WadesTrailerLaundryRoom(),
+            new WadesTrailerOutside()
         ];
     }
 

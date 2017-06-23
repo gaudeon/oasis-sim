@@ -94,19 +94,24 @@ export default class TextBuffer extends Phaser.Group {
     get bottomY () { return this.game.height - this.lineHeight; }
 
     splitTextIntoLines (text) {
-        text.replace('\n', ''); // no actual newlines
-
         let lines = [''];
-        let words = text.split(' ');
+        text.split(/\n/).forEach((subText, index, splitText) => {
+            let words = subText.split(' ');
 
-        words.forEach((word) => {
-            let currentLine = lines.length - 1;
-            let tmpText = lines[currentLine] + ' ' + word;
+            words.forEach((word) => {
+                let currentLine = lines.length - 1;
+                let tmpText = lines[currentLine] + ' ' + word;
 
-            if (tmpText.length > this.lineCharWidth) {
-                lines.push(word);
-            } else {
-                lines[currentLine] = lines[currentLine] + ' ' + word;
+                if (tmpText.length > this.lineCharWidth) {
+                    lines.push(word);
+                } else {
+                    lines[currentLine] = lines[currentLine] + ' ' + word;
+                }
+            });
+
+            // add another new line if we found newlines and we are not at the last piece of subText
+            if (splitText.length > 1 && index < splitText.length - 1) {
+                lines.push('');
             }
         });
 

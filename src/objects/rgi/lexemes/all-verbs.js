@@ -1,4 +1,5 @@
 import LookVerb from './verbs/look';
+import BriefVerb from './verbs/brief';
 
 export default class AllVerbs {
     constructor () {
@@ -13,6 +14,7 @@ export default class AllVerbs {
 
     get verbList () {
         return [
+            new BriefVerb(),
             new LookVerb()
         ];
     }

@@ -21,6 +21,6 @@ export default class RoomState extends Phaser.State {
         this.buffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
 
         // call a look command
-        this.rgi.exec('look', this.room, false);
+        this.rgi.exec('brief', this.room, false);
     }
 };

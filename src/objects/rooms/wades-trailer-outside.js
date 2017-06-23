@@ -10,6 +10,6 @@ export default class WadesTrailerOutside extends Room {
 
         this._flavorText = '';
 
-        this._in = 'WadesTrailerLaundryRoom';
+        this.setSouth('a door leading inside your trailer', 'WadesTrailerLaundryRoom');
     }
 }

@@ -8,8 +8,8 @@ export default class WadesTrailerLaundryRoom extends Room {
 
         this._description = 'in a tiny laundry room';
 
-        this._flavorText = 'This room smells of liquid detergent and fabric softener.';
+        this._flavorText = 'You are surrounded by the smell of liquid detergent and fabric softener.';
 
-        this._out = 'WadesTrailerOutside';
+        this.setNorth('a door leading outside', 'WadesTrailerOutside');
     }
 }
