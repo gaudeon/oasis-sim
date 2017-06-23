@@ -1,2 +1,3 @@
-verb = "look" ;
-command = verb ;
+command = verb-phrase ;
+verb-phrase = verb;
+verb = "look" | "brief" ;
