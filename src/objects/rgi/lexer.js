@@ -1,8 +1,11 @@
 import AllVerbs from './lexemes/all-verbs';
 import PhraseVerb from './phrases/phrase-verb';
+import PhraseVerbString from './phrases/phrase-verb-string';
 
 export default class Lexer {
-    constructor () {
+    constructor (rgi) {
+        this.rgi = rgi;
+
         this.verbs = new AllVerbs();
     }
 
@@ -25,8 +28,13 @@ export default class Lexer {
             // run through each lexeme in a phrase and attempt to match each word in command to it's lexeme counterpart
             for (let lexemeIndex = 0; lexemeIndex < phrase.phraseTemplate.length; lexemeIndex++) {
                 let word = wordsCopy.shift();
+
+                if (typeof word === 'undefined') {
+                    break;
+                }
+
                 let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
-                let lexeme = findMethod.fn.call(findMethod.context, word);
+                let lexeme = findMethod.fn.call(findMethod.context, word, wordsCopy);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
@@ -52,6 +60,7 @@ export default class Lexer {
 
     get lexemePhrases () {
         return [
+            new PhraseVerbString(),
             new PhraseVerb()
         ];
     }
@@ -61,7 +70,17 @@ export default class Lexer {
             verb: {
                 fn: this.verbs.findVerb,
                 context: this.verbs
+            },
+            string: {
+                fn: this.findString,
+                context: this
             }
         }
+    }
+
+    findString (word, words) {
+        let s = word + ' ' + words.join(' ');
+
+        return s;
     }
 }

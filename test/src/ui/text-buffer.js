@@ -3,7 +3,7 @@ import TextBuffer from '../../../src/ui/text-buffer';
 describe('TextBuffer', () => {
     let textBuffer;
 
-    describe('constructor()', () => {
+    describe('constructor(game)', () => {
         it('generates an object', () => {
             textBuffer = new TextBuffer(game);
 

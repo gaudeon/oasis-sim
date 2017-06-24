@@ -1,8 +1,8 @@
 import Room from '../room';
 
 export default class WadesTrailerOutside extends Room {
-    constructor () {
-        super();
+    constructor (game) {
+        super(game);
 
         this._name = 'Wade\'s Trailer - Outside'
 

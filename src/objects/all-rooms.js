@@ -2,7 +2,9 @@ import WadesTrailerLaundryRoom from './rooms/wades-trailer-laundry-room';
 import WadesTrailerOutside from './rooms/wades-trailer-outside';
 
 export default class AllRooms {
-    constructor () {
+    constructor (game) {
+        this.game = game;
+
         this._roomMap = {};
 
         this.roomList.forEach((room) => {
@@ -12,8 +14,8 @@ export default class AllRooms {
 
     get roomList () {
         return [
-            new WadesTrailerLaundryRoom(),
-            new WadesTrailerOutside()
+            new WadesTrailerLaundryRoom(this.game),
+            new WadesTrailerOutside(this.game)
         ];
     }
 

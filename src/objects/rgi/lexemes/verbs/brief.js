@@ -12,7 +12,7 @@ export default class BriefVerb extends Verb {
     exec () {
         super.exec();
 
-        let description = this.room.brief();
+        let description = this.room.commandBrief();
 
         this.buffer.addText(description, {fill: this.color, stroke: this.color});
     }

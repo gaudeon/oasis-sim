@@ -5,8 +5,8 @@ import Parser from './rgi/parser';
 export default class RGI {
     constructor (buffer) {
         this.textBuffer = buffer;
-        this.lexer = new Lexer();
-        this.parser = new Parser();
+        this.lexer = new Lexer(this);
+        this.parser = new Parser(this);
     }
 
     exec (command, room, outputCommand = true) {
@@ -26,7 +26,7 @@ export default class RGI {
         let commands = this.parser.parse(lexemePhrase);
 
         commands.forEach((command) => {
-            command.setContext(this.textBuffer, room);
+            command.setContext(this, this.textBuffer, room);
             command.exec();
         });
     }

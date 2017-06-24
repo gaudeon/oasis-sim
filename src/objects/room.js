@@ -1,7 +1,9 @@
 import Door from './door';
 
 export default class Room {
-    constructor (data) {
+    constructor (game) {
+        this.game = game;
+
         this._name = 'Generic Room'
         this._description = '';
         this._flavorText = '';
@@ -21,6 +23,7 @@ export default class Room {
         };
     }
 
+    // room info
     get key () { return this.constructor.name; }
 
     get name () { return this._name; }
@@ -29,6 +32,7 @@ export default class Room {
 
     get flavorText () { return this._flavorText; }
 
+    // doors
     setNorth (description, room) { this.doors.north = new Door('north', description, room); }
 
     get north () { return this.doors.north; }
@@ -72,7 +76,7 @@ export default class Room {
     get exits () { return _.filter(Object.values(this.doors), (door) => { return typeof door !== 'undefined'; }); }
 
     // command methods
-    brief () {
+    commandBrief () {
         let description = 'You are ' + this.description + '.';
 
         description = description + ' ' + this.flavorText;
@@ -80,9 +84,9 @@ export default class Room {
         return description;
     };
 
-    look () {
+    commandLook () {
         let description = {};
-        description.brief = this.brief();
+        description.brief = this.commandBrief();
 
         description.exits = '';
 
@@ -106,4 +110,16 @@ export default class Room {
 
         return description;
     };
+
+    _directionCommand (direction) {
+        if (typeof this[direction] === 'undefined') {
+            return 'There doesn\'t seem to be anything in that direction';
+        }
+
+        this.game.state.start('Room', false, false, this[direction].room);
+    }
+
+    commandNorth () {
+        return this._directionCommand('north');
+    }
 }

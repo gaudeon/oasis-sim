@@ -1,3 +1,37 @@
-command = verb-phrase ;
-verb-phrase = verb;
-verb = "look" | "brief" ;
+player-command = player-verb-phrase ;
+admin-command = admin-verb-string-phrase | player-verb-phrase;
+player-verb-phrase = player-verb ;
+admin-verb-string-phrase = admin-verb string ;
+player-verb = look-verb | brief-verb | north-verb | south-verb | east-verb
+            | west-verb | northeast-verb | northwest-verb | southeast-verb
+            | southwest-verb | up-verb | down-verb ;
+admin-verb = error-verb;
+look-verb = "l" | "look" ;
+brief-verb = "brief" ;
+north-verb = "n" | "north" ;
+south-verb = "s" | "south" ;
+east-verb = "e" | "east" ;
+west-verb = "w" | "west" ;
+northeast-verb = "ne" | "northeast" ;
+northwest-verb = "nw" | "northwest" ;
+southeast-verb = "se" | "southeast" ;
+southwest-verb = "sw" | "southwest" ;
+up-verb = "u" | "up" ;
+down-verb = "d" | "down" ;
+error-verb = "error" ;
+string = { character } ;
+character = letter | digit | symbol | space;
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+       | "H" | "I" | "J" | "K" | "L" | "M" | "N"
+       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
+       | "c" | "d" | "e" | "f" | "g" | "h" | "i"
+       | "j" | "k" | "l" | "m" | "n" | "o" | "p"
+       | "q" | "r" | "s" | "t" | "u" | "v" | "w"
+       | "x" | "y" | "z" ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+symbol = "!" | "@" | "#" | "$" | "%" | "^" | "&" | "*"
+       | "(" | ")" | "-" | "_" | "=" | "+" | "[" | "]"
+       | "{" | "}" | "\" | "|" | ";" | ":" | "'" | '"'
+       | "," | "<" | "." | ">" | "/" | "?" | "`" | "~" ;
+space = " ";

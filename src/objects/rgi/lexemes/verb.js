@@ -1,32 +1,23 @@
-export default class Verb {
+import Lexeme from '../lexeme';
+
+export default class Verb extends Lexeme {
     constructor () {
-        this._buffer = undefined;
-        this._room = undefined;
+        super();
         this._word = undefined; // each child should set their word
+        this._stringData = '';
         this._aliases = []; // set aliases list for multiple aliases otherwise default to word
     }
-
-    setContext (textBuffer, currentRoom) {
-        this._buffer = textBuffer;
-        this._room = currentRoom;
-    }
-
-    get buffer () { return this._buffer; }
-
-    get room () { return this._room; }
 
     get word () { return this._word; }
 
     get aliases () { return Object.assign([], [this._word], this._aliases || []); }
 
-    exec () {
-        if (typeof this.buffer === 'undefined') {
-            throw new Error('Text Buffer is not defined.');
-        }
+    set stringData (str) { this._stringData = str; }
 
-        if (typeof this.room === 'undefined') {
-            throw new Error('Current room is not defined.')
-        }
+    get stringData () { return this._stringData; }
+
+    exec () {
+        super.exec();
 
         if (typeof this.word === 'undefined') {
             throw new Error('Current word is not defined.');

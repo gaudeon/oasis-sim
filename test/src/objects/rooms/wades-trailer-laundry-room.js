@@ -3,9 +3,9 @@ import WadesTrailerLaundryRoom from '../../../../src/objects/rooms/wades-trailer
 describe('WadesTrailerLaundryRoom', () => {
     let wadesTrailerLaundryRoom;
 
-    describe('constructor()', () => {
+    describe('constructor(game)', () => {
         it('generates an object', () => {
-            wadesTrailerLaundryRoom = new WadesTrailerLaundryRoom();
+            wadesTrailerLaundryRoom = new WadesTrailerLaundryRoom(game);
 
             assert.isObject(wadesTrailerLaundryRoom);
         });

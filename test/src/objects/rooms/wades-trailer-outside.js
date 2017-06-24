@@ -3,9 +3,9 @@ import WadesTrailerOutside from '../../../../src/objects/rooms/wades-trailer-out
 describe('WadesTrailerOutside', () => {
     let wadesTrailerOutside;
 
-    describe('constructor()', () => {
+    describe('constructor(game)', () => {
         it('generates an object', () => {
-            wadesTrailerOutside = new WadesTrailerOutside();
+            wadesTrailerOutside = new WadesTrailerOutside(game);
 
             assert.isObject(wadesTrailerOutside);
         });

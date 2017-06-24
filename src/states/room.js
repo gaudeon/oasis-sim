@@ -5,7 +5,7 @@ import AllRooms from '../objects/all-rooms';
 
 export default class RoomState extends Phaser.State {
     init (room = 'WadesTrailerLaundryRoom') {
-        this.allRooms = new AllRooms();
+        this.allRooms = new AllRooms(this.game);
         this.room = this.allRooms.roomMap[room];
         this.buffer = this.game.buffer = this.game.buffer || new TextBuffer(this.game);
         this.rgi = new RGI(this.buffer);

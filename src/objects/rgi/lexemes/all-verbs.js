@@ -1,5 +1,7 @@
 import LookVerb from './verbs/look';
 import BriefVerb from './verbs/brief';
+import NorthVerb from './verbs/north';
+import ErrorVerb from './verbs/error';
 
 export default class AllVerbs {
     constructor () {
@@ -15,7 +17,9 @@ export default class AllVerbs {
     get verbList () {
         return [
             new BriefVerb(),
-            new LookVerb()
+            new LookVerb(),
+            new NorthVerb(),
+            new ErrorVerb()
         ];
     }
 

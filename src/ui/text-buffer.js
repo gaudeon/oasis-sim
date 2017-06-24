@@ -35,6 +35,11 @@ export default class TextBuffer extends Phaser.Group {
 
     addText (text, overrideStyle = {}, fontKey = 'rubik') {
         let displayLines = this.splitTextIntoLines(text);
+
+        if (displayLines.length <= 0) { // no lines just just be done
+            return;
+        }
+
         let style = this.lineStyle(fontKey, overrideStyle);
 
         displayLines.forEach((line) => {
@@ -94,6 +99,10 @@ export default class TextBuffer extends Phaser.Group {
     get bottomY () { return this.game.height - this.lineHeight; }
 
     splitTextIntoLines (text) {
+        if (typeof text === 'undefined') { // no lines returned if nothing given as a param
+            return [];
+        }
+
         let lines = [''];
         text.split(/\n/).forEach((subText, index, splitText) => {
             let words = subText.split(' ');

@@ -13,7 +13,7 @@ export default class LookVerb extends Verb {
     exec () {
         super.exec();
 
-        let description = this.room.look();
+        let description = this.room.commandLook();
 
         this.buffer.addText(description.brief, {fill: this.colorBrief, stroke: this.colorBrief});
         this.buffer.addText(description.exits, {fill: this.colorExits, stroke: this.colorExits});
