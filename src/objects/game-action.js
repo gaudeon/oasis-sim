@@ -9,5 +9,5 @@ export default class GameAction {
 
     get data () { return this._data; }
 
-    run (rgi, buffer, room) { /* nothing here */ }
+    run (rgi, buffer, room, lastCommand) { /* nothing here */ }
 }

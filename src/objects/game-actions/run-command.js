@@ -13,7 +13,7 @@ export default class RunCommandAction extends GameAction {
 
     set outputCommand (outputCommand) { this._outputCommand = outputCommand; }
 
-    run (rgi, buffer, room) {
+    run (rgi, buffer, room, lastCommand) {
         rgi.exec(this.data, room, this.outputCommand);
     }
 }

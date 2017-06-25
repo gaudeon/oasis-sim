@@ -19,7 +19,7 @@ export default class TextAction extends GameAction {
 
     set font (font) { this._font = font; }
 
-    run (rgi, buffer, room) {
+    run (rgi, buffer, room, lastCommand) {
         buffer.addText(this.data, this.style, this.font);
     }
 }

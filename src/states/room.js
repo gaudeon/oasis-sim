@@ -4,7 +4,7 @@ import RGI from '../objects/rgi';
 import AllRooms from '../objects/all-rooms';
 
 export default class RoomState extends Phaser.State {
-    init (room = 'WadesTrailerLaundryRoom') {
+    init (room = 'WadesTrailerLaundryRoom', lastCommand) {
         this.allRooms = new AllRooms(this.game);
         this.room = this.allRooms.roomMap[room];
 
@@ -15,6 +15,8 @@ export default class RoomState extends Phaser.State {
         }
 
         this.rgi = new RGI(this.buffer);
+
+        this.lastCommand = lastCommand;
     }
 
     create () {
@@ -26,7 +28,12 @@ export default class RoomState extends Phaser.State {
         this.buffer.events.onStartAddingLines.add(() => { this.input.enabled = false; });
         this.buffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
 
-        // call a look command
+        // output the last command that lead us to this line
+        if (this.lastCommand) {
+            this.rgi.outputCommand(this.lastCommand);
+        }
+
+        // output brief description of room
         this.rgi.exec('brief', this.room, false);
     }
 };

@@ -68,7 +68,8 @@ export default class TextBuffer extends Phaser.Group {
         this.add(textLine);
 
         if (this._lineQueue.length) {
-            textLine.events.onTextAnimationComplete.add(() => {
+            this._queueProcessing = true;
+            textLine.events.onTextAnimationComplete.addOnce(() => {
                 this.addNextTextLine();
             })
         } else {
@@ -97,6 +98,8 @@ export default class TextBuffer extends Phaser.Group {
     get lineCharWidth () { return this.game.width / (this.fontSize / 2); }
 
     get bottomY () { return this.game.height - this.lineHeight; }
+
+    get queueProcessing () { return this._queueProcessing; }
 
     splitTextIntoLines (text) {
         if (typeof text === 'undefined') { // no lines returned if nothing given as a param

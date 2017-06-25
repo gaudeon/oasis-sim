@@ -12,19 +12,9 @@ export default class RGI {
     exec (command, room, outputCommand = true) {
         let lexemePhrase;
         let commands;
-        const outputText = (fn) => {
-            if (typeof fn !== 'function') {
-                fn = function () {};
-            }
-
+        const outputText = () => {
             if (outputCommand) {
-                this.textBuffer.events.onDoneAddingLines.addOnce(() => {
-                    fn();
-                });
-                this.textBuffer.addText('');
-                this.textBuffer.addText('> ' + command);
-            } else {
-                fn();
+                this.outputCommand(command);
             }
         };
 
@@ -42,20 +32,23 @@ export default class RGI {
             return;
         }
 
-        const commandDisplayPromise = new Promise((resolve, reject) => {
-            outputText(resolve);
+        let actions = [];
+
+        commands.forEach((command) => {
+            actions = _.concat(actions, command.actions(room));
         });
 
-        commandDisplayPromise.then(() => {
-            let actions = [];
+        // only output text commnad if we aren't moving to a new room
+        if (_.findIndex(actions, (action) => { return action.type === 'change-room'; }) < 0) {
+            outputText();
+        }
 
-            commands.forEach((command) => {
-                actions = _.concat(actions, command.actions(room));
-            });
-
-            actions.forEach((action) => {
-                action.run(this, this.textBuffer, room);
-            });
+        actions.forEach((action) => {
+                action.run(this, this.textBuffer, room, outputCommand ? command : undefined);
         });
+    }
+
+    outputCommand (command) {
+        this.textBuffer.addText('\n> ' + command);
     }
 }
