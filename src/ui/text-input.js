@@ -9,6 +9,22 @@ export default class TextInput extends Phaser.Group {
         this._inputValue = '';
         this._cursorVisible = true;
         this._enabled = true;
+        this._cursorPosition = -1;
+
+        // text cursor
+        this.textCursor = new Phaser.Text(game);
+        this.textCursor.fontSize = this._fontSize;
+        this.textCursor.fill = 'white';
+        this.textCursor.stroke = 'white';
+        this.textCursor.lineSpacing = this._fontSize * this._lineSpacingRatio;
+        this.add(this.textCursor);
+
+        // hidden input
+        this.hiddenInput = new Phaser.Text(game);
+        this.hiddenInput.fontSize = this._fontSize;
+        this.hiddenInput.fill = 'white';
+        this.hiddenInput.stroke = 'white';
+        this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
 
         // text input
         this.textInput = new Phaser.Text(game);
@@ -61,7 +77,25 @@ export default class TextInput extends Phaser.Group {
 
     get lineHeight () { return this._fontSize * this._lineSpacingRatio; }
 
-    get textOutput () { return this._inputIndicator + this._inputValue + (this._cursorVisible && this._enabled ? '_' : ''); }
+    get textOutput () { return this._inputIndicator + this._inputValue; }
+
+    get hiddenOutput () {
+        let text = this.textOutput;
+
+        if (this._cursorPosition === -1) {
+            return text;
+        }
+
+        return text.substring(0, this._cursorPosition);
+    }
+
+    get cursorOutput () {
+        return this._enabled && this._cursorVisible ? '_' : '';
+    }
+
+    get cursorPosition () {
+        return this.hiddenInput.width;
+    }
 
     get enabled () { return this._enabled; }
 
@@ -72,11 +106,22 @@ export default class TextInput extends Phaser.Group {
     keyPress (chr, ev) {
         if (this._enabled) {
             if (chr.match(/^[\w ]$/)) {
-                this._inputValue = this._inputValue + chr;
+                if (this._cursorPosition <= -1) { // insert at end of text
+                    this._inputValue = this._inputValue + chr;
+                } else if (this._cursorPosition - this._inputIndicator.length === 0) { // insert at beginning of text
+                    this._inputValue = chr + this._inputValue;
+                } else { // insert in middle of text
+                    let pos = this._cursorPosition - this._inputIndicator.length;
+                    let text = this._inputValue;
+
+                    this._inputValue = text.substring(0, pos) + chr + text.substring(pos, text.length);
+                }
             } else if (ev.charCode === 13) {
                 this.events.onEnterPressed.dispatch(this._inputValue);
 
                 this._inputValue = '';
+
+                this._cursorPosition = -1;
             }
         }
     }
@@ -85,12 +130,47 @@ export default class TextInput extends Phaser.Group {
         // delete characters
         if (this._enabled) {
             if (this.specialKeys.del.isDown || this.specialKeys.bs.isDown) {
-                 this._inputValue = this._inputValue.substr(0, this._inputValue.length - 1);
+                if (this._cursorPosition <= -1) {
+                    this._inputValue = this._inputValue.substr(0, this._inputValue.length - 1);
+                } else if (this._cursorPosition - this._inputIndicator.length === 0) {
+                    this._inputValue = this._inputValue.substring(1, this._inputValue.length);
+                } else {
+                    let pos = this._cursorPosition - this._inputIndicator.length;
+                    let text = this._inputValue;
+
+                    this._inputValue = text.substring(0, pos) + text.substring(pos + 1, text.length);
+                    this._cursorPosition--;
+                }
+
+                 if (this._cursorPosition - this._inputIndicator.length >= this._inputValue.length) {
+                     this._cursorPosition = -1;
+                 }
+            }
+            if (this.specialKeys.left.isDown) {
+                if (this._cursorPosition <= -1) {
+                    this._cursorPosition = this.textOutput.length - 1;
+                } else {
+                    this._cursorPosition = this._cursorPosition - 1;
+
+                    if (this._cursorPosition < this._inputIndicator.length) {
+                        this._cursorPosition = this._inputIndicator.length;
+                    }
+                }
+            }
+            if (this.specialKeys.right.isDown && this._cursorPosition >= 0) {
+                if (this._cursorPosition + 1 >= this.textOutput.length) {
+                    this._cursorPosition = -1;
+                } else {
+                    this._cursorPosition++;
+                }
             }
         }
     }
 
     update () {
+        this.hiddenInput.setText(this.hiddenOutput);
+        this.textCursor.reset(this.cursorPosition, 0);
+        this.textCursor.setText(this.cursorOutput);
         this.textInput.setText(this.textOutput);
     }
 }
