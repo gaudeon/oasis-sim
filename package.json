@@ -1,7 +1,7 @@
 {
-  "name": "project",
+  "name": "ready-player-two",
   "version": "1.0.0",
-  "description": "Project",
+  "description": "Ready Player Two",
   "main": "src/app.js",
   "private": true,
   "scripts": {
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/[account]/[project].git"
+    "url": "git+https://github.com/gaudeon/ready-player-two.git"
   },
   "author": "",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/[account]/[project]/issues"
+    "url": "https://github.com/gaudeon/ready-player-two/issues"
   },
-  "homepage": "https://github.com/[account]/[project]#readme",
+  "homepage": "https://github.com/gaudeon/ready-player-two/#readme",
   "dependencies": {
     "lodash": "^4.17.4",
     "phaser-ce": "^2.8.0",
