@@ -1,24 +1,49 @@
-export default class TextInput extends Phaser.Text {
-    constructor (game, x = 0, y = 0, text = '', style = {}) {
-        super(game, x, y, '', style);
+export default class TextInput extends Phaser.Group {
+    constructor (game) {
+        super(game);
 
-        this.fontSize = 20;
-        this.fill = 'white';
-        this.stroke = 'white';
+        // our data
+        this._fontSize = 20;
         this._lineSpacingRatio = 1.5;
-        this.lineSpacing = this.fontSize * this._lineSpacingRatio;
         this._inputIndicator = '> ';
         this._inputValue = '';
         this._cursorVisible = true;
         this._enabled = true;
 
+        // text input
+        this.textInput = new Phaser.Text(game);
+        this.textInput.fontSize = this._fontSize;
+        this.textInput.fill = 'white';
+        this.textInput.stroke = 'white';
+        this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
+        this.add(this.textInput);
+
+        // reset position to bottom
+        this.x = 25;
+        this.y = this.game.height - 30;
+
+        // events
+        this.events = this.events || {};
         this.events.onEnterPressed = new Phaser.Signal();
 
-        this.reset(20, this.bottomY);
+        // capture delete, backspace and arrow keys
+        this.game.input.keyboard.addKeyCapture([
+            Phaser.KeyCode.DELETE,
+            Phaser.KeyCode.BACKSPACE,
+            Phaser.KeyCode.UP,
+            Phaser.KeyCode.DOWN,
+            Phaser.KeyCode.LEFT,
+            Phaser.KeyCode.RIGHT
+        ]);
 
-        // capture delete and backspace
-        this.game.input.keyboard.addKeyCapture([Phaser.KeyCode.DELETE, Phaser.KeyCode.BACKSPACE]);
-        this.specialKeys = this.game.input.keyboard.addKeys({ del: Phaser.KeyCode.DELETE, bs: Phaser.KeyCode.BACKSPACE });
+        this.specialKeys = this.game.input.keyboard.addKeys({
+            del: Phaser.KeyCode.DELETE,
+            bs: Phaser.KeyCode.BACKSPACE,
+            up: Phaser.KeyCode.UP,
+            down: Phaser.KeyCode.DOWN,
+            left: Phaser.KeyCode.LEFT,
+            right: Phaser.KeyCode.RIGHT
+        });
 
         // other character key presses can be handle with a callback
         this.game.input.keyboard.addCallbacks(this, null, null, this.keyPress);
@@ -27,16 +52,14 @@ export default class TextInput extends Phaser.Text {
     resetTimers () {
         this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.toggleCursor, this);
 
-        this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.checkForBackspace, this);
+        this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.checkForSpecialKeys, this);
     }
 
     get lineSpacingRatio () { return this._lineSpacingRatio; }
 
     set lineSpacingRatio (ratio) { this._lineSpacingRatio = ratio; }
 
-    get lineHeight () { return this.fontSize * this._lineSpacingRatio; }
-
-    get bottomY () { return this.game.height - this.lineHeight; }
+    get lineHeight () { return this._fontSize * this._lineSpacingRatio; }
 
     get textOutput () { return this._inputIndicator + this._inputValue + (this._cursorVisible && this._enabled ? '_' : ''); }
 
@@ -58,14 +81,16 @@ export default class TextInput extends Phaser.Text {
         }
     }
 
-    checkForBackspace () {
+    checkForSpecialKeys () {
         // delete characters
-        if (this._enabled && (this.specialKeys.del.isDown || this.specialKeys.bs.isDown)) {
-            this._inputValue = this._inputValue.substr(0, this._inputValue.length - 1);
+        if (this._enabled) {
+            if (this.specialKeys.del.isDown || this.specialKeys.bs.isDown) {
+                 this._inputValue = this._inputValue.substr(0, this._inputValue.length - 1);
+            }
         }
     }
 
     update () {
-        this.setText(this.textOutput);
+        this.textInput.setText(this.textOutput);
     }
 }

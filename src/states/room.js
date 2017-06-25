@@ -23,7 +23,6 @@ export default class RoomState extends Phaser.State {
         } else {
             this.textInput = this.game.textInput = new TextInput(this.game);
             this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room); });
-            this.game.add.existing(this.textInput);
         }
 
         this.rgi = new RGI(this.textBuffer);
