@@ -1,4 +1,5 @@
 import Verb from '../verb';
+import TextAction from '../../../game-actions/text';
 
 export default class LookVerb extends Verb {
     constructor () {
@@ -10,12 +11,17 @@ export default class LookVerb extends Verb {
         this._aliases = ['l'];
     }
 
-    exec () {
-        super.exec();
+    actions (room) {
+        super.actions(room);
 
-        let description = this.room.commandLook();
+        let description = room.commandLook();
 
-        this.buffer.addText(description.brief, {fill: this.colorBrief, stroke: this.colorBrief});
-        this.buffer.addText(description.exits, {fill: this.colorExits, stroke: this.colorExits});
+        let briefTextAction = new TextAction(description.brief);
+        briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
+
+        let exitsTextAction = new TextAction(description.exits);
+        exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
+
+        return [briefTextAction, exitsTextAction];
     }
 }

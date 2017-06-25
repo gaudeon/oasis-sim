@@ -1,4 +1,5 @@
 import Door from './door';
+import ChangeRoomAction from './game-actions/change-room';
 
 export default class Room {
     constructor (game) {
@@ -113,13 +114,17 @@ export default class Room {
 
     _directionCommand (direction) {
         if (typeof this[direction] === 'undefined') {
-            return 'There doesn\'t seem to be anything in that direction';
+            throw new Error('There doesn\'t seem to be anything in that direction');
         }
 
-        this.game.state.start('Room', false, false, this[direction].room);
+        return new ChangeRoomAction(this[direction].room);
     }
 
     commandNorth () {
         return this._directionCommand('north');
+    }
+
+    commandSouth () {
+        return this._directionCommand('south');
     }
 }

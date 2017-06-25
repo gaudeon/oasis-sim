@@ -1,4 +1,5 @@
 import Verb from '../verb';
+import TextAction from '../../../game-actions/text';
 
 export default class BriefVerb extends Verb {
     constructor () {
@@ -9,11 +10,14 @@ export default class BriefVerb extends Verb {
         this._aliases = [];
     }
 
-    exec () {
-        super.exec();
+    actions (room) {
+        super.actions(room);
 
-        let description = this.room.commandBrief();
+        let description = room.commandBrief();
 
-        this.buffer.addText(description, {fill: this.color, stroke: this.color});
+        let action = new TextAction(description);
+        action.style = {fill: this.color, stroke: this.color};
+
+        return action;
     }
 }

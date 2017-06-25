@@ -11,23 +11,51 @@ export default class RGI {
 
     exec (command, room, outputCommand = true) {
         let lexemePhrase;
+        let commands;
+        const outputText = (fn) => {
+            if (typeof fn !== 'function') {
+                fn = function () {};
+            }
 
-        if (outputCommand) {
-            this.textBuffer.addText('');
-            this.textBuffer.addText('> ' + command);
-        }
+            if (outputCommand) {
+                this.textBuffer.events.onDoneAddingLines.addOnce(() => {
+                    fn();
+                });
+                this.textBuffer.addText('');
+                this.textBuffer.addText('> ' + command);
+            } else {
+                fn();
+            }
+        };
 
         try {
             lexemePhrase = this.lexer.tokenize(command);
+
+            commands = this.parser.parse(lexemePhrase);
         } catch (error) {
-            return error;
+            outputText();
+
+            const errorText = 'I don\'t know how to do that.';
+
+            this.exec('error ' + errorText, room, false);
+
+            return;
         }
 
-        let commands = this.parser.parse(lexemePhrase);
+        const commandDisplayPromise = new Promise((resolve, reject) => {
+            outputText(resolve);
+        });
 
-        commands.forEach((command) => {
-            command.setContext(this, this.textBuffer, room);
-            command.exec();
+        commandDisplayPromise.then(() => {
+            let actions = [];
+
+            commands.forEach((command) => {
+                actions = _.concat(actions, command.actions(room));
+            });
+
+            actions.forEach((action) => {
+                action.run(this, this.textBuffer, room);
+            });
         });
     }
 }

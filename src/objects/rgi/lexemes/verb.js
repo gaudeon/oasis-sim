@@ -16,8 +16,8 @@ export default class Verb extends Lexeme {
 
     get stringData () { return this._stringData; }
 
-    exec () {
-        super.exec();
+    actions (room) {
+        super.actions(room);
 
         if (typeof this.word === 'undefined') {
             throw new Error('Current word is not defined.');

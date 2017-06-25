@@ -1,4 +1,5 @@
 import Verb from '../verb';
+import TextAction from '../../../game-actions/text';
 
 export default class ErrorVerb extends Verb {
     constructor () {
@@ -9,9 +10,12 @@ export default class ErrorVerb extends Verb {
         this.colorError = '#FFB6C1'; // LightPink
     }
 
-    exec () {
-        super.exec();
+    actions (room) {
+        super.actions(room);
 
-        this.buffer.addText(this.stringData, {fill: this.colorError, stroke: this.colorError});
+        let action = new TextAction(this.stringData);
+        action.style = {fill: this.colorError, stroke: this.colorError};
+
+        return action;
     }
 }

@@ -1,6 +1,7 @@
 import LookVerb from './verbs/look';
 import BriefVerb from './verbs/brief';
 import NorthVerb from './verbs/north';
+import SouthVerb from './verbs/south';
 import ErrorVerb from './verbs/error';
 
 export default class AllVerbs {
@@ -19,6 +20,7 @@ export default class AllVerbs {
             new BriefVerb(),
             new LookVerb(),
             new NorthVerb(),
+            new SouthVerb(),
             new ErrorVerb()
         ];
     }
@@ -32,7 +34,8 @@ export default class AllVerbs {
         for (let i = 0; i < letters.length; i++) {
             key += letters[i];
 
-            if (_.has(this.verbMap, key)) {
+            // we found a vern if the word entered matches a word in our verbMap and it's complete
+            if (_.has(this.verbMap, key) && i === letters.length - 1) {
                 return this.verbMap[key];
             }
         }
