@@ -7,7 +7,6 @@ export default class RoomState extends Phaser.State {
     init (room = 'WadesTrailerLaundryRoom') {
         this.allRooms = new AllRooms(this.game);
         this.room = this.allRooms.roomMap[room];
-        console.log(this.game.buffer ? this.game.buffer._lineQueue : '');
 
         if (this.game.buffer) {
             this.buffer = this.game.buffer;
