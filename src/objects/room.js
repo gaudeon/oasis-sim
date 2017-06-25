@@ -1,4 +1,5 @@
 import Door from './door';
+import Inventory from './inventory';
 import ChangeRoomAction from './game-actions/change-room';
 
 export default class Room {
@@ -8,6 +9,8 @@ export default class Room {
         this._name = 'Generic Room'
         this._description = '';
         this._flavorText = '';
+
+        this._inventory = new Inventory(game);
 
         // doors
         this.doors = {
@@ -32,6 +35,10 @@ export default class Room {
     get description () { return this._description; }
 
     get flavorText () { return this._flavorText; }
+
+    get inventory () { return this._inventory; }
+
+    get items () { return this._inventory.items; }
 
     // doors
     setNorth (description, room) { this.doors.north = new Door('north', description, room); }
@@ -89,6 +96,14 @@ export default class Room {
         let description = {};
         description.brief = this.commandBrief();
 
+        description.items = '\nThe room contains: ';
+
+        this.items.forEach((item) => {
+            let article = 'a';
+
+            description.items = description.items + article + ' ' + item.brief;
+        });
+
         description.exits = '';
 
         this.exits.forEach((door) => {
@@ -108,6 +123,8 @@ export default class Room {
 
             description.exits = description.exits + '\nThere is ' + door.description + ' ' + preposition + '.';
         });
+
+        console.log(description);
 
         return description;
     };

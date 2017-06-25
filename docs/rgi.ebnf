@@ -1,11 +1,12 @@
-player-command = player-verb-phrase ;
-admin-command = admin-verb-string-phrase | player-verb-phrase;
+player-command = player-verb-phrase | player-verb-noun-phrase ;
+admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase ;
+player-verb-noun-phrase = ( look-verb ) noun ;
 player-verb-phrase = player-verb ;
 admin-verb-string-phrase = admin-verb string ;
 player-verb = look-verb | brief-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
             | southwest-verb | up-verb | down-verb ;
-admin-verb = error-verb;
+admin-verb = error-verb ;
 look-verb = "l" | "look" ;
 brief-verb = "brief" ;
 north-verb = "n" | "north" ;
@@ -19,6 +20,7 @@ southwest-verb = "sw" | "southwest" ;
 up-verb = "u" | "up" ;
 down-verb = "d" | "down" ;
 error-verb = "error" ;
+noun = string ;
 string = { character } ;
 character = letter | digit | symbol | space;
 letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
@@ -34,4 +36,4 @@ symbol = "!" | "@" | "#" | "$" | "%" | "^" | "&" | "*"
        | "(" | ")" | "-" | "_" | "=" | "+" | "[" | "]"
        | "{" | "}" | "\" | "|" | ";" | ":" | "'" | '"'
        | "," | "<" | "." | ">" | "/" | "?" | "`" | "~" ;
-space = " ";
+space = " " ;

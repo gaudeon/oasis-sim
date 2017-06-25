@@ -1,5 +1,5 @@
-import WadesTrailerLaundryRoom from './rooms/wades-trailer-laundry-room';
-import WadesTrailerOutside from './rooms/wades-trailer-outside';
+import YourTrailerLivingRoom from './rooms/your-trailer/living-room';
+import YourTrailerPorch from './rooms/your-trailer/porch';
 
 export default class AllRooms {
     constructor (game) {
@@ -8,14 +8,14 @@ export default class AllRooms {
         this._roomMap = {};
 
         this.roomList.forEach((room) => {
-            this._roomMap[room.constructor.name] = room;
+            this._roomMap[room.prototype.constructor.name] = room;
         });
     }
 
     get roomList () {
         return [
-            new WadesTrailerLaundryRoom(this.game),
-            new WadesTrailerOutside(this.game)
+            YourTrailerLivingRoom,
+            YourTrailerPorch
         ];
     }
 

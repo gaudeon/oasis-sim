@@ -2,11 +2,23 @@ import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 import RGI from '../objects/rgi';
 import AllRooms from '../objects/all-rooms';
+import AllItems from '../objects/all-items';
 
 export default class RoomState extends Phaser.State {
-    init (room = 'WadesTrailerLaundryRoom', lastCommand) {
-        this.allRooms = new AllRooms(this.game);
-        this.room = this.allRooms.roomMap[room];
+    init (room = 'YourTrailerLivingRoom', lastCommand) {
+        if (this.game.allItems) {
+            this.allItems = this.game.allItems;
+        } else {
+            this.allItems = this.game.allItems = new AllItems(this.game);
+        }
+
+        if (this.game.allRooms) {
+            this.allRooms = this.game.allRooms;
+        } else {
+            this.allRooms = this.game.allRooms = new AllRooms(this.game);
+        }
+
+        this.room = new this.allRooms.roomMap[room](this.game); // get the room object for the room we are in
 
         if (this.game.textBuffer) {
             this.textBuffer = this.game.textBuffer;
@@ -25,7 +37,11 @@ export default class RoomState extends Phaser.State {
             this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room); });
         }
 
-        this.rgi = new RGI(this.textBuffer);
+        if (this.game.rgi) {
+            this.rgi = this.game.rgi;
+        } else {
+            this.rgi = this.game.rgi = new RGI(this.textBuffer);
+        }
 
         this.lastCommand = lastCommand;
     }
