@@ -8,25 +8,32 @@ export default class RoomState extends Phaser.State {
         this.allRooms = new AllRooms(this.game);
         this.room = this.allRooms.roomMap[room];
 
-        if (this.game.buffer) {
-            this.buffer = this.game.buffer;
+        if (this.game.textBuffer) {
+            this.textBuffer = this.game.textBuffer;
         } else {
-            this.buffer = this.game.buffer = new TextBuffer(this.game);
+            this.textBuffer = this.game.textBuffer = new TextBuffer(this.game);
+
+            // disable text input while buffer is adding text
+            this.textBuffer.events.onStartAddingLines.add(() => { this.input.enabled = false; });
+            this.textBuffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
         }
 
-        this.rgi = new RGI(this.buffer);
+        if (this.game.textInput) {
+            this.textInput = this.game.textInput;
+        } else {
+            this.textInput = this.game.textInput = new TextInput(this.game);
+            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room); });
+            this.game.add.existing(this.textInput);
+        }
+
+        this.rgi = new RGI(this.textBuffer);
 
         this.lastCommand = lastCommand;
     }
 
     create () {
-        this.input = new TextInput(this.game);
-        this.input.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room); });
-        this.game.add.existing(this.input);
-
-        // disable text input while buffer is adding text
-        this.buffer.events.onStartAddingLines.add(() => { this.input.enabled = false; });
-        this.buffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
+        // reset text input timers
+        this.textInput.resetTimers();
 
         // output the last command that lead us to this line
         if (this.lastCommand) {

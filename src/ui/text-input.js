@@ -16,16 +16,18 @@ export default class TextInput extends Phaser.Text {
 
         this.reset(20, this.bottomY);
 
-        this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.toggleCursor, this);
-
-        this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.checkForBackspace, this);
-
         // capture delete and backspace
         this.game.input.keyboard.addKeyCapture([Phaser.KeyCode.DELETE, Phaser.KeyCode.BACKSPACE]);
         this.specialKeys = this.game.input.keyboard.addKeys({ del: Phaser.KeyCode.DELETE, bs: Phaser.KeyCode.BACKSPACE });
 
         // other character key presses can be handle with a callback
         this.game.input.keyboard.addCallbacks(this, null, null, this.keyPress);
+    }
+
+    resetTimers () {
+        this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.toggleCursor, this);
+
+        this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.checkForBackspace, this);
     }
 
     get lineSpacingRatio () { return this._lineSpacingRatio; }
