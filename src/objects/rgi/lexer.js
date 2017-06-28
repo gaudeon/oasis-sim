@@ -1,16 +1,19 @@
 import AllVerbs from './lexemes/all-verbs';
+import AllItems from '../all-items';
 import PhraseVerb from './phrases/phrase-verb';
 import PhraseVerbString from './phrases/phrase-verb-string';
+import PhraseVerbNoun from './phrases/phrase-verb-noun';
 
 export default class Lexer {
     constructor (rgi) {
         this.rgi = rgi;
 
         this.verbs = new AllVerbs();
+        this.items = new AllItems();
     }
 
-    tokenize (command) {
-        let words = command.split(/ /);
+    tokenize (command, room) {
+        let words = this.cleanPrepositions(this.cleanArticles(command.split(/ /)));
 
         if (!words.length) { // no command found
             throw new Error('No words found');
@@ -25,6 +28,10 @@ export default class Lexer {
             let foundPhrase = [];
             let phrase = this.lexemePhrases[lexemePhraseIndex];
 
+            if (wordsCopy.length < phrase.phraseTemplate.length) { // no need to match on phrases to don't support a short command
+                continue;
+            }
+
             // run through each lexeme in a phrase and attempt to match each word in command to it's lexeme counterpart
             for (let lexemeIndex = 0; lexemeIndex < phrase.phraseTemplate.length; lexemeIndex++) {
                 let word = wordsCopy.shift();
@@ -34,7 +41,7 @@ export default class Lexer {
                 }
 
                 let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
-                let lexeme = findMethod.fn.call(findMethod.context, word, wordsCopy);
+                let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
@@ -60,6 +67,7 @@ export default class Lexer {
 
     get lexemePhrases () {
         return [
+            new PhraseVerbNoun(),
             new PhraseVerbString(),
             new PhraseVerb()
         ];
@@ -67,20 +75,41 @@ export default class Lexer {
 
     get lexemeToFindMethod () {
         return {
-            verb: {
-                fn: this.verbs.findVerb,
-                context: this.verbs
-            },
-            string: {
-                fn: this.findString,
-                context: this
-            }
+            verb: this.findVerb,
+            string: this.findString,
+            noun: this.findNoun
         }
     }
 
-    findString (word, words) {
+    findVerb (word, wordACL, words, room) {
+        return this.verbs.findVerb(word, wordACL, words, room);
+    }
+
+    findString (word, wordACL, words, room) {
         let s = word + ' ' + words.join(' ');
 
         return s;
+    }
+
+    findNoun (word, wordACL, words, room) {
+        let matches = [];
+
+        room.items.forEach((item) => {
+            if (item.brief.match(new RegExp(word, 'i'))) {
+                matches.push(item);
+            }
+        });
+
+        if (matches.length >= 1) {
+            return matches[0];
+        }
+    }
+
+    cleanArticles (words) {
+        return _.filter(words, (word) => { return !word.match(/^(?:a|an|the)$/i); });
+    }
+
+    cleanPrepositions (words) {
+        return _.filter(words, (word) => { return !word.match(/^(?:aboard|about|above|absent|across|after|against|along|alongside|amid|apropos|apud|around|as|astride|at|atop|ontop|bar|before|behind|beneath|beside|besides|between|beyond|but|by|chez|circa|come|despite|down|during|except|for|from|in|inside|into|less|like|minus|near|notwithstanding|of|off|on|onto|opposite|out|outside|over|pace|past|per|post|pre|pro|qua|re|sans|save|short|since|than|thorugh|throughout|to|toward|under|underneath|unlike|until|up|upon|upside|versus|via|vice|with|within|without|worth)$/i); });
     }
 }

@@ -15,17 +15,31 @@ export default class LookVerb extends Verb {
     actions (room) {
         super.actions(room);
 
-        let description = room.commandLook();
+        if (typeof this.source !== 'undefined') {
+            let briefTextAction;
 
-        let briefTextAction = new TextAction(description.brief);
-        briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
+            if (typeof this.source.description !== 'undefined') {
+                briefTextAction = new TextAction('You see ' + this.source.description);
+            } else {
+                briefTextAction = new TextAction('You don\'t see anything else noteworthy about it.');
+            }
 
-        let itemsTextAction = new TextAction(description.items);
-        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+            briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
 
-        let exitsTextAction = new TextAction(description.exits);
-        exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
+            return [briefTextAction];
+        } else {
+            let description = room.commandLook();
 
-        return [briefTextAction, itemsTextAction, exitsTextAction];
+            let briefTextAction = new TextAction(description.brief);
+            briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
+
+            let itemsTextAction = new TextAction(description.items);
+            itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+
+            let exitsTextAction = new TextAction(description.exits);
+            exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
+
+            return [briefTextAction, itemsTextAction, exitsTextAction];
+        }
     }
 }

@@ -8,6 +8,6 @@ export default class SleepingBag extends Item {
 
         this._brief = 'sleeping bag';
 
-        this._description = 'A mildly worn out sleeping bag.';
+        this._description = 'a mildly worn out sleeping bag.';
     }
 }

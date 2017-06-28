@@ -19,7 +19,7 @@ export default class RGI {
         };
 
         try {
-            lexemePhrase = this.lexer.tokenize(command);
+            lexemePhrase = this.lexer.tokenize(command, room);
 
             commands = this.parser.parse(lexemePhrase);
         } catch (error) {

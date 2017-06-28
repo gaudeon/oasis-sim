@@ -1,14 +1,14 @@
 import LexemePhrase from '../lexeme-phrase';
 
-export default class PhraseVerbString extends LexemePhrase {
+export default class PhraseVerbNoun extends LexemePhrase {
     constructor () {
         super();
 
-        this._phraseTemplate = ['verb', 'string'];
+        this._phraseTemplate = ['verb', 'noun'];
 
         this._phraseTemplateACL = [
             {
-                error: true
+                look: true
             },
             undefined
         ];

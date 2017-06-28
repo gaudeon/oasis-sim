@@ -2,9 +2,9 @@ export default class Item {
     constructor (game) {
         this._name = 'Generic Item';
 
-        this._brief = 'generic item';
+        this._brief = 'a generic item'; // displayed in room look commands in the form "The room contains: <item> <item>"
 
-        this._description = 'generic item';
+        this._description = 'a generic item' // display in "look at <item>" commands in the form "You see <item>";
     }
 
     get name () { return this._name; }
@@ -12,4 +12,6 @@ export default class Item {
     get brief () { return this._brief }
 
     get description () { return this._description; }
+
+    get key () { return this.prototype.constructor.name };
 }

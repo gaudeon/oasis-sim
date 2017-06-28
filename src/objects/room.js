@@ -28,7 +28,7 @@ export default class Room {
     }
 
     // room info
-    get key () { return this.constructor.name; }
+    get key () { return this.prototype.constructor.name; }
 
     get name () { return this._name; }
 
@@ -123,8 +123,6 @@ export default class Room {
 
             description.exits = description.exits + '\nThere is ' + door.description + ' ' + preposition + '.';
         });
-
-        console.log(description);
 
         return description;
     };

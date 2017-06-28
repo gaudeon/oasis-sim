@@ -8,35 +8,44 @@ export default class AllVerbs {
     constructor () {
         this._verbMap = {};
 
-        this.verbList.forEach((verb) => {
-            verb.aliases.forEach((alias) => {
-                this._verbMap[alias] = verb;
+        this.verbList.forEach((VerbClass) => {
+            let tempVerb = new VerbClass();
+
+            this._verbMap[tempVerb.word] = VerbClass;
+
+            tempVerb.aliases.forEach((alias) => {
+                this._verbMap[alias] = VerbClass;
             });
         });
     }
 
     get verbList () {
         return [
-            new BriefVerb(),
-            new LookVerb(),
-            new NorthVerb(),
-            new SouthVerb(),
-            new ErrorVerb()
+            BriefVerb,
+            LookVerb,
+            NorthVerb,
+            SouthVerb,
+            ErrorVerb
         ];
     }
 
     get verbMap () { return this._verbMap; }
 
-    findVerb (word) {
+    findVerb (word, wordACL) {
         let letters = word.toLowerCase().split('');
         let key = '';
 
         for (let i = 0; i < letters.length; i++) {
             key += letters[i];
 
-            // we found a vern if the word entered matches a word in our verbMap and it's complete
+            // we found a verb if the word entered matches a word in our verbMap and it's complete
             if (_.has(this.verbMap, key) && i === letters.length - 1) {
-                return this.verbMap[key];
+                let VerbClass = this.verbMap[key];
+                let verb = new VerbClass();
+
+                if (typeof wordACL === 'undefined' || (typeof wordACL === 'object' && wordACL[verb.word])) {
+                    return verb;
+                }
             }
         }
 
