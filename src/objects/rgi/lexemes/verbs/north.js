@@ -10,8 +10,8 @@ export default class NorthVerb extends Verb {
         this._aliases = ['n'];
     }
 
-    actions (room) {
-        super.actions(room);
+    actions (room, player) {
+        super.actions(room, player);
 
         try {
             return room.commandNorth();

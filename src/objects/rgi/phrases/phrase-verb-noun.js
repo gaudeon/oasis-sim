@@ -8,7 +8,8 @@ export default class PhraseVerbNoun extends LexemePhrase {
 
         this._phraseTemplateACL = [
             {
-                look: true
+                look: true,
+                get: true
             },
             undefined
         ];

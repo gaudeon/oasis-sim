@@ -5,11 +5,7 @@ describe('Room', () => {
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            room = new Room({
-                key: 'test-room',
-                description: 'this is a test room',
-                name: 'test room'
-            });
+            room = new Room(global.game);
 
             assert.isObject(room);
         });

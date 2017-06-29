@@ -10,8 +10,8 @@ export default class ErrorVerb extends Verb {
         this.colorError = '#FFB6C1'; // LightPink
     }
 
-    actions (room) {
-        super.actions(room);
+    actions (room, player) {
+        super.actions(room, player);
 
         let action = new TextAction(this.stringData);
         action.style = {fill: this.colorError, stroke: this.colorError};

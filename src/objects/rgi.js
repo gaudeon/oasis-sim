@@ -9,7 +9,7 @@ export default class RGI {
         this.parser = new Parser(this);
     }
 
-    exec (command, room, outputCommand = true) {
+    exec (command, room, player, outputCommand = true) {
         let lexemePhrase;
         let commands;
         const outputText = () => {
@@ -19,7 +19,7 @@ export default class RGI {
         };
 
         try {
-            lexemePhrase = this.lexer.tokenize(command, room);
+            lexemePhrase = this.lexer.tokenize(command, room, player);
 
             commands = this.parser.parse(lexemePhrase);
         } catch (error) {
@@ -27,7 +27,7 @@ export default class RGI {
 
             const errorText = 'I don\'t know how to do that.';
 
-            this.exec('error ' + errorText, room, false);
+            this.exec('error ' + errorText, room, player, false);
 
             return;
         }
@@ -35,7 +35,7 @@ export default class RGI {
         let actions = [];
 
         commands.forEach((command) => {
-            actions = _.concat(actions, command.actions(room));
+            actions = _.concat(actions, command.actions(room, player));
         });
 
         // only output text commnad if we aren't moving to a new room
@@ -44,7 +44,7 @@ export default class RGI {
         }
 
         actions.forEach((action) => {
-                action.run(this, this.textBuffer, room, outputCommand ? command : undefined);
+                action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
         });
     }
 

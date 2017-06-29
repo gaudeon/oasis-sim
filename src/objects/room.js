@@ -28,7 +28,7 @@ export default class Room {
     }
 
     // room info
-    get key () { return this.prototype.constructor.name; }
+    get key () { return this.constructor.name; }
 
     get name () { return this._name; }
 

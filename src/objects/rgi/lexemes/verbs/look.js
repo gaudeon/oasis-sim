@@ -12,8 +12,8 @@ export default class LookVerb extends Verb {
         this._aliases = ['l'];
     }
 
-    actions (room) {
-        super.actions(room);
+    actions (room, player) {
+        super.actions(room, player);
 
         if (typeof this.source !== 'undefined') {
             let briefTextAction;

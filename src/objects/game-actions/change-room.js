@@ -7,7 +7,7 @@ export default class ChangeRoomAction extends GameAction {
         this._type = 'change-room';
     }
 
-    run (rgi, buffer, room, lastCommand) {
+    run (rgi, buffer, room, player, lastCommand) {
         room.game.state.start('Room', false, false, this.data, lastCommand);
     }
 }

@@ -3,6 +3,7 @@ import BriefVerb from './verbs/brief';
 import NorthVerb from './verbs/north';
 import SouthVerb from './verbs/south';
 import ErrorVerb from './verbs/error';
+import GetVerb from './verbs/get';
 
 export default class AllVerbs {
     constructor () {
@@ -25,13 +26,14 @@ export default class AllVerbs {
             LookVerb,
             NorthVerb,
             SouthVerb,
-            ErrorVerb
+            ErrorVerb,
+            GetVerb
         ];
     }
 
     get verbMap () { return this._verbMap; }
 
-    findVerb (word, wordACL) {
+    findVerb (word, wordACL, words, room, player) {
         let letters = word.toLowerCase().split('');
         let key = '';
 

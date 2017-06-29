@@ -1,3 +1,3 @@
 export default class Lexeme {
-    actions (room) { /* nothing here */ }
+    actions (room, player) { /* nothing here */ }
 }

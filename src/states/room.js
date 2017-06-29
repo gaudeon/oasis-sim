@@ -3,9 +3,16 @@ import TextInput from '../ui/text-input';
 import RGI from '../objects/rgi';
 import AllRooms from '../objects/all-rooms';
 import AllItems from '../objects/all-items';
+import Player from '../objects/player';
 
 export default class RoomState extends Phaser.State {
     init (room = 'YourTrailerLivingRoom', lastCommand) {
+        if (this.game.player) {
+            this.player = this.game.player;
+        } else {
+            this.player = this.game.player = new Player(this.game);
+        }
+
         if (this.game.allItems) {
             this.allItems = this.game.allItems;
         } else {
@@ -34,7 +41,7 @@ export default class RoomState extends Phaser.State {
             this.textInput = this.game.textInput;
         } else {
             this.textInput = this.game.textInput = new TextInput(this.game);
-            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room); });
+            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player); });
         }
 
         if (this.game.rgi) {
@@ -56,6 +63,6 @@ export default class RoomState extends Phaser.State {
         }
 
         // output brief description of room
-        this.rgi.exec('brief', this.room, false);
+        this.rgi.exec('brief', this.room, this.player, false);
     }
 };

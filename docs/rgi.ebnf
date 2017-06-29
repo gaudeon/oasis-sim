@@ -1,11 +1,10 @@
 player-command = player-verb-phrase | player-verb-noun-phrase ;
 admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase ;
-player-verb-noun-phrase = { article | preposition } ( look-verb ) { article | preposition } noun { article | preposition };
-player-verb-phrase = player-verb ;
-admin-verb-string-phrase = admin-verb string ;
-player-verb = look-verb | brief-verb | north-verb | south-verb | east-verb
+player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb ) { article | preposition } noun { article | preposition };
+player-verb-phrase = look-verb | brief-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
             | southwest-verb | up-verb | down-verb ;
+admin-verb-string-phrase = admin-verb string ;
 admin-verb = error-verb ;
 look-verb = "l" | "look" ;
 brief-verb = "brief" ;
@@ -20,6 +19,7 @@ southwest-verb = "sw" | "southwest" ;
 up-verb = "u" | "up" ;
 down-verb = "d" | "down" ;
 error-verb = "error" ;
+get-verb = "g" | "get" | "take" | "pick" ;
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "against" | "along" | "alongside" | "amid" | "apropos" | "apud"
             | "around" | "as" | "astride" | "at" | "atop" | "ontop" | "bar"
