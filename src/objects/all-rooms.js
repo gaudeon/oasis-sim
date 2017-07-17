@@ -8,7 +8,7 @@ export default class AllRooms {
         this._roomMap = {};
 
         this.roomList.forEach((room) => {
-            this._roomMap[room.prototype.constructor.name] = room;
+            this._roomMap[room.name] = room;
         });
     }
 

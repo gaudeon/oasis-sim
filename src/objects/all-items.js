@@ -7,7 +7,7 @@ export default class AllItems {
         this._itemMap = {};
 
         this.itemList.forEach((item) => {
-            this._itemMap[item.prototype.constructor.name] = item;
+            this._itemMap[item.name] = item;
         });
     }
 
