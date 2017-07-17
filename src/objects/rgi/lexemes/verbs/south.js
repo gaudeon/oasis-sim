@@ -16,7 +16,7 @@ export default class SouthVerb extends Verb {
         try {
             return room.commandSouth();
         } catch (error) {
-            return new RunCommandAction('error ' + error);
+            return new RunCommandAction('error ' + error.message);
         }
     }
 }

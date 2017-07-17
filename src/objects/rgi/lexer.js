@@ -110,6 +110,6 @@ export default class Lexer {
     }
 
     cleanPrepositions (words) {
-        return _.filter(words, (word) => { return !word.match(/^(?:aboard|about|above|absent|across|after|against|along|alongside|amid|apropos|apud|around|as|astride|at|atop|ontop|bar|before|behind|beneath|beside|besides|between|beyond|but|by|chez|circa|come|despite|down|during|except|for|from|in|inside|into|less|like|minus|near|notwithstanding|of|off|on|onto|opposite|out|outside|over|pace|past|per|post|pre|pro|qua|re|sans|save|short|since|than|thorugh|throughout|to|toward|under|underneath|unlike|until|up|upon|upside|versus|via|vice|with|within|without|worth)$/i); });
+        return _.filter(words, (word) => { return !word.match(/^(?:aboard|about|above|absent|across|after|against|along|alongside|amid|apropos|apud|around|as|astride|at|atop|ontop|bar|before|behind|beneath|beside|besides|between|beyond|but|by|chez|circa|come|despite|during|except|for|from|in|inside|into|less|like|minus|near|notwithstanding|of|off|on|onto|opposite|out|outside|over|pace|past|per|post|pre|pro|qua|re|sans|save|short|since|than|thorugh|throughout|to|toward|under|underneath|unlike|until|upon|upside|versus|via|vice|with|within|without|worth)$/i); });
     }
 }

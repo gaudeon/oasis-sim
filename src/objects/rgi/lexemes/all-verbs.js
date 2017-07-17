@@ -2,6 +2,14 @@ import LookVerb from './verbs/look';
 import BriefVerb from './verbs/brief';
 import NorthVerb from './verbs/north';
 import SouthVerb from './verbs/south';
+import EastVerb from './verbs/east';
+import WestVerb from './verbs/west';
+import NorthEastVerb from './verbs/northeast';
+import NorthWestVerb from './verbs/northwest';
+import SouthEastVerb from './verbs/southeast';
+import SouthWestVerb from './verbs/southwest';
+import UpVerb from './verbs/up';
+import DownVerb from './verbs/down';
 import ErrorVerb from './verbs/error';
 import GetVerb from './verbs/get';
 
@@ -26,6 +34,14 @@ export default class AllVerbs {
             LookVerb,
             NorthVerb,
             SouthVerb,
+            EastVerb,
+            WestVerb,
+            NorthEastVerb,
+            NorthWestVerb,
+            SouthEastVerb,
+            SouthWestVerb,
+            UpVerb,
+            DownVerb,
             ErrorVerb,
             GetVerb
         ];

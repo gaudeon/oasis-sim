@@ -1,20 +1,20 @@
 import Verb from '../verb';
 import RunCommandAction from '../../../game-actions/run-command';
 
-export default class NorthVerb extends Verb {
+export default class EastVerb extends Verb {
     constructor () {
         super();
 
-        this._word = 'north';
+        this._word = 'east';
 
-        this._aliases = ['n'];
+        this._aliases = ['e'];
     }
 
     actions (room, player) {
         super.actions(room, player);
 
         try {
-            return room.commandNorth();
+            return room.commandEast();
         } catch (error) {
             return new RunCommandAction('error ' + error.message);
         }

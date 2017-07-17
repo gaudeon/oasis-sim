@@ -44,7 +44,7 @@ export default class RGI {
         }
 
         actions.forEach((action) => {
-                action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
+            action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
         });
     }
 

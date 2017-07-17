@@ -18,6 +18,7 @@ southeast-verb = "se" | "southeast" ;
 southwest-verb = "sw" | "southwest" ;
 up-verb = "u" | "up" ;
 down-verb = "d" | "down" ;
+help-verb = "?" | "h" | "help" ;
 error-verb = "error" ;
 get-verb = "g" | "get" | "take" | "pick" ;
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"

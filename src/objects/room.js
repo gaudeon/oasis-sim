@@ -75,11 +75,11 @@ export default class Room {
 
     setUp (description, room) { this._up = new Door('up', description, room); }
 
-    get up () { return this._up; }
+    get up () { return this.doors.up; }
 
     setDown (description, room) { this._down = new Door('down', description, room); }
 
-    get down () { return this._down; }
+    get down () { return this.doors.down; }
 
     get exits () { return _.filter(Object.values(this.doors), (door) => { return typeof door !== 'undefined'; }); }
 
@@ -128,11 +128,11 @@ export default class Room {
     };
 
     _directionCommand (direction) {
-        if (typeof this[direction] === 'undefined') {
+        if (typeof this.doors[direction] === 'undefined') {
             throw new Error('There doesn\'t seem to be anything in that direction');
         }
 
-        return new ChangeRoomAction(this[direction].room);
+        return new ChangeRoomAction(this.doors[direction].room);
     }
 
     commandNorth () {
@@ -141,5 +141,37 @@ export default class Room {
 
     commandSouth () {
         return this._directionCommand('south');
+    }
+
+    commandEast () {
+        return this._directionCommand('east');
+    }
+
+    commandWest () {
+        return this._directionCommand('west');
+    }
+
+    commandNorthEast () {
+        return this._directionCommand('northeast');
+    }
+
+    commandNorthWest () {
+        return this._directionCommand('northwest');
+    }
+
+    commandSouthEast () {
+        return this._directionCommand('southeast');
+    }
+
+    commandSouthWest () {
+        return this._directionCommand('southwest');
+    }
+
+    commandUp () {
+        return this._directionCommand('up');
+    }
+
+    commandDown () {
+        return this._directionCommand('down');
     }
 }
