@@ -41,7 +41,7 @@ export default class RoomState extends Phaser.State {
             this.textInput = this.game.textInput;
         } else {
             this.textInput = this.game.textInput = new TextInput(this.game);
-            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player); });
+            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
         }
 
         if (this.game.rgi) {
@@ -63,6 +63,6 @@ export default class RoomState extends Phaser.State {
         }
 
         // output brief description of room
-        this.rgi.exec('brief', this.room, this.player, false);
+        this.rgi.exec('brief', this.room, this.player, false, 'player');
     }
 };

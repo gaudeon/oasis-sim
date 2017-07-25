@@ -7,11 +7,14 @@ export default class Verb extends Lexeme {
         this._stringData = '';
         this._source = undefined;
         this._aliases = []; // set aliases list for multiple aliases otherwise default to word
+        this._playerCanExecute = true; // determines if a player can use this verb
     }
 
     get word () { return this._word; }
 
     get aliases () { return Object.assign([], [this._word], this._aliases || []); }
+
+    get playerCanExecute () { return this._playerCanExecute; }
 
     set stringData (str) { this._stringData = str; }
 

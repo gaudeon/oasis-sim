@@ -9,7 +9,7 @@ export default class RGI {
         this.parser = new Parser(this);
     }
 
-    exec (command, room, player, outputCommand = true) {
+    exec (command, room, player, outputCommand = true, source = 'admin') {
         let lexemePhrase;
         let commands;
         const outputText = () => {
@@ -19,9 +19,9 @@ export default class RGI {
         };
 
         try {
-            lexemePhrase = this.lexer.tokenize(command, room, player);
+            lexemePhrase = this.lexer.tokenize(command, room, player, source);
 
-            commands = this.parser.parse(lexemePhrase);
+            commands = this.parser.parse(lexemePhrase, source);
         } catch (error) {
             outputText();
 

@@ -3,7 +3,7 @@ export default class Parser {
         this.rgi = rgi;
     }
 
-    parse (lexemePhrase) {
+    parse (lexemePhrase, source = 'admin') {
         let commands = [];
         switch (lexemePhrase.phraseTemplateKey) {
             case 'verb':

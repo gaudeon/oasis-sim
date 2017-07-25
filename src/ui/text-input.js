@@ -105,7 +105,13 @@ export default class TextInput extends Phaser.Group {
 
     keyPress (chr, ev) {
         if (this._enabled) {
-            if (chr.match(/^[\w ]$/)) {
+            if (ev.charCode === 13) {
+                this.events.onEnterPressed.dispatch(this._inputValue);
+
+                this._inputValue = '';
+
+                this._cursorPosition = -1;
+            } else {
                 if (this._cursorPosition <= -1) { // insert at end of text
                     this._inputValue = this._inputValue + chr;
                 } else if (this._cursorPosition - this._inputIndicator.length === 0) { // insert at beginning of text
@@ -116,12 +122,6 @@ export default class TextInput extends Phaser.Group {
 
                     this._inputValue = text.substring(0, pos) + chr + text.substring(pos, text.length);
                 }
-            } else if (ev.charCode === 13) {
-                this.events.onEnterPressed.dispatch(this._inputValue);
-
-                this._inputValue = '';
-
-                this._cursorPosition = -1;
             }
         }
     }

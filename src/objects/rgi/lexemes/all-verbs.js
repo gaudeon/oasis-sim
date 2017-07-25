@@ -12,6 +12,7 @@ import UpVerb from './verbs/up';
 import DownVerb from './verbs/down';
 import ErrorVerb from './verbs/error';
 import GetVerb from './verbs/get';
+import HelpVerb from './verbs/help';
 
 export default class AllVerbs {
     constructor () {
@@ -43,7 +44,8 @@ export default class AllVerbs {
             UpVerb,
             DownVerb,
             ErrorVerb,
-            GetVerb
+            GetVerb,
+            HelpVerb
         ];
     }
 

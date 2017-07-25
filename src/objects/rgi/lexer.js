@@ -12,7 +12,7 @@ export default class Lexer {
         this.items = new AllItems();
     }
 
-    tokenize (command, room, player) {
+    tokenize (command, room, player, source = 'admin') {
         let words = this.cleanPrepositions(this.cleanArticles(command.split(/ /)));
 
         if (!words.length) { // no command found
@@ -41,7 +41,7 @@ export default class Lexer {
                 }
 
                 let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
-                let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room, player);
+                let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room, player, source);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
@@ -81,17 +81,23 @@ export default class Lexer {
         }
     }
 
-    findVerb (word, wordACL, words, room, player) {
-        return this.verbs.findVerb(word, wordACL, words, room, player);
+    findVerb (word, wordACL, words, room, player, source) {
+        let verb = this.verbs.findVerb(word, wordACL, words, room, player);
+
+        if (source && source === 'player' && !verb.playerCanExecute) { // check to see if the player can execute this verb
+            return undefined;
+        }
+
+        return verb;
     }
 
-    findString (word, wordACL, words, room, player) {
+    findString (word, wordACL, words, room, player, source) {
         let s = word + ' ' + words.join(' ');
 
         return s;
     }
 
-    findNoun (word, wordACL, words, room, player) {
+    findNoun (word, wordACL, words, room, player, source) {
         let matches = [];
 
         room.items.forEach((item) => {

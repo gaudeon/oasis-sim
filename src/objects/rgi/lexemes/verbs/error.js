@@ -8,6 +8,8 @@ export default class ErrorVerb extends Verb {
         this._word = 'error';
 
         this.colorError = '#FFB6C1'; // LightPink
+
+        this._playerCanExecute = false;
     }
 
     actions (room, player) {
