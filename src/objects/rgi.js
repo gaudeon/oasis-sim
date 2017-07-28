@@ -3,10 +3,11 @@ import Parser from './rgi/parser';
 
 // RGI === Regular Grammar Interpreter
 export default class RGI {
-    constructor (buffer) {
+    constructor (buffer, debug = false) {
         this.textBuffer = buffer;
-        this.lexer = new Lexer(this);
-        this.parser = new Parser(this);
+        this.debug = debug;
+        this.lexer = new Lexer(this, debug);
+        this.parser = new Parser(this, debug);
     }
 
     exec (command, room, player, outputCommand = true, source = 'admin') {
@@ -17,6 +18,11 @@ export default class RGI {
                 this.outputCommand(command);
             }
         };
+
+        if (this.debug && console) {
+            console.log(`--- Start RGI Exec ---`);
+            console.log(`RGI: Command: ${command}`);
+        }
 
         try {
             lexemePhrase = this.lexer.tokenize(command, room, player, source);
@@ -38,14 +44,28 @@ export default class RGI {
             actions = _.concat(actions, command.actions(room, player));
         });
 
-        // only output text commnad if we aren't moving to a new room
+        if (this.debug && console) {
+            console.log(`RGI: Processing list of commands into list of actions:`, actions);
+        }
+
+        // only output text command if we aren't moving to a new room
         if (_.findIndex(actions, (action) => { return action.type === 'change-room'; }) < 0) {
             outputText();
         }
 
         actions.forEach((action) => {
-            action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
+            if (action instanceof Promise) {
+                action.then(realAction => {
+                    realAction.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
+                })
+            } else {
+                action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
+            }
         });
+
+        if (this.debug && console) {
+            console.log(`--- Finish RGI Exec ---`);
+        }
     }
 
     outputCommand (command) {

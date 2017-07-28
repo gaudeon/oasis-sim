@@ -15,22 +15,60 @@ export default class HelpVerb extends Verb {
     actions (room, player) {
         super.actions(room, player);
 
-        import('../all-verbs').then(Module => {
-            let AllVerbs = Module.default;
-            let verbs = new AllVerbs();
-            this.stringData = '';
+        let actionPromise = new Promise((resolve, reject) => {
+            import('../all-verbs').then(Module => {
+                let AllVerbs = Module.default;
+                let verbs = new AllVerbs();
+                let output = '';
 
-            verbs.verbList.forEach(Verb => {
-                let verb = new Verb();
-                this.stringData = this.stringData + verb.word + '\n';
+                if (this.stringData) {
+                    let VerbClass = verbs.verbMap[this.stringData.toLowerCase().replace(/[^\w]/, '')];
+
+                    if (VerbClass) {
+                        let verb = new VerbClass();
+
+                        // only get help text if the player can execute it
+                        if (verb.playerCanExecute) {
+                            output = verb.helpText();
+                        }
+                    }
+                }
+
+                if (!output) {
+                    output = 'Usage: help <command>\nAvailable Commands:\n';
+
+                    const numColumns = 4;
+                    let currColumn = 0;
+                    verbs.verbList.sort((a, b) => {
+                        return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+                    }).forEach(Verb => {
+                        let verb = new Verb();
+
+                        // don't display this verb as an option if the player can't execute it
+                        if (!verb.playerCanExecute) {
+                            return;
+                        }
+
+                        output = output + verb.word + '\t\t\t';
+                        currColumn++;
+                        if (currColumn >= numColumns) {
+                            output = output + '\n';
+                            currColumn = 0;
+                        }
+                    });
+                }
+
+                let action = new TextAction(output);
+                action.style = {fill: this.colorHelp, stroke: this.colorHelp};
+
+                resolve(action);
             });
         });
 
-        // TODO: needs to handle returning of promises from actions calls (because import() is a promise and so we have to wait for it to complete - so we need to return a promise for this one.. so all actions should return promises)
+        return actionPromise;
+    }
 
-        let action = new TextAction(this.stringData);
-        action.style = {fill: this.colorHelp, stroke: this.colorHelp};
-
-        return action;
+    helpText () {
+        return 'You really ran help to get help about help?';
     }
 }

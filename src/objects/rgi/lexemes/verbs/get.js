@@ -28,4 +28,8 @@ export default class GetVerb extends Verb {
             return new RunCommandAction('error Hmm, I wonder what I should take?');
         }
     }
+
+    helpText () {
+        return 'Attempt to pick up an item in the room.';
+    }
 }

@@ -47,7 +47,8 @@ export default class RoomState extends Phaser.State {
         if (this.game.rgi) {
             this.rgi = this.game.rgi;
         } else {
-            this.rgi = this.game.rgi = new RGI(this.textBuffer);
+            const DEBUG_RGI = true; // set to true to see command processing
+            this.rgi = this.game.rgi = new RGI(this.textBuffer, DEBUG_RGI);
         }
 
         this.lastCommand = lastCommand;

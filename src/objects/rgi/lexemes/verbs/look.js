@@ -42,4 +42,8 @@ export default class LookVerb extends Verb {
             return [briefTextAction, itemsTextAction, exitsTextAction];
         }
     }
+
+    helpText () {
+        return 'Look more closely at the room or at something in the room.';
+    }
 }

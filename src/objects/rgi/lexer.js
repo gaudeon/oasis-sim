@@ -5,11 +5,13 @@ import PhraseVerbString from './phrases/phrase-verb-string';
 import PhraseVerbNoun from './phrases/phrase-verb-noun';
 
 export default class Lexer {
-    constructor (rgi) {
+    constructor (rgi, debug = false) {
         this.rgi = rgi;
 
         this.verbs = new AllVerbs();
         this.items = new AllItems();
+
+        this.debug = debug;
     }
 
     tokenize (command, room, player, source = 'admin') {
@@ -32,6 +34,10 @@ export default class Lexer {
                 continue;
             }
 
+            if (this.debug && console) {
+                console.log(`Lexer: Testing Phrase Class: ${phrase.constructor.name}`);
+            }
+
             // run through each lexeme in a phrase and attempt to match each word in command to it's lexeme counterpart
             for (let lexemeIndex = 0; lexemeIndex < phrase.phraseTemplate.length; lexemeIndex++) {
                 let word = wordsCopy.shift();
@@ -40,12 +46,24 @@ export default class Lexer {
                     break;
                 }
 
+                if (this.debug && console) {
+                    console.log(`Lexer: Looking for ${phrase.phraseTemplate[lexemeIndex]}`);
+                }
+
                 let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
                 let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room, player, source);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
+
+                    if (this.debug && console) {
+                        console.log(`Lexer: Found ${phrase.phraseTemplate[lexemeIndex]}! Class: ${lexeme.constructor.name}`);
+                    }
                 } else {
+                    if (this.debug && console) {
+                        console.log(`Lexer: ${phrase.phraseTemplate[lexemeIndex]} not found!`);
+                    }
+
                     break;
                 }
             }
@@ -54,6 +72,11 @@ export default class Lexer {
                 found = true;
                 lexemePhrase = phrase;
                 lexemePhrase.tokenSentence = foundPhrase;
+
+                if (this.debug && console) {
+                    console.log(`Lexer: Matching Phrase found! Class: ${lexemePhrase.constructor.name}`);
+                }
+
                 break;
             }
         }
@@ -84,7 +107,11 @@ export default class Lexer {
     findVerb (word, wordACL, words, room, player, source) {
         let verb = this.verbs.findVerb(word, wordACL, words, room, player);
 
-        if (source && source === 'player' && !verb.playerCanExecute) { // check to see if the player can execute this verb
+        if (this.debug && console) {
+            console.log(`Lexer: FindVerb Result: ${typeof verb === 'undefined' ? 'undefined' : verb.constructor.name}`);
+        }
+
+        if (source && source === 'player' && verb && !verb.playerCanExecute) { // check to see if the player can execute this verb
             return undefined;
         }
 
@@ -94,11 +121,16 @@ export default class Lexer {
     findString (word, wordACL, words, room, player, source) {
         let s = word + ' ' + words.join(' ');
 
+        if (this.debug && console) {
+            console.log(`Lexer: FindString Result: ${s}`);
+        }
+
         return s;
     }
 
     findNoun (word, wordACL, words, room, player, source) {
         let matches = [];
+        let match;
 
         room.items.forEach((item) => {
             if (item.brief.match(new RegExp(word, 'i'))) {
@@ -107,8 +139,14 @@ export default class Lexer {
         });
 
         if (matches.length >= 1) {
-            return matches[0];
+            match = matches[0];
         }
+
+        if (this.debug && console) {
+            console.log(`Lexer: FindNoun Result: ${typeof match === 'undefined' ? 'undefined' : match.constructor.name}`);
+        }
+
+        return match;
     }
 
     cleanArticles (words) {

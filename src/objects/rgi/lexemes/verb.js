@@ -32,4 +32,8 @@ export default class Verb extends Lexeme {
             throw new Error('Current word is not defined.');
         }
     }
+
+    helpText () {
+        return '** help text for this command goes here **';
+    }
 }

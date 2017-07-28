@@ -1,6 +1,7 @@
 export default class Parser {
-    constructor (rgi) {
+    constructor (rgi, debug = false) {
         this.rgi = rgi;
+        this.debug = debug;
     }
 
     parse (lexemePhrase, source = 'admin') {
@@ -17,6 +18,10 @@ export default class Parser {
                 break;
             default:
                 throw new Error('Provided lexeme phrase does not have a supported pattern');
+        }
+
+        if (this.debug && console) {
+            console.log('Parser: Processed Lexeme Phrase into array of commands:', commands);
         }
 
         return commands;

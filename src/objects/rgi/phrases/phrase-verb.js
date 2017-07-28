@@ -5,5 +5,7 @@ export default class PhraseVerb extends LexemePhrase {
         super();
 
         this._phraseTemplate = ['verb'];
+
+        // NOTE: All verbs are allowed in this phrase
     }
 }

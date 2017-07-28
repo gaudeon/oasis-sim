@@ -19,4 +19,8 @@ export default class SouthVerb extends Verb {
             return new RunCommandAction('error ' + error.message);
         }
     }
+
+    helpText () {
+        return 'Move southward';
+    }
 }

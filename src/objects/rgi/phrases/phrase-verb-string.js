@@ -8,7 +8,8 @@ export default class PhraseVerbString extends LexemePhrase {
 
         this._phraseTemplateACL = [
             {
-                error: true
+                error: true,
+                help: true
             },
             undefined
         ];

@@ -19,4 +19,8 @@ export default class WestVerb extends Verb {
             return new RunCommandAction('error ' + error.message);
         }
     }
+
+    helpText () {
+        return 'Move westward.';
+    }
 }

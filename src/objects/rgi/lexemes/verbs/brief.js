@@ -20,4 +20,8 @@ export default class BriefVerb extends Verb {
 
         return action;
     }
+
+    helpText () {
+        return 'Outputs a brief description of the room.';
+    }
 }

@@ -20,4 +20,8 @@ export default class ErrorVerb extends Verb {
 
         return action;
     }
+
+    helpText () {
+        return 'Admin command to output error messages.';
+    }
 }
