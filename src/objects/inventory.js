@@ -10,7 +10,7 @@ export default class Inventory {
     addItem (item) { this._items.push(item); }
 
     removeItem (removeItem) {
-        this._items = _.remove(this._items, (item) => {
+        _.remove(this._items, (item) => {
             return item === removeItem;
         });
     }

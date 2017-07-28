@@ -132,14 +132,20 @@ export default class Lexer {
         let matches = [];
         let match;
 
-        room.items.forEach((item) => {
-            if (item.brief.match(new RegExp(word, 'i'))) {
-                matches.push(item);
-            }
-        });
+        if (word.match(/^(self|myself|me)$/)) {
+            match = player;
+        } else if (word.match(/^(room|surroundings)$/)) {
+            match = room
+        } else {
+            room.items.forEach((item) => {
+                if (item.brief.match(new RegExp(word, 'i'))) {
+                    matches.push(item);
+                }
+            });
 
-        if (matches.length >= 1) {
-            match = matches[0];
+            if (matches.length >= 1) {
+                match = matches[0];
+            }
         }
 
         if (this.debug && console) {

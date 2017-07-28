@@ -1,5 +1,7 @@
 import Verb from '../verb';
 import TextAction from '../../../game-actions/text';
+import Player from '../../../player';
+import Room from '../../../room';
 
 export default class LookVerb extends Verb {
     constructor () {
@@ -18,7 +20,11 @@ export default class LookVerb extends Verb {
         if (typeof this.source !== 'undefined') {
             let briefTextAction;
 
-            if (typeof this.source.description !== 'undefined') {
+            if (this.source instanceof Player) {
+                return this.lookAtPlayer(player);
+            } else if (this.source instanceof Room) {
+                return this.lookAtRoom(room);
+            } if (typeof this.source.description !== 'undefined') {
                 briefTextAction = new TextAction('You see ' + this.source.description);
             } else {
                 briefTextAction = new TextAction('You don\'t see anything else noteworthy about it.');
@@ -28,19 +34,32 @@ export default class LookVerb extends Verb {
 
             return [briefTextAction];
         } else {
-            let description = room.commandLook();
-
-            let briefTextAction = new TextAction(description.brief);
-            briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
-
-            let itemsTextAction = new TextAction(description.items);
-            itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
-
-            let exitsTextAction = new TextAction(description.exits);
-            exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
-
-            return [briefTextAction, itemsTextAction, exitsTextAction];
+            return this.lookAtRoom(room);
         }
+    }
+
+    lookAtPlayer (player) {
+        let description = player.commandLook();
+
+        let itemsTextAction = new TextAction(description.items);
+        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+
+        return [itemsTextAction];
+    }
+
+    lookAtRoom (room) {
+        let description = room.commandLook();
+
+        let briefTextAction = new TextAction(description.brief);
+        briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
+
+        let itemsTextAction = new TextAction(description.items);
+        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+
+        let exitsTextAction = new TextAction(description.exits);
+        exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
+
+        return [briefTextAction, itemsTextAction, exitsTextAction];
     }
 
     helpText () {

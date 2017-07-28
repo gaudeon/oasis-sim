@@ -22,6 +22,8 @@ export default class RGI {
         if (this.debug && console) {
             console.log(`--- Start RGI Exec ---`);
             console.log(`RGI: Command: ${command}`);
+            console.log(`RGI: Room: `, room);
+            console.log(`RGI: Player: `, player);
         }
 
         try {

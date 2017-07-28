@@ -96,13 +96,17 @@ export default class Room {
         let description = {};
         description.brief = this.commandBrief();
 
-        description.items = '\nThe room contains: ';
+        if (this.items.length) {
+            description.items = '\nThe room contains: ';
 
-        this.items.forEach((item) => {
-            let article = 'a';
+            this.items.forEach((item) => {
+                let article = 'a';
 
-            description.items = description.items + article + ' ' + item.brief;
-        });
+                description.items = description.items + article + ' ' + item.brief;
+            });
+        } else {
+            description.items = '\nThe room contains nothing of interest.';
+        }
 
         description.exits = '';
 

@@ -60,9 +60,7 @@ export default class AllVerbs {
 
             // we found a verb if the word entered matches a word in our verbMap and it's complete
             if (_.has(this.verbMap, key) && i === letters.length - 1) {
-                console.log('asdf');
                 let VerbClass = this.verbMap[key];
-                console.log(VerbClass);
                 let verb = new VerbClass();
 
                 if (typeof wordACL === 'undefined' || (typeof wordACL === 'object' && wordACL[verb.word])) {

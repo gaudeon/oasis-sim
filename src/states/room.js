@@ -19,13 +19,25 @@ export default class RoomState extends Phaser.State {
             this.allItems = this.game.allItems = new AllItems(this.game);
         }
 
+        // retrieve or setup a data structure to track the change in state of the rooms as the game progresses
+        if (this.game.visitedRooms) {
+            this.visitedRooms = this.game.visitedRooms;
+        } else {
+            this.visitedRooms = this.game.visitedRooms = {};
+        }
+
         if (this.game.allRooms) {
             this.allRooms = this.game.allRooms;
         } else {
             this.allRooms = this.game.allRooms = new AllRooms(this.game);
         }
 
-        this.room = new this.allRooms.roomMap[room](this.game); // get the room object for the room we are in
+        if (this.visitedRooms[room]) {
+            this.room = this.visitedRooms[room];
+        } else {
+            this.room = new this.allRooms.roomMap[room](this.game);
+            this.visitedRooms[room] = this.room;
+        }
 
         if (this.game.textBuffer) {
             this.textBuffer = this.game.textBuffer;
@@ -37,18 +49,18 @@ export default class RoomState extends Phaser.State {
             this.textBuffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
         }
 
-        if (this.game.textInput) {
-            this.textInput = this.game.textInput;
-        } else {
-            this.textInput = this.game.textInput = new TextInput(this.game);
-            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
-        }
-
         if (this.game.rgi) {
             this.rgi = this.game.rgi;
         } else {
             const DEBUG_RGI = true; // set to true to see command processing
             this.rgi = this.game.rgi = new RGI(this.textBuffer, DEBUG_RGI);
+        }
+
+        if (this.game.textInput) {
+            this.textInput = this.game.textInput;
+        } else {
+            this.textInput = this.game.textInput = new TextInput(this.game);
+            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
         }
 
         this.lastCommand = lastCommand;
