@@ -1,3 +1,5 @@
+import CommandHistory from '../objects/command-history';
+
 export default class TextInput extends Phaser.Group {
     constructor (game) {
         super(game);
@@ -6,10 +8,8 @@ export default class TextInput extends Phaser.Group {
         this._fontSize = 20;
         this._lineSpacingRatio = 1.5;
         this._inputIndicator = '> ';
-        this._inputValue = '';
         this._cursorVisible = true;
         this._enabled = true;
-        this._cursorPosition = -1;
 
         // text cursor
         this.textCursor = new Phaser.Text(game);
@@ -42,6 +42,10 @@ export default class TextInput extends Phaser.Group {
         this.events = this.events || {};
         this.events.onEnterPressed = new Phaser.Signal();
 
+        // command history
+        const HISTORY_LIMIT = 20;
+        this._commandHistory = this.game.commandHistory = new CommandHistory(HISTORY_LIMIT);
+
         // capture delete, backspace and arrow keys
         this.game.input.keyboard.addKeyCapture([
             Phaser.KeyCode.DELETE,
@@ -63,7 +67,11 @@ export default class TextInput extends Phaser.Group {
 
         // other character key presses can be handle with a callback
         this.game.input.keyboard.addCallbacks(this, null, null, this.keyPress);
+
+        this.resetInput();
     }
+
+    get history () { return this._commandHistory; }
 
     resetTimers () {
         this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.toggleCursor, this);
@@ -103,14 +111,26 @@ export default class TextInput extends Phaser.Group {
 
     toggleCursor () { this._cursorVisible = !this._cursorVisible; }
 
+    resetInput (text = '', commandHistoryIndex = this._commandHistory.length) {
+        this._inputValue = text;
+
+        this._cursorPosition = -1;
+
+        this._commandHistoryIndex = commandHistoryIndex;
+    }
+
     keyPress (chr, ev) {
         if (this._enabled) {
             if (ev.charCode === 13) {
-                this.events.onEnterPressed.dispatch(this._inputValue);
+                if (!this._inputValue.match(/^[\s\n\r]*$/)) {
+                    this._inputValue = this._inputValue.replace(/[\n\r]/, '');
 
-                this._inputValue = '';
+                    this._commandHistory.add(this._inputValue);
 
-                this._cursorPosition = -1;
+                    this.events.onEnterPressed.dispatch(this._inputValue);
+                }
+
+                this.resetInput();
             } else {
                 if (this._cursorPosition <= -1) { // insert at end of text
                     this._inputValue = this._inputValue + chr;
@@ -146,6 +166,7 @@ export default class TextInput extends Phaser.Group {
                      this._cursorPosition = -1;
                  }
             }
+
             if (this.specialKeys.left.isDown) {
                 if (this._cursorPosition <= -1) {
                     this._cursorPosition = this.textOutput.length - 1;
@@ -157,11 +178,26 @@ export default class TextInput extends Phaser.Group {
                     }
                 }
             }
+
             if (this.specialKeys.right.isDown && this._cursorPosition >= 0) {
                 if (this._cursorPosition + 1 >= this.textOutput.length) {
                     this._cursorPosition = -1;
                 } else {
                     this._cursorPosition++;
+                }
+            }
+
+            if (this._commandHistory.length) {
+                if (this.specialKeys.up.isDown && this._commandHistoryIndex > 0) {
+                    this._commandHistoryIndex--;
+                    this.resetInput(this._commandHistory.history[this._commandHistoryIndex], this._commandHistoryIndex);
+                } else if (this.specialKeys.down.isDown && this._commandHistoryIndex < this._commandHistory.length) {
+                    this._commandHistoryIndex++;
+                    if (this._commandHistoryIndex === this._commandHistory.length) {
+                        this.resetInput();
+                    } else {
+                        this.resetInput(this._commandHistory.history[this._commandHistoryIndex], this._commandHistoryIndex);
+                    }
                 }
             }
         }
