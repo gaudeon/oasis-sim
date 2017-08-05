@@ -133,6 +133,30 @@ export default class Room {
         return description;
     };
 
+    commandExits (firstNewLine = false) {
+        let description = '';
+
+        this.exits.forEach((door, i) => {
+            let preposition;
+
+            switch (door.direction) {
+                case 'up':
+                    preposition = 'upward';
+                    break;
+                case 'down':
+                    preposition = 'downward';
+                    break;
+                default:
+                    preposition = 'to the ' + door.direction;
+                    break;
+            };
+
+            description = description + (i === 0 && !firstNewLine ? '' : '\n') + 'There is ' + door.description + ' ' + preposition + '.';
+        });
+
+        return description;
+    };
+
     commandLook () {
         let description = {};
         description.brief = this.commandBrief();
@@ -149,26 +173,7 @@ export default class Room {
             description.items = '\nThe room contains nothing of interest.';
         }
 
-        description.exits = '';
-
-        this.exits.forEach((door) => {
-            let preposition;
-            console.log(door);
-
-            switch (door.direction) {
-                case 'up':
-                    preposition = 'upward';
-                    break;
-                case 'down':
-                    preposition = 'downward';
-                    break;
-                default:
-                    preposition = 'to the ' + door.direction;
-                    break;
-            };
-
-            description.exits = description.exits + '\nThere is ' + door.description + ' ' + preposition + '.';
-        });
+        description.exits = this.commandExits(true);
 
         return description;
     };

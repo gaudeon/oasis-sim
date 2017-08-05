@@ -24,6 +24,7 @@ require('./src/objects/rgi/lexemes/verbs/brief.js');
 require('./src/objects/rgi/lexemes/verbs/down.js');
 require('./src/objects/rgi/lexemes/verbs/east.js');
 require('./src/objects/rgi/lexemes/verbs/error.js');
+require('./src/objects/rgi/lexemes/verbs/exits.js');
 require('./src/objects/rgi/lexemes/verbs/get.js');
 require('./src/objects/rgi/lexemes/verbs/help.js');
 require('./src/objects/rgi/lexemes/verbs/history.js');

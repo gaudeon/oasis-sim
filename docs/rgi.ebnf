@@ -5,7 +5,7 @@ player-verb-string-phrase = help-verb string;
 player-verb-phrase = look-verb | brief-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
             | southwest-verb | up-verb | down-verb | help-verb | history-verb
-            | inventory-verb ;
+            | inventory-verb | exits ;
 admin-verb-string-phrase = admin-verb string ;
 admin-verb = error-verb ;
 look-verb = "l" | "look" ;
@@ -24,6 +24,7 @@ help-verb = "?" | "h" | "help" ;
 error-verb = "error" ;
 history-verb = "history" ;
 inventory-verb = "inventory" ;
+exits-verb = "exits";
 get-verb = "g" | "get" | "take" | "pick" ;
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "against" | "along" | "alongside" | "amid" | "apropos" | "apud"
