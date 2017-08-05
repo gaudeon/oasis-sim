@@ -5,7 +5,10 @@ describe('RemoveInventoryAction', () => {
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            removeInventory = new RemoveInventoryAction();
+            removeInventory = new RemoveInventoryAction({
+                target: {}, // target must be defined
+                items: [ {} ] // items array with at least a length of 1 must be defined
+            });
 
             assert.isObject(removeInventory);
         });

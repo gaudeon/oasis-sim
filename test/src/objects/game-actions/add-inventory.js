@@ -5,7 +5,10 @@ describe('AddInventoryAction', () => {
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            addInventory = new AddInventoryAction();
+            addInventory = new AddInventoryAction({
+                target: {}, // target must be defined
+                items: [ {} ] // items array with at least a length of 1 must be defined
+            });
 
             assert.isObject(addInventory);
         });
