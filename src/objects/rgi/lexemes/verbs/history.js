@@ -38,6 +38,6 @@ export default class HistoryVerb extends Verb {
     }
 
     helpText () {
-        return 'Display recently entered commands.';
+        return super.helpText() + 'Display recently entered commands.';
     }
 }

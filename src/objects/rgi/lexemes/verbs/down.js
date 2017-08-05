@@ -21,6 +21,6 @@ export default class DownVerb extends Verb {
     }
 
     helpText () {
-        return 'Move downward.';
+        return super.helpText() + 'Move downward.';
     }
 }

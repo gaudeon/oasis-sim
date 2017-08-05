@@ -38,6 +38,6 @@ export default class GetVerb extends Verb {
     }
 
     helpText () {
-        return 'Attempt to pick up an item in the room.';
+        return super.helpText() + 'Attempt to pick up an item in the room.';
     }
 }

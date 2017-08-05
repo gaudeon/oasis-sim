@@ -22,6 +22,6 @@ export default class BriefVerb extends Verb {
     }
 
     helpText () {
-        return 'Outputs a brief description of the room.';
+        return super.helpText() + 'Outputs a brief description of the room.';
     }
 }

@@ -7,7 +7,7 @@ export default class HelpVerb extends Verb {
 
         this._word = 'help';
 
-        this._aliases = ['h', '?'];
+        this._aliases = ['commands', 'h', '?'];
 
         this.colorHelp = '#DDA0DD'; // Plum
     }
@@ -37,7 +37,7 @@ export default class HelpVerb extends Verb {
                 if (!output) {
                     output = 'Usage: help <command>\nAvailable Commands:\n';
 
-                    const numColumns = 4;
+                    const numColumns = 5;
                     let currColumn = 0;
                     verbs.verbList.sort((a, b) => {
                         return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
@@ -49,7 +49,7 @@ export default class HelpVerb extends Verb {
                             return;
                         }
 
-                        output = output + verb.word + '\t\t\t';
+                        output = output + verb.word + '\t\t\t\t';
                         currColumn++;
                         if (currColumn >= numColumns) {
                             output = output + '\n';
@@ -69,6 +69,6 @@ export default class HelpVerb extends Verb {
     }
 
     helpText () {
-        return 'You really ran help to get help about help?';
+        return super.helpText() + 'You really ran help to get help about help?';
     }
 }

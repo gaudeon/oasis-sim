@@ -34,6 +34,8 @@ export default class Verb extends Lexeme {
     }
 
     helpText () {
-        return '** help text for this command goes here **';
+        let output = 'Command: ';
+        output = output + this._word + (this._aliases.length ? ', ' + this._aliases.join(', ') : '') + '\n';
+        return output;
     }
 }

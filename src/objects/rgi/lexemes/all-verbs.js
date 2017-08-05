@@ -14,6 +14,7 @@ import ErrorVerb from './verbs/error';
 import GetVerb from './verbs/get';
 import HelpVerb from './verbs/help';
 import HistoryVerb from './verbs/history';
+import InventoryVerb from './verbs/inventory';
 
 export default class AllVerbs {
     constructor () {
@@ -47,7 +48,8 @@ export default class AllVerbs {
             ErrorVerb,
             GetVerb,
             HelpVerb,
-            HistoryVerb
+            HistoryVerb,
+            InventoryVerb
         ];
     }
 

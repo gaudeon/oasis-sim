@@ -4,7 +4,8 @@ player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb ) { a
 player-verb-string-phrase = help-verb string;
 player-verb-phrase = look-verb | brief-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
-            | southwest-verb | up-verb | down-verb | help-verb | history-verb ;
+            | southwest-verb | up-verb | down-verb | help-verb | history-verb
+            | inventory-verb ;
 admin-verb-string-phrase = admin-verb string ;
 admin-verb = error-verb ;
 look-verb = "l" | "look" ;
@@ -22,6 +23,7 @@ down-verb = "d" | "down" ;
 help-verb = "?" | "h" | "help" ;
 error-verb = "error" ;
 history-verb = "history" ;
+inventory-verb = "inventory" ;
 get-verb = "g" | "get" | "take" | "pick" ;
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "against" | "along" | "alongside" | "amid" | "apropos" | "apud"
@@ -33,7 +35,7 @@ preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "notwithstanding" | "of" | "off" | "on" | "onto" | "opposite"
             | "out" | "outside" | "over" | "pace" | "past" | "per" | "post"
             | "pre" | "pro" | "qua" | "re" | "sans" | "save" | "short"
-            | "since" | "than" | "thorugh" | "throughout" | "to" | "toward"
+            | "since" | "than" | "through" | "throughout" | "to" | "toward"
             | "under" | "underneath" | "unlike" | "until" | "up" | "upon"
             | "upside" | "versus" | "via" | "vice" | "with" | "within"
             | "without" | "worth ;

@@ -63,6 +63,6 @@ export default class LookVerb extends Verb {
     }
 
     helpText () {
-        return 'Look more closely at the room or at something in the room.';
+        return super.helpText() + 'Look more closely at the room or at something in the room.';
     }
 }

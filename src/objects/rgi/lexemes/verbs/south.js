@@ -21,6 +21,6 @@ export default class SouthVerb extends Verb {
     }
 
     helpText () {
-        return 'Move southward';
+        return super.helpText() + 'Move southward';
     }
 }

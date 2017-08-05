@@ -22,6 +22,6 @@ export default class ErrorVerb extends Verb {
     }
 
     helpText () {
-        return 'Admin command to output error messages.';
+        return super.helpText() + 'Admin command to output error messages.';
     }
 }
