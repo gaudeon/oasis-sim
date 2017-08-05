@@ -6,7 +6,7 @@ import AllItems from '../objects/all-items';
 import Player from '../objects/player';
 
 export default class RoomState extends Phaser.State {
-    init (room = 'YourTrailerLivingRoom', lastCommand) {
+    init (room = 'YourTrailerLivingRoom', preRoomDesc = [], postRoomDesc = [], lastCommand) {
         if (this.game.player) {
             this.player = this.game.player;
         } else {
@@ -63,6 +63,10 @@ export default class RoomState extends Phaser.State {
             this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
         }
 
+        this.preRoomDesc = preRoomDesc;
+
+        this.postRoomDesc = postRoomDesc;
+
         this.lastCommand = lastCommand;
     }
 
@@ -75,7 +79,13 @@ export default class RoomState extends Phaser.State {
             this.rgi.outputCommand(this.lastCommand);
         }
 
+        // run actions prior to brief (preRoomDesc)
+        this.rgi.executeActions(this.preRoomDesc, this.room, this.player);
+
         // output brief description of room
         this.rgi.exec('brief', this.room, this.player, false, 'player');
+
+        // run actions after brief (postRoomDesc)
+        this.rgi.executeActions(this.postRoomDesc, this.room, this.player);
     }
 };

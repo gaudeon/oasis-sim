@@ -1,5 +1,6 @@
 import Lexer from './rgi/lexer';
 import Parser from './rgi/parser';
+import GameAction from './game-action';
 
 // RGI === Regular Grammar Interpreter
 export default class RGI {
@@ -55,19 +56,36 @@ export default class RGI {
             outputText();
         }
 
-        actions.forEach((action) => {
-            if (action instanceof Promise) {
-                action.then(realAction => {
-                    realAction.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
-                })
-            } else {
-                action.run(this, this.textBuffer, room, player, outputCommand ? command : undefined);
-            }
-        });
+        this.executeActions(actions, room, player, outputCommand ? command : undefined);
 
         if (this.debug && console) {
             console.log(`--- Finish RGI Exec ---`);
         }
+    }
+
+    // run each action in a list of game actions
+    executeActions (actions, room, player, lastCommand) {
+        if (!Array.isArray(actions)) {
+            throw new Error('actions is not an array', actions);
+        }
+
+        actions.forEach((action) => {
+            if (action instanceof Promise) {
+                action.then(realAction => {
+                    if (realAction instanceof GameAction) {
+                        realAction.run(this, this.textBuffer, room, player, lastCommand);
+                    } else {
+                        throw new Error('Not a valid game action', action);
+                    }
+                })
+            } else {
+                if (action instanceof GameAction) {
+                    action.run(this, this.textBuffer, room, player, lastCommand);
+                } else {
+                    throw new Error('Not a valid game action', action);
+                }
+            }
+        });
     }
 
     outputCommand (command) {

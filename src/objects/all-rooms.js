@@ -1,5 +1,6 @@
 import YourTrailerLivingRoom from './rooms/your-trailer/living-room';
 import YourTrailerPorch from './rooms/your-trailer/porch';
+import YourTrailerGround from './rooms/your-trailer/ground';
 
 export default class AllRooms {
     constructor (game) {
@@ -15,7 +16,8 @@ export default class AllRooms {
     get roomList () {
         return [
             YourTrailerLivingRoom,
-            YourTrailerPorch
+            YourTrailerPorch,
+            YourTrailerGround
         ];
     }
 

@@ -10,6 +10,7 @@ require('./src/objects/rgi.js');
 require('./src/objects/room.js');
 require('./src/objects/game-actions/add-inventory.js');
 require('./src/objects/game-actions/change-room.js');
+require('./src/objects/game-actions/null.js');
 require('./src/objects/game-actions/remove-inventory.js');
 require('./src/objects/game-actions/run-command.js');
 require('./src/objects/game-actions/text.js');
