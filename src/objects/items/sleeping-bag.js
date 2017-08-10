@@ -1,8 +1,8 @@
 import Item from '../item';
 
 export default class SleepingBag extends Item {
-    constructor (game) {
-        super(game);
+    constructor (game, containerOrientation) {
+        super(game, containerOrientation);
 
         this._name = 'Sleeping Bag';
 

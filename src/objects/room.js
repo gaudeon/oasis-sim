@@ -124,17 +124,29 @@ export default class Room {
 
     get exits () { return _.filter(Object.values(this.doors), (door) => { return typeof door !== 'undefined'; }); }
 
-    // command methods
-    commandBrief () {
+    // the room description
+    getGeneralDescription () {
         let description = 'You are ' + this.description + '.';
 
         description = description + ' ' + this.flavorText;
 
         return description;
-    };
+    }
 
-    commandExits (firstNewLine = false) {
-        let description = '';
+    // the room inventory
+    getInventoryDescription () {
+        let itemDescriptions = [];
+
+        this.items.forEach((item) => {
+            itemDescriptions.push('There is a ' + item.getBriefDescription());
+        });
+
+        return itemDescriptions;
+    }
+
+    // the room exits
+    getExitsDescription (firstNewLine = false) {
+        let exitDescriptions = [];
 
         this.exits.forEach((door, i) => {
             let preposition;
@@ -151,31 +163,44 @@ export default class Room {
                     break;
             };
 
-            description = description + (i === 0 && !firstNewLine ? '' : '\n') + 'There is ' + door.description + ' ' + preposition + '.';
+            exitDescriptions.push('There is ' + door.description + ' ' + preposition + '.');
+        });
+
+        return exitDescriptions;
+    }
+
+    // all descriptive details about a room
+    get allDetails () {
+        return {
+            general: this.getGeneralDescription(),
+            items: this.getInventoryDescription(),
+            exits: this.getExitsDescription()
+        };
+    }
+
+    // command methods
+    commandBrief () {
+        let description = this.allDetails.general;
+
+        this.allDetails.items.forEach((item) => {
+            description = description + ' ' + item;
+        });
+
+        this.allDetails.exits.forEach((exit) => {
+            description = description + ' ' + exit;
         });
 
         return description;
     };
 
-    commandLook () {
-        let description = {};
-        description.brief = this.commandBrief();
-
-        if (this.items.length) {
-            description.items = '\nThe room contains: ';
-
-            this.items.forEach((item) => {
-                let article = 'a';
-
-                description.items = description.items + article + ' ' + item.brief;
-            });
-        } else {
-            description.items = '\nThe room contains nothing of interest.';
-        }
-
-        description.exits = this.commandExits(true);
-
+    commandExits (firstNewLine = false) {
+        let description = firstNewLine ? '\n' : '';
+        description = description + this.getExitsDescription().join('\n');
         return description;
+    };
+
+    commandLook () {
+        return this.commandBrief();
     };
 
     _directionCommandEvent (direction) {

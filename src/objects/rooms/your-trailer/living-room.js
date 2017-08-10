@@ -12,6 +12,6 @@ export default class YourTrailerLivingRoom extends Room {
 
         this.setNorth('a door leading outside', 'YourTrailerPorch');
 
-        this.inventory.addItem(new this.game.allItems.itemMap.SleepingBag(this.game));
+        this.inventory.addItem(new this.game.allItems.itemMap.SleepingBag(this.game, 'on the floor in the corner of the room'));
     }
 }

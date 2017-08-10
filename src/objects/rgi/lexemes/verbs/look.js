@@ -48,18 +48,10 @@ export default class LookVerb extends Verb {
     }
 
     lookAtRoom (room) {
-        let description = room.commandLook();
-
-        let briefTextAction = new TextAction(description.brief);
+        let briefTextAction = new TextAction(room.commandLook());
         briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
 
-        let itemsTextAction = new TextAction(description.items);
-        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
-
-        let exitsTextAction = new TextAction(description.exits);
-        exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
-
-        return [briefTextAction, itemsTextAction, exitsTextAction];
+        return [briefTextAction];
     }
 
     helpText () {

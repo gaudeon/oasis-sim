@@ -15,12 +15,12 @@ export default class Player {
         let description = {};
 
         if (this.items.length) {
-            description.items = 'You are carrying: ';
+            description.items = 'You are carrying: \n';
 
             this.items.forEach((item) => {
-                let article = 'a';
+                let article = '\t\t\t\tA';
 
-                description.items = description.items + article + ' ' + item.brief;
+                description.items = description.items + article + ' ' + item.brief + '\n';
             });
         } else {
             description.items = 'You are not carrying anything.';
