@@ -153,17 +153,17 @@ export default class Room {
 
             switch (door.direction) {
                 case 'up':
-                    preposition = 'upward';
+                    preposition = '{{exitDescription}}upward';
                     break;
                 case 'down':
-                    preposition = 'downward';
+                    preposition = '{{exitDescription}}downward';
                     break;
                 default:
-                    preposition = 'to the ' + door.direction;
+                    preposition = 'to the {{exitDescription}}' + door.direction;
                     break;
             };
 
-            exitDescriptions.push('There is ' + door.description + ' ' + preposition + '.');
+            exitDescriptions.push('There is ' + door.description + ' ' + preposition + '{{defaultDescription}}.');
         });
 
         return exitDescriptions;
@@ -180,7 +180,7 @@ export default class Room {
 
     // command methods
     commandBrief () {
-        let description = this.allDetails.general;
+        let description = '{{defaultDescription}}' + this.allDetails.general;
 
         this.allDetails.items.forEach((item) => {
             description = description + ' ' + item;

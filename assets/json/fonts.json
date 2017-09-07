@@ -32,5 +32,71 @@
             },
             "familyName": "Rubik"
         }
+    },
+    "textStyles": {
+        "default": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "White",
+                "stroke": "White"
+            }
+        },
+        "error": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "LightPink",
+                "stroke": "LightPink"
+            }
+        },
+        "helpDescription": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "Plum",
+                "stroke": "Plum"
+            }
+        },
+        "historyTitle": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "Plum",
+                "stroke": "Plum"
+            }
+        },
+        "historyText": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "Orchid",
+                "stroke": "Orchid"
+            }
+        },
+        "defaultDescription": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "SkyBlue",
+                "stroke": "SkyBlue"
+            }
+        },
+        "exitDescription": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "LightGreen",
+                "stroke": "LightGreen"
+            }
+        },
+        "itemDescription": {
+            "earth": {
+                "font": "rubik",
+                "fontSize": 20,
+                "fill": "LightGreen",
+                "stroke": "LightGreen"
+            }
+        }
     }
 }

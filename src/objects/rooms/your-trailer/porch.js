@@ -12,10 +12,6 @@ export default class YourTrailerPorch extends Room {
 
         this.setSouth('a door leading inside your trailer', 'YourTrailerLivingRoom');
 
-        this.onSouth = () => {
-            return this.briefTextAction('test\n');
-        };
-
         this.setDown('a piecemeal metal ladder leading', 'YourTrailerGround');
 
         this.onDown = () => {

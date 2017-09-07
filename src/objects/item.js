@@ -13,7 +13,7 @@ export default class Item {
 
     get brief () { return this._brief; }
 
-    getBriefDescription () { return this._brief + (this._containerOrientation !== '' ? ` ${this._containerOrientation}` : '') + '.'; }
+    getBriefDescription () { return '{{itemDescription}}' + this._brief + '{{defaultDescription}}' + (this._containerOrientation !== '' ? ` ${this._containerOrientation}` : '') + '.'; }
 
     get description () { return this._description; }
 
