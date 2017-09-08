@@ -6,15 +6,14 @@ export default class LookVerb extends Verb {
         super();
 
         this._word = 'exits';
-        this.colorExits = '#90EE90'; // LightGreen
+
         this._aliases = [];
     }
 
     actions (room, player) {
         super.actions(room, player);
 
-        let exitsTextAction = new TextAction(room.commandExits());
-        exitsTextAction.style = {fill: this.colorExits, stroke: this.colorExits};
+        let exitsTextAction = new TextAction('{{exitDescription}}' + room.commandExits());
 
         return [exitsTextAction];
     }

@@ -10,9 +10,7 @@ export default class TextBuffer extends Phaser.Group {
         this._queueProcessing = false; // used to make sure addNextTextLine isn't called multiple times
 
         this._paddingLeft = 20;
-        this._fontSize = 20;
-        this._fillColor = 'white';
-        this._strokeColor = 'white';
+        this._fontSize = fontConfig.globalTextStyle.fontSize;
         this._lineSpacing = 1.5;
         this._lastTextStyle = this.defaultTextStyle;
         this.y = this.bottomY - this.lineHeight;
@@ -22,41 +20,6 @@ export default class TextBuffer extends Phaser.Group {
         };
     }
 
-    get currentDimension () { return 'earth'; } // earth or oasis
-
-    get defaultTextStyle () {
-        return this.convertStyle(fontConfig.textStyles['default'][this.currentDimension]);
-    }
-
-    convertStyle (style) {
-        style.font = this.convertFontKey(style.font);
-        style.fill = this.convertColorWord(style.fill);
-        style.stroke = this.convertColorWord(style.stroke);
-
-        return style;
-    }
-
-    convertColorWord (color) {
-        return colorConfig[color] ? colorConfig[color] : color; // if the color word isn't found just return the arg because it could be a hex color
-    }
-
-    convertFontKey (font) {
-        return fontConfig.fonts[font] ? fontConfig.fonts[font].familyName : font;
-    }
-
-    lineStyle (fontKey, overrideStyle = {}) {
-        let lineStyle = {
-            fill: this.fillColor,
-            font: this.convertFontKey(fontKey),
-            fontSize: this.fontSize,
-            stroke: this.strokeColor
-        };
-
-        _.merge(lineStyle, overrideStyle);
-
-        return lineStyle;
-    }
-
     addText (text, overrideStyle = {}, fontKey = 'rubik') {
         let displayLines = this.splitTextIntoLines(text);
 
@@ -64,45 +27,36 @@ export default class TextBuffer extends Phaser.Group {
             return;
         }
 
-        let style = this.lineStyle(fontKey, overrideStyle);
-
         displayLines.forEach((line) => {
             let colorChanges = line.match(this.textStyleRegExp);
 
-            if (colorChanges && colorChanges.length > 0) {
-                let textByColor = line.split(this.textStyleRegExp);
+            let textByColor = line.split(this.textStyleRegExp);
 
-                let lineParts = [];
-                for (let i = 0; i < textByColor.length; i++) { // add each part of the line and it's style
-                    let textStyle;
-                    if (i === 0) {
-                        textStyle = this._lastTextStyle || this.defaultTextStyle;
-                    } else {
-                        let styleTag = this.getTextStyleFromTag(colorChanges[i - 1]);
-                        let styleByDimension;
-                        if (fontConfig.textStyles[styleTag]) {
-                            styleByDimension = fontConfig.textStyles[styleTag][this.currentDimension];
-                        }
-                        textStyle = styleByDimension || this.defaultTextStyle;
+            let lineParts = [];
+            for (let i = 0; i < textByColor.length; i++) { // add each part of the line and it's style
+                let textStyle;
+                if (i === 0 || colorChanges.length <= i - 1) {
+                    textStyle = this._lastTextStyle || this.defaultTextStyle;
+                } else {
+                    let styleTag = this.getTextStyleFromTag(colorChanges[i - 1]);
+                    let styleByDimension;
+                    if (fontConfig.textStyles[styleTag]) {
+                        styleByDimension = fontConfig.textStyles[styleTag][this.currentDimension];
                     }
-
-                    this._lastTextStyle = this.convertStyle(textStyle);
-
-                    lineParts.push({
-                        text: textByColor[i],
-                        style: this._lastTextStyle
-                    });
+                    textStyle = styleByDimension || this.defaultTextStyle;
                 }
 
-                this._lineQueue.push({
-                    lineParts: lineParts
-                });
-            } else {
-                this._lineQueue.push({
-                    text: line,
-                    style: style
+                this._lastTextStyle = this.convertStyle(textStyle);
+
+                lineParts.push({
+                    text: textByColor[i],
+                    style: this._lastTextStyle
                 });
             }
+
+            this._lineQueue.push({
+                lineParts: lineParts
+            });
         });
 
         if (!this._queueProcessing) {
@@ -170,20 +124,17 @@ export default class TextBuffer extends Phaser.Group {
         }
     };
 
+    get currentDimension () { return 'earth'; } // earth or oasis
+
+    get defaultTextStyle () {
+        return this.convertStyle(fontConfig.textStyles['default'][this.currentDimension]);
+    }
+
     get fontSize () { return this._fontSize; }
-    set fontSize (size) { this._fontSize = size; }
 
     get paddingLeft () { return this._paddingLeft; }
-    set paddingLeft (amount) { this._paddingLeft = amount; }
-
-    get fillColor () { return this._fillColor; }
-    set fillColor (color) { this._fillColor = color; }
-
-    get strokeColor () { return this._strokeColor; }
-    set strokeColor (color) { this._strokeColor = color; }
 
     get lineSpacing () { return this._lineSpacing; }
-    set lineSpacing (spacing) { this._lineSpacing = spacing; }
 
     get lineHeight () { return this._fontSize * this._lineSpacing; }
 
@@ -205,6 +156,23 @@ export default class TextBuffer extends Phaser.Group {
         this._textStyleRegExp = new RegExp(regExp, 'g');
 
         return this._textStyleRegExp;
+    }
+
+    convertColorWord (color) {
+        return colorConfig[color] ? colorConfig[color] : color; // if the color word isn't found just return the arg because it could be a hex color
+    }
+
+    convertFontKey (font) {
+        return fontConfig.fonts[font] ? fontConfig.fonts[font].familyName : font;
+    }
+
+    convertStyle (style) {
+        style.font = this.convertFontKey(style.font);
+        style.fill = this.convertColorWord(style.fill);
+        style.stroke = this.convertColorWord(style.stroke);
+        style.fontSize = this._fontSize;
+
+        return style;
     }
 
     getTextStyleFromTag (tag) {

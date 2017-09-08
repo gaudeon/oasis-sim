@@ -25,11 +25,9 @@ export default class HistoryVerb extends Verb {
         }
 
         if (output !== '') {
-            let titleAction = new TextAction('History:');
-            titleAction.style = {fill: this.colorTitle, stroke: this.colorTitle};
+            let titleAction = new TextAction('{{historyTitle}}History:');
 
-            let commandsAction = new TextAction(output);
-            commandsAction.style = {fill: this.colorCommands, stroke: this.colorCommands};
+            let commandsAction = new TextAction('{{historyText}}' + output);
 
             return [titleAction, commandsAction];
         }

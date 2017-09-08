@@ -6,7 +6,7 @@ export default class BriefVerb extends Verb {
         super();
 
         this._word = 'brief';
-        this.color = '#87CEEB'; // SkyBlue
+
         this._aliases = [];
     }
 
@@ -15,8 +15,7 @@ export default class BriefVerb extends Verb {
 
         let description = room.commandBrief();
 
-        let action = new TextAction(description);
-        action.style = {fill: this.color, stroke: this.color};
+        let action = new TextAction('{{defaultDescription}}' + description);
 
         return action;
     }

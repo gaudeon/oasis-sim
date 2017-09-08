@@ -11,8 +11,6 @@ export default class GetVerb extends Verb {
         this._word = 'get';
 
         this._aliases = ['g', 'take', 'pick'];
-
-        this.colorItems = '#90EE90'; // MediumOrchid
     }
 
     actions (room, player) {
@@ -27,8 +25,7 @@ export default class GetVerb extends Verb {
             let addItemAction = new AddInventoryAction({ target: player, items: [this.source] });
             actions.push(addItemAction);
 
-            let getTextAction = new TextAction('You obtained a ' + this.source.brief + '.');
-            getTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+            let getTextAction = new TextAction('{{itemDescription}}You obtained a ' + this.source.brief + '.');
             actions.push(getTextAction);
 
             return actions;

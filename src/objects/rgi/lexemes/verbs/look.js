@@ -8,9 +8,7 @@ export default class LookVerb extends Verb {
         super();
 
         this._word = 'look';
-        this.colorBrief = '#87CEEB'; // SkyBlue
-        this.colorItems = '#90EE90'; // MediumOrchid
-        this.colorExits = '#90EE90'; // LightGreen
+
         this._aliases = ['l'];
     }
 
@@ -25,12 +23,10 @@ export default class LookVerb extends Verb {
             } else if (this.source instanceof Room) {
                 return this.lookAtRoom(room);
             } if (typeof this.source.description !== 'undefined') {
-                briefTextAction = new TextAction('You see ' + this.source.description);
+                briefTextAction = new TextAction('{{defaultDescription}}You see ' + this.source.description);
             } else {
-                briefTextAction = new TextAction('You don\'t see anything else noteworthy about it.');
+                briefTextAction = new TextAction('{{defaultDescription}}You don\'t see anything else noteworthy about it.');
             }
-
-            briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
 
             return [briefTextAction];
         } else {
@@ -41,15 +37,13 @@ export default class LookVerb extends Verb {
     lookAtPlayer (player) {
         let description = player.commandLook();
 
-        let itemsTextAction = new TextAction(description.items);
-        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+        let itemsTextAction = new TextAction('{{itemDescription}}' + description.items);
 
         return [itemsTextAction];
     }
 
     lookAtRoom (room) {
-        let briefTextAction = new TextAction(room.commandLook());
-        briefTextAction.style = {fill: this.colorBrief, stroke: this.colorBrief};
+        let briefTextAction = new TextAction('{{defaultDescription}}' + room.commandLook());
 
         return [briefTextAction];
     }

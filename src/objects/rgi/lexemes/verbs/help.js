@@ -29,13 +29,13 @@ export default class HelpVerb extends Verb {
 
                         // only get help text if the player can execute it
                         if (verb.playerCanExecute) {
-                            output = verb.helpText();
+                            output = '{{helpDescription}}' + verb.helpText();
                         }
                     }
                 }
 
                 if (!output) {
-                    output = 'Usage: help <command>\nAvailable Commands:\n';
+                    output = '{{helpDescription}}Usage: help <command>\nAvailable Commands:\n';
 
                     const numColumns = 5;
                     let currColumn = 0;
@@ -59,7 +59,6 @@ export default class HelpVerb extends Verb {
                 }
 
                 let action = new TextAction(output);
-                action.style = {fill: this.colorHelp, stroke: this.colorHelp};
 
                 resolve(action);
             });

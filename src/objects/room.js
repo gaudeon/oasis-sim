@@ -33,8 +33,7 @@ export default class Room {
 
     // generate text actions (for preRoomDesc / postRoomDesc)
     briefTextAction (text) {
-        let action = new TextAction(text);
-        action.style = {fill: this.briefTextColor, stroke: this.briefTextColor};
+        let action = new TextAction('{{defaultDescription}}' + text);
         return action;
     }
 

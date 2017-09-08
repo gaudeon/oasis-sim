@@ -6,9 +6,7 @@ export default class InventoryVerb extends Verb {
         super();
 
         this._word = 'inventory';
-        this.colorBrief = '#87CEEB'; // SkyBlue
-        this.colorItems = '#90EE90'; // MediumOrchid
-        this.colorExits = '#90EE90'; // LightGreen
+
         this._aliases = ['inv', 'i'];
     }
 
@@ -17,8 +15,7 @@ export default class InventoryVerb extends Verb {
 
         let description = player.commandLook();
 
-        let itemsTextAction = new TextAction(description.items);
-        itemsTextAction.style = {fill: this.colorItems, stroke: this.colorItems};
+        let itemsTextAction = new TextAction('{{itemDescription}}' + description.items);
 
         return [itemsTextAction];
     }
