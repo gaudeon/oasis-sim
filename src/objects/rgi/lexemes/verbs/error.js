@@ -10,8 +10,8 @@ export default class ErrorVerb extends Verb {
         this._playerCanExecute = false;
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         let action = new TextAction('{{error}}' + this.stringData);
 

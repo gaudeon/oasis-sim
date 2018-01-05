@@ -10,8 +10,8 @@ export default class LookVerb extends Verb {
         this._aliases = [];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         let exitsTextAction = new TextAction('{{exitDescription}}' + room.commandExits());
 

@@ -10,8 +10,8 @@ export default class WestVerb extends Verb {
         this._aliases = ['w'];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         try {
             return room.commandWest();

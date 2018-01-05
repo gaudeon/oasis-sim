@@ -10,8 +10,8 @@ export default class InventoryVerb extends Verb {
         this._aliases = ['inv', 'i'];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         let description = player.commandLook();
 

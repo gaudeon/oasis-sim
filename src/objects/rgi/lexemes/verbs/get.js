@@ -13,8 +13,8 @@ export default class GetVerb extends Verb {
         this._aliases = ['g', 'take', 'pick'];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         if (typeof this.source !== 'undefined') {
             let actions = [];

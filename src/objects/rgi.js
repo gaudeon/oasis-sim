@@ -44,7 +44,7 @@ export default class RGI {
         let actions = [];
 
         commands.forEach((command) => {
-            actions = _.concat(actions, command.actions(room, player));
+            actions = _.concat(actions, command.actions(room, player, lexemePhrase));
         });
 
         if (this.debug && console) {

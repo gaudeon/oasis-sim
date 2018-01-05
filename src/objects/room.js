@@ -148,21 +148,7 @@ export default class Room {
         let exitDescriptions = [];
 
         this.exits.forEach((door, i) => {
-            let preposition;
-
-            switch (door.direction) {
-                case 'up':
-                    preposition = '{{exitDescription}}upward';
-                    break;
-                case 'down':
-                    preposition = '{{exitDescription}}downward';
-                    break;
-                default:
-                    preposition = 'to the {{exitDescription}}' + door.direction;
-                    break;
-            };
-
-            exitDescriptions.push('There is ' + door.description + ' ' + preposition + '{{defaultDescription}}.');
+            exitDescriptions.push('There is ' + door.description + '.');
         });
 
         return exitDescriptions;

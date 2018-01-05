@@ -19,7 +19,23 @@ export default class Door {
 
     get direction () { return this._direction; }
 
-    get description () { return this._description; }
+    get description () {
+        let preposition = '';
+
+        switch (this._direction) {
+            case 'up':
+                preposition = '{{exitDescription}}upward{{defaultDescription}}';
+                break;
+            case 'down':
+                preposition = '{{exitDescription}}downward{{defaultDescription}}';
+                break;
+            default:
+                preposition = 'to the {{exitDescription}}' + this._direction + '{{defaultDescription}}';
+                break;
+        };
+
+        return this._description + ' ' + preposition;
+    }
 
     get room () { return this._room; }
 }

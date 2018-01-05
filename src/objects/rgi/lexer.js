@@ -15,7 +15,7 @@ export default class Lexer {
     }
 
     tokenize (command, room, player, source = 'admin') {
-        let words = this.cleanPrepositions(this.cleanArticles(command.split(/ /)));
+        let words = this.cleanPrepositions(this.cleanArticles(command.replace(/\s+$/, '').split(/\s+/)));
 
         if (!words.length) { // no command found
             throw new Error('No words found');
@@ -136,6 +136,8 @@ export default class Lexer {
             match = player;
         } else if (word.match(/^(room|surroundings)$/)) {
             match = room
+        } else if (word.match(/^(north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/)) {
+            match = room.doors[word] || '';
         } else {
             room.items.forEach((item) => {
                 if (item.brief.match(new RegExp(word, 'i'))) {
@@ -152,7 +154,7 @@ export default class Lexer {
             console.log(`Lexer: FindNoun Result: ${typeof match === 'undefined' ? 'undefined' : match.constructor.name}`);
         }
 
-        return match;
+        return match || '';
     }
 
     cleanArticles (words) {

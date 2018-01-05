@@ -10,8 +10,8 @@ export default class BriefVerb extends Verb {
         this._aliases = [];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
         let description = room.commandBrief();
 

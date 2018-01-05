@@ -12,26 +12,33 @@ export default class LookVerb extends Verb {
         this._aliases = ['l'];
     }
 
-    actions (room, player) {
-        super.actions(room, player);
+    actions (room, player, lexemePhrase) {
+        super.actions(room, player, lexemePhrase);
 
-        if (typeof this.source !== 'undefined') {
-            let briefTextAction;
+        let actions;
 
-            if (this.source instanceof Player) {
-                return this.lookAtPlayer(player);
-            } else if (this.source instanceof Room) {
-                return this.lookAtRoom(room);
-            } if (typeof this.source.description !== 'undefined') {
-                briefTextAction = new TextAction('{{defaultDescription}}You see ' + this.source.description);
-            } else {
-                briefTextAction = new TextAction('{{defaultDescription}}You don\'t see anything else noteworthy about it.');
-            }
+        switch (lexemePhrase.constructor.name) {
+            case 'PhraseVerbNoun':
+                if (typeof this.source !== 'undefined') {
+                    if (this.source instanceof Player) {
+                        actions = this.lookAtPlayer(player);
+                    } else if (this.source instanceof Room) {
+                        actions = this.lookAtRoom(room);
+                    } else if (typeof this.source.description !== 'undefined') {
+                        actions = [new TextAction('{{defaultDescription}}You see ' + this.source.description + '.')];
+                    }
+                }
 
-            return [briefTextAction];
-        } else {
-            return this.lookAtRoom(room);
+                if (typeof actions === 'undefined') {
+                    actions = [new TextAction('{{defaultDescription}}You don\'t see anything noteworthy about it.')];
+                }
+
+                break;
+            default:
+                actions = this.lookAtRoom(room);
         }
+
+        return actions;
     }
 
     lookAtPlayer (player) {
