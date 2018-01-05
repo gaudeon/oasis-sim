@@ -24,6 +24,8 @@ export default class GetVerb extends Verb {
             let removeItemAction = new RemoveInventoryAction({ target: room, items: [this.source] });
             actions.push(removeItemAction);
 
+            this.source.containerOrientation = ''; // TODO: make handling container orientation more robust
+
             let addItemAction = new AddInventoryAction({ target: player, items: [this.source] });
             actions.push(addItemAction);
 

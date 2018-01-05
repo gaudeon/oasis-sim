@@ -24,6 +24,8 @@ export default class PutVerb extends Verb {
             let removeItemAction = new RemoveInventoryAction({ target: player, items: [this.source] });
             actions.push(removeItemAction);
 
+            this.source.containerOrientation = 'on the ground'; // TODO: make handling container orientation more robust
+
             let addItemAction = new AddInventoryAction({ target: room, items: [this.source] });
             actions.push(addItemAction);
 
