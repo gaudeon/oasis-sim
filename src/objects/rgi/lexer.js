@@ -148,6 +148,7 @@ export default class Lexer {
 
             if (matches.length >= 1) {
                 match = matches[0];
+                match.from = room;
             } else {
                 player.items.forEach((item) => {
                     if (item.brief.match(new RegExp(word, 'i'))) {
@@ -157,6 +158,7 @@ export default class Lexer {
 
                 if (matches.length >= 1) {
                     match = matches[0];
+                    match.from = player;
                 }
             }
         }

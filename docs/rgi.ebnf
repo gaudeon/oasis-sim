@@ -1,6 +1,6 @@
 player-command = player-verb-phrase | player-verb-noun-phrase ;
 admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase ;
-player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb ) { article | preposition } noun { article | preposition };
+player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb | put-verb ) { article | preposition } noun { article | preposition };
 player-verb-string-phrase = help-verb string;
 player-verb-phrase = look-verb | brief-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
@@ -26,6 +26,7 @@ history-verb = "history" ;
 inventory-verb = "inventory" ;
 exits-verb = "exits";
 get-verb = "g" | "get" | "take" | "pick" ;
+put-verb = "p" | "put" | "drop" | "set";
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "against" | "along" | "alongside" | "amid" | "apropos" | "apud"
             | "around" | "as" | "astride" | "at" | "atop" | "ontop" | "bar"

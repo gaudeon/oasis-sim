@@ -3,6 +3,8 @@ import RunCommandAction from '../../../game-actions/run-command';
 import TextAction from '../../../game-actions/text';
 import AddInventoryAction from '../../../game-actions/add-inventory';
 import RemoveInventoryAction from '../../../game-actions/remove-inventory';
+import Item from '../../../item';
+import Player from '../../../player';
 
 export default class GetVerb extends Verb {
     constructor () {
@@ -16,7 +18,7 @@ export default class GetVerb extends Verb {
     actions (room, player, lexemePhrase) {
         super.actions(room, player, lexemePhrase);
 
-        if (typeof this.source !== 'undefined') {
+        if (typeof this.source !== 'undefined' && this.source instanceof Item && !(this.source.from instanceof Player)) {
             let actions = [];
 
             let removeItemAction = new RemoveInventoryAction({ target: room, items: [this.source] });

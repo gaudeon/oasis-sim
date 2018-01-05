@@ -12,6 +12,7 @@ import UpVerb from './verbs/up';
 import DownVerb from './verbs/down';
 import ErrorVerb from './verbs/error';
 import GetVerb from './verbs/get';
+import PutVerb from './verbs/put';
 import HelpVerb from './verbs/help';
 import HistoryVerb from './verbs/history';
 import InventoryVerb from './verbs/inventory';
@@ -48,6 +49,7 @@ export default class AllVerbs {
             DownVerb,
             ErrorVerb,
             GetVerb,
+            PutVerb,
             HelpVerb,
             HistoryVerb,
             InventoryVerb,
