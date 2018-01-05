@@ -129,7 +129,6 @@ export default class Lexer {
     }
 
     findNoun (word, wordACL, words, room, player, source) {
-        let matches = [];
         let match;
 
         if (word.match(/^(self|myself|me)$/)) {
@@ -139,6 +138,8 @@ export default class Lexer {
         } else if (word.match(/^(north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/)) {
             match = room.doors[word] || '';
         } else {
+            let matches = [];
+
             room.items.forEach((item) => {
                 if (item.brief.match(new RegExp(word, 'i'))) {
                     matches.push(item);
@@ -147,6 +148,16 @@ export default class Lexer {
 
             if (matches.length >= 1) {
                 match = matches[0];
+            } else {
+                player.items.forEach((item) => {
+                    if (item.brief.match(new RegExp(word, 'i'))) {
+                        matches.push(item);
+                    }
+                });
+
+                if (matches.length >= 1) {
+                    match = matches[0];
+                }
             }
         }
 
