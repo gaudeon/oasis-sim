@@ -18,6 +18,7 @@ export default class LookVerb extends Verb {
         let actions;
 
         switch (lexemePhrase.constructor.name) {
+            // if we are supposed to have a noun, attempt to find it's description
             case 'PhraseVerbNoun':
                 if (typeof this.source !== 'undefined') {
                     if (this.source instanceof Player) {
@@ -34,6 +35,8 @@ export default class LookVerb extends Verb {
                 }
 
                 break;
+
+            // otherwise just assume we are looking at the room
             default:
                 actions = this.lookAtRoom(room);
         }
