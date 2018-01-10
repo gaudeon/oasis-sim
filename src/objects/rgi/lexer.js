@@ -1,5 +1,4 @@
 import AllVerbs from './lexemes/all-verbs';
-import AllItems from '../all-items';
 import PhraseVerb from './phrases/phrase-verb';
 import PhraseVerbString from './phrases/phrase-verb-string';
 import PhraseVerbNoun from './phrases/phrase-verb-noun';
@@ -9,7 +8,6 @@ export default class Lexer {
         this.rgi = rgi;
 
         this.verbs = new AllVerbs();
-        this.items = new AllItems();
 
         this.debug = debug;
     }
@@ -141,7 +139,7 @@ export default class Lexer {
             let matches = [];
 
             room.items.forEach((item) => {
-                if (item.brief.match(new RegExp(word, 'i'))) {
+                if (item.key.match(new RegExp(word, 'i'))) {
                     matches.push(item);
                 }
             });
@@ -151,7 +149,7 @@ export default class Lexer {
                 match.from = room;
             } else {
                 player.items.forEach((item) => {
-                    if (item.brief.match(new RegExp(word, 'i'))) {
+                    if (item.key.match(new RegExp(word, 'i'))) {
                         matches.push(item);
                     }
                 });

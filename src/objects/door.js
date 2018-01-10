@@ -1,20 +1,19 @@
 export default class Door {
-    constructor (direction, description, room) {
+    constructor (world, node) {
+        this.world = world;
+        this.game = world.game;
+        this.node = node;
+
+        let nameParts = node.name.split(/-/); // FORMAT: Door-<direction>-<id>
+        let direction = nameParts[1];
+
         if (typeof direction !== 'string' || !direction.match(/^(?:north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/i)) {
             throw new Error('direction not valid.');
         }
 
-        if (typeof description !== 'string') {
-            throw new Error('description not valid.');
-        }
-
-        if (typeof room !== 'string') {
-            throw new Error('room not valid.');
-        }
-
         this._direction = direction.toLowerCase();
-        this._description = description;
-        this._room = room;
+        this._description = node.description;
+        this._room = this.node.childrenNames[0].replace(/^\[\[/, '').replace(/\]\]$/, '');
     }
 
     get direction () { return this._direction; }

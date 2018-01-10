@@ -1,43 +1,29 @@
 import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 import RGI from '../objects/rgi';
-import AllRooms from '../objects/all-rooms';
-import AllItems from '../objects/all-items';
+import World from '../objects/world';
 import Player from '../objects/player';
 
 export default class RoomState extends Phaser.State {
-    init (room = 'YourTrailerLivingRoom', preRoomDesc = [], postRoomDesc = [], lastCommand) {
+    init (room = '', preRoomDesc = [], postRoomDesc = [], lastCommand) {
+        if (this.game.theWorld) {
+            this.theWorld = this.game.theWorld;
+        } else {
+            this.theWorld = this.game.theWorld = new World(this.game);
+        }
+
         if (this.game.player) {
             this.player = this.game.player;
         } else {
-            this.player = this.game.player = new Player(this.game);
+            this.player = this.game.player = new Player(this.theWorld);
         }
 
-        if (this.game.allItems) {
-            this.allItems = this.game.allItems;
-        } else {
-            this.allItems = this.game.allItems = new AllItems(this.game);
+        if (typeof this.theWorld.rooms[room] !== 'object') { // set the starting room if we don't have one defined
+            room = this.theWorld.startingRoomId;
         }
 
-        // retrieve or setup a data structure to track the change in state of the rooms as the game progresses
-        if (this.game.visitedRooms) {
-            this.visitedRooms = this.game.visitedRooms;
-        } else {
-            this.visitedRooms = this.game.visitedRooms = {};
-        }
-
-        if (this.game.allRooms) {
-            this.allRooms = this.game.allRooms;
-        } else {
-            this.allRooms = this.game.allRooms = new AllRooms(this.game);
-        }
-
-        if (this.visitedRooms[room]) {
-            this.room = this.visitedRooms[room];
-        } else {
-            this.room = new this.allRooms.roomMap[room](this.game);
-            this.visitedRooms[room] = this.room;
-        }
+        // retrieve the room
+        this.room = this.theWorld.rooms[room];
 
         if (this.game.textBuffer) {
             this.textBuffer = this.game.textBuffer;

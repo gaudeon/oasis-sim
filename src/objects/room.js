@@ -1,143 +1,102 @@
-import Door from './door';
 import Inventory from './inventory';
 import ChangeRoomAction from './game-actions/change-room';
-import NullAction from './game-actions/null';
 import TextAction from './game-actions/text';
 
 export default class Room {
-    constructor (game) {
-        this.game = game;
+    constructor (world, node) {
+        this.world = world;
+        this.game = world.game;
+        this.node = node;
 
-        this._name = 'Generic Room'
-        this._description = '';
-        this._flavorText = '';
+        this._name = node.name;
+        this._description = node.description;
 
-        this.briefTextColor = '#87CEEB'; // SkyBlue
-
-        this._inventory = new Inventory(game);
+        // items in the room
+        this._inventory = new Inventory(this.world);
 
         // doors
-        this.doors = {
-            north: undefined,
-            south: undefined,
-            east: undefined,
-            west: undefined,
-            northeast: undefined,
-            northwest: undefined,
-            southeast: undefined,
-            southwest: undefined,
-            up: undefined,
-            down: undefined
-        };
-    }
+        this._doors = [];
 
-    // generate text actions (for preRoomDesc / postRoomDesc)
-    briefTextAction (text) {
-        let action = new TextAction('{{defaultDescription}}' + text);
-        return action;
+        node.childrenNames.forEach(child => {
+            let id = child.replace(/^\[\[/, '').replace(/\]\]$/, '');
+            let idParts = id.split(/-/);
+
+            switch (idParts[0].toLowerCase()) {
+                case 'door': // FORMAT: Door-<direction>-<id>
+                    this.doors.push(id);
+                    break;
+                case 'item': // FORMAT: Item-<id>
+                    this.inventory.addItem(id);
+                    break;
+            }
+        });
     }
 
     // room info
-    get key () { return this.constructor.name; }
-
     get name () { return this._name; }
 
     get description () { return this._description; }
 
-    get flavorText () { return this._flavorText; }
-
     get inventory () { return this._inventory; }
 
-    get items () { return this._inventory.items; }
+    get items () { return this._inventory.itemObjs; }
 
     // doors
-    setNorth (description, room) { this.doors.north = new Door('north', description, room); }
+    _filterDoorByDirection (direction) {
+        return (_.filter(this._doors, door => { return door.match(new RegExp('^door-' + direction + '-', 'i')); }))[0];
+    }
 
-    get north () { return this.doors.north; }
+    get north () { return this._filterDoorByDirection('north'); }
 
-    // event method called when moving in this direction from current room
-    onNorth () { return [new NullAction()]; }
+    get south () { return this._filterDoorByDirection('south'); }
 
-    setSouth (description, room) { this.doors.south = new Door('south', description, room); }
+    get east () { return this._filterDoorByDirection('east'); }
 
-    get south () { return this.doors.south; }
+    get west () { return this._filterDoorByDirection('west'); }
 
-    // event method called when moving in this direction from current room
-    onSouth () { return [new NullAction()]; }
+    get northeast () { return this._filterDoorByDirection('northeast'); }
 
-    setEast (description, room) { this.doors.east = new Door('east', description, room); }
+    get northwest () { return this._filterDoorByDirection('northwest'); }
 
-    get east () { return this.doors.east; }
+    get southeast () { return this._filterDoorByDirection('southeast'); }
 
-    // event method called when moving in this direction from current room
-    onEast () { return [new NullAction()]; }
+    get southwest () { return this._filterDoorByDirection('southwest'); }
 
-    setWest (description, room) { this.doors.west = new Door('west', description, room); }
+    get up () { return this._filterDoorByDirection('up'); }
 
-    get west () { return this.doors.west; }
+    get down () { return this._filterDoorByDirection('down'); }
 
-    // event method called when moving in this direction from current room
-    onWest () { return [new NullAction()]; }
+    // get exits () { return _.filter(Object.values(this.doors), (door) => { return typeof door !== 'undefined'; }); }
+    get doors () { return this._doors; }
+    get exits () { return this._doors; }
 
-    setNortheast (description, room) { this.doors.northeast = new Door('northeast', description, room); }
+    _loadItem (id = '') {
+        if (typeof id === 'object') {
+            return id;
+        }
 
-    get northeast () { return this.doors.northeast; }
+        return this.world.items[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
+    }
 
-    // event method called when moving in this direction from current room
-    onNortheast () { return [new NullAction()]; }
+    _loadDoor (id = '') {
+        if (typeof id === 'object') {
+            return id;
+        }
 
-    setNorthwest (description, room) { this.doors.northwest = new Door('northwest', description, room); }
-
-    get northwest () { return this.doors.northwest; }
-
-    // event method called when moving in this direction from current room
-    onNorthwest () { return [new NullAction()]; }
-
-    setSoutheast (description, room) { this.doors.southeast = new Door('southeast', description, room); }
-
-    get southeast () { return this.doors.southeast; }
-
-    // event method called when moving in this direction from current room
-    onSoutheast () { return [new NullAction()]; }
-
-    setSouthwest (description, room) { this.doors.southwest = new Door('southwest', description, room); }
-
-    get southwest () { return this.doors.southwest; }
-
-    // event method called when moving in this direction from current room
-    onSouthwest () { return [new NullAction()]; }
-
-    setUp (description, room) { this.doors.up = new Door('up', description, room); }
-
-    get up () { return this.doors.up; }
-
-    // event method called when moving in this direction from current room
-    onUp () { return [new NullAction()]; }
-
-    setDown (description, room) { this.doors.down = new Door('down', description, room); }
-
-    get down () { return this.doors.down; }
-
-    // event method called when moving in this direction from current room
-    onDown () { return [new NullAction()]; }
-
-    get exits () { return _.filter(Object.values(this.doors), (door) => { return typeof door !== 'undefined'; }); }
+        return this.world.doors[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
+    }
 
     // the room description
     getGeneralDescription () {
-        let description = 'You are ' + this.description + '.';
-
-        description = description + ' ' + this.flavorText;
-
-        return description;
+        return this.description;
     }
 
     // the room inventory
     getInventoryDescription () {
         let itemDescriptions = [];
 
-        this.items.forEach((item) => {
-            itemDescriptions.push('There is a ' + item.getBriefDescription());
+        this.items.forEach(item => {
+            itemDescriptions.push('There is a {{itemDescription}}' + this._loadItem(item).description + '{{defaultDescription}}' + (this.node[item + '-Location'] ? ' ' + this.node[item + '-Location'] : '') + '.');
         });
 
         return itemDescriptions;
@@ -147,8 +106,8 @@ export default class Room {
     getExitsDescription (firstNewLine = false) {
         let exitDescriptions = [];
 
-        this.exits.forEach((door, i) => {
-            exitDescriptions.push('There is ' + door.description + '.');
+        this.exits.forEach(door => {
+            exitDescriptions.push('There is ' + this._loadDoor(door).description + '.');
         });
 
         return exitDescriptions;
@@ -193,34 +152,34 @@ export default class Room {
 
         switch (direction) {
             case 'north':
-                actions = this.onNorth();
+                actions = this._getActions('onNorth');
                 break;
             case 'south':
-                actions = this.onSouth();
+                actions = this._getActions('onSouth');
                 break;
             case 'east':
-                actions = this.onEast();
+                actions = this._getActions('onEast');
                 break;
             case 'west':
-                actions = this.onWest();
+                actions = this._getActions('onWest');
                 break;
             case 'northeast':
-                actions = this.onNortheast();
+                actions = this._getActions('onNortheast');
                 break;
             case 'northwest':
-                actions = this.onNorthwest();
+                actions = this._getActions('onNorthwest');
                 break;
             case 'southeast':
-                actions = this.onSoutheast();
+                actions = this._getActions('onSoutheast');
                 break;
             case 'southwest':
-                actions = this.onSouthwest();
+                actions = this._getActions('onSouthwest');
                 break;
             case 'up':
-                actions = this.onUp();
+                actions = this._getActions('onUp');
                 break;
             case 'down':
-                actions = this.onDown();
+                actions = this._getActions('onDown');
                 break;
         }
 
@@ -231,13 +190,34 @@ export default class Room {
         return actions;
     }
 
+    _getActions (event) {
+        let actions = [];
+
+        if (this.node[event]) {
+            // TODO, support escaped characters
+            let events = JSON.parse(this.node[event]);
+
+            events.forEach(e => {
+                switch (e.type) {
+                    case 'TextAction':
+                        actions.push(new TextAction('{{defaultDescription}}' + e.text + '\n'));
+                        break;
+                };
+            });
+        }
+
+        return actions;
+    }
+
     _directionCommand (direction) {
-        if (typeof this.doors[direction] === 'undefined') {
+        let door = this._loadDoor(this[direction]);
+
+        if (typeof door === 'undefined') {
             throw new Error('There doesn\'t seem to be anything in that direction');
         }
 
         return new ChangeRoomAction({
-            room: this.doors[direction].room,
+            room: door.room,
             preRoomDesc: this._directionCommandEvent(direction),
             postRoomDesc: []
         });

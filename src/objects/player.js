@@ -1,15 +1,16 @@
 import Inventory from './inventory';
 
 export default class Player {
-    constructor (game) {
-        this.game = game;
+    constructor (world) {
+        this.world = world;
+        this.game = world.game;
 
-        this._inventory = new Inventory(game);
+        this._inventory = new Inventory(world);
     }
 
     get inventory () { return this._inventory; }
 
-    get items () { return this._inventory.items; }
+    get items () { return this._inventory.itemObjs; }
 
     commandLook () {
         let description = {};
@@ -20,7 +21,7 @@ export default class Player {
             this.items.forEach((item) => {
                 let article = '\t\t\t\tA';
 
-                description.items = description.items + article + ' ' + item.brief + '\n';
+                description.items = description.items + article + ' ' + item.description + '\n';
             });
         } else {
             description.items = 'You are not carrying anything.';

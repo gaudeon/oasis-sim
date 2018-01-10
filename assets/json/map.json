@@ -1,20 +1,135 @@
 ﻿[
-    {
-        "pid": 1,
-        "position": {
-            "x": 412,
-            "y": 200
-        },
-        "name": "Wade's Trailer - Laundry Room",
-        "tags": [
-            ""
-        ],
-        "content": "{{key}}wades-trailer-laundry-room{{/key}} {{description}}a tiny laundry room{{/description}} {{flavorText}}This room smells of liquid detergent and fabric softener.{{/flavorText}} {{inventory}} [ \t{ \t\t'key': 'rusted-washer-dryer', \t\t'quantity': 1, \t\t'description': 'a mismatched washer and dryer set peppered with rust spots', \t\t'can': { \t\t\t'pickup': false \t\t} \t}, \t{ \t\t'key': 'old-sleeping-bag', \t\t'quantity': 1, \t\t'description': { \t\t\t'default': 'an old sleeping bag on the ground', \t\t\t'wades-trailer-laundry-room': 'an old sleeping bag sprawled in a space between the washer and the adjacent wall' \t\t}, \t\t'can': { \t\t\t'pickup': true \t\t} \t} ] {{/inventory}}",
-        "childrenNames": [],
-        "key": "wades-trailer-laundry-room",
-        "description": "a tiny laundry room",
-        "flavorText": "This room smells of liquid detergent and fabric softener.",
-        "inventory": "[\r\n\t{\r\n\t\t\"key\": \"rusted-washer-dryer\",\r\n\t\t\"quantity\": 1,\r\n\t\t\"description\": \"a mismatched washer and dryer set peppered with rust spots\",\r\n\t\t\"can\": {\r\n\t\t\t\"pickup\": false\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"key\": \"old-sleeping-bag\",\r\n\t\t\"quantity\": 1,\r\n\t\t\"description\": {\r\n\t\t\t\"default\": \"an old sleeping bag on the ground\",\r\n\t\t\t\"wades-trailer-laundry-room\": \"an old sleeping bag sprawled in a space between the washer and the adjacent wall\"\r\n\t\t},\r\n\t\t\"can\": {\r\n\t\t\t\"pickup\": true\r\n\t\t}\r\n\t}\r\n]",
-        "children": []
-    }
+  {
+    "pid": 1,
+    "position": {
+      "x": 412,
+      "y": 200
+    },
+    "name": "Room-YourTrailerLivingRoom",
+    "tags": [
+      "room"
+    ],
+    "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You are in the living room of your trailer in the stacks. There are several large stains in what remains of the carpet on the floor.{{/description}} [[Item-SleepingBag]] {{Item-SleepingBag-Location}}on the floor in the corner of the room{{/Item-SleepingBag-Location}} [[Door-North-YourTrailerLivingRoom]]",
+    "childrenNames": [
+      "[[Item-SleepingBag]]",
+      "[[Door-North-YourTrailerLivingRoom]]"
+    ],
+    "isStartingRoom": "1",
+    "description": "You are in the living room of your trailer in the stacks. There are several large stains in what remains of the carpet on the floor.",
+    "Item-SleepingBag-Location": "on the floor in the corner of the room"
+  },
+  {
+    "pid": 2,
+    "position": {
+      "x": 133,
+      "y": 218
+    },
+    "name": "Item-SleepingBag",
+    "tags": [
+      "item"
+    ],
+    "content": "{{key}}sleeping bag{{/key}} {{description}}a mildly worn out sleeping bag{{/description}}",
+    "childrenNames": [],
+    "key": "sleeping bag",
+    "description": "a mildly worn out sleeping bag"
+  },
+  {
+    "pid": 3,
+    "position": {
+      "x": 412,
+      "y": 350
+    },
+    "name": "Room-YourTrailerPorch",
+    "tags": [
+      "room"
+    ],
+    "content": "{{description}}You are standing outside on the porch of your trailer. You are ten stories up from the ground. Out from where you stand you see several other stacks across the flat dirt plain.{{/description}} [[Door-South-TrailerPorch]] [[Door-Down-YourTrailerPorch]] {{onDown}}[ {  \t'type': 'TextAction',  \t'text': 'You climb down past the many trailers in the stack below your trailer.' } ]{{/onDown}}",
+    "childrenNames": [
+      "[[Door-South-TrailerPorch]]",
+      "[[Door-Down-YourTrailerPorch]]"
+    ],
+    "description": "You are standing outside on the porch of your trailer. You are ten stories up from the ground. Out from where you stand you see several other stacks across the flat dirt plain.",
+    "onDown": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You climb down past the many trailers in the stack below your trailer.\"\r\n} ]"
+  },
+  {
+    "pid": 4,
+    "position": {
+      "x": 412,
+      "y": 500
+    },
+    "name": "Room-YourTrailerGround",
+    "tags": [
+      "room"
+    ],
+    "content": "{{description}}You are on the ground by your stack. It's dark other than the weak makeshift lighting on the outside of the trailers of you stack and other surrounding stacks.{{/description}} [[Door-Up-YourTrailerGround]] {{onUp}}[ {  \t'type': 'TextAction',  \t'text': 'You climb up past the many trailers in the stack situated below your destination.' } ]{{/onUp}}",
+    "childrenNames": [
+      "[[Door-Up-YourTrailerGround]]"
+    ],
+    "description": "You are on the ground by your stack. It's dark other than the weak makeshift lighting on the outside of the trailers of you stack and other surrounding stacks.",
+    "onUp": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You climb up past the many trailers in the stack situated below your destination.\"\r\n} ]"
+  },
+  {
+    "pid": 5,
+    "position": {
+      "x": 600,
+      "y": 207
+    },
+    "name": "Door-North-YourTrailerLivingRoom",
+    "tags": [
+      "door"
+    ],
+    "content": "{{description}}a door leading outside{{/description}} [[Room-YourTrailerPorch]]",
+    "childrenNames": [
+      "[[Room-YourTrailerPorch]]"
+    ],
+    "description": "a door leading outside"
+  },
+  {
+    "pid": 6,
+    "position": {
+      "x": 598,
+      "y": 354
+    },
+    "name": "Door-South-TrailerPorch",
+    "tags": [
+      "door"
+    ],
+    "content": "{{description}}a door leading inside your trailer{{/description}} [[Room-YourTrailerLivingRoom]]",
+    "childrenNames": [
+      "[[Room-YourTrailerLivingRoom]]"
+    ],
+    "description": "a door leading inside your trailer"
+  },
+  {
+    "pid": 7,
+    "position": {
+      "x": 741,
+      "y": 351
+    },
+    "name": "Door-Down-YourTrailerPorch",
+    "tags": [
+      "door"
+    ],
+    "content": "{{description}}a peicemeal metal ladder leading{{/description}} [[Room-YourTrailerGround]]",
+    "childrenNames": [
+      "[[Room-YourTrailerGround]]"
+    ],
+    "description": "a peicemeal metal ladder leading"
+  },
+  {
+    "pid": 8,
+    "position": {
+      "x": 600,
+      "y": 499
+    },
+    "name": "Door-Up-YourTrailerGround",
+    "tags": [
+      "door"
+    ],
+    "content": "{{description}}a piecemeal metal ladder leading{{/description}} [[Room-YourTrailerPorch]]",
+    "childrenNames": [
+      "[[Room-YourTrailerPorch]]"
+    ],
+    "description": "a piecemeal metal ladder leading"
+  }
 ]

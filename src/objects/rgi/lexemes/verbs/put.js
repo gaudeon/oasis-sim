@@ -29,7 +29,7 @@ export default class PutVerb extends Verb {
             let addItemAction = new AddInventoryAction({ target: room, items: [this.source] });
             actions.push(addItemAction);
 
-            let getTextAction = new TextAction('{{itemDescription}}You dropped a ' + this.source.brief + '.');
+            let getTextAction = new TextAction('{{itemDescription}}You dropped a ' + this.source.description + '.');
             actions.push(getTextAction);
 
             return actions;
