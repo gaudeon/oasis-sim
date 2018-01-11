@@ -23,10 +23,10 @@ export default class Room {
 
             switch (idParts[0].toLowerCase()) {
                 case 'door': // FORMAT: Door-<direction>-<id>
-                    this.doors.push(id);
+                    this._doors.push(id);
                     break;
                 case 'item': // FORMAT: Item-<id>
-                    this.inventory.addItem(id);
+                    this._inventory.addItem(id);
                     break;
             }
         });
@@ -39,7 +39,7 @@ export default class Room {
 
     get inventory () { return this._inventory; }
 
-    get items () { return this._inventory.itemObjs; }
+    get items () { return this._inventory.items; }
 
     // doors
     _filterDoorByDirection (direction) {

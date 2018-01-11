@@ -10,7 +10,7 @@ export default class Player {
 
     get inventory () { return this._inventory; }
 
-    get items () { return this._inventory.itemObjs; }
+    get items () { return this._inventory.items; }
 
     commandLook () {
         let description = {};

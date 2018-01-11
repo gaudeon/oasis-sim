@@ -28,10 +28,10 @@
     "tags": [
       "item"
     ],
-    "content": "{{key}}sleeping bag{{/key}} {{description}}a mildly worn out sleeping bag{{/description}}",
+    "content": "{{key}}sleeping bag{{/key}} {{description}}mildly worn out sleeping bag{{/description}}",
     "childrenNames": [],
     "key": "sleeping bag",
-    "description": "a mildly worn out sleeping bag"
+    "description": "mildly worn out sleeping bag"
   },
   {
     "pid": 3,
