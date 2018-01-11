@@ -1,5 +1,3 @@
-require('./src/objects/all-items.js');
-require('./src/objects/all-rooms.js');
 require('./src/objects/command-history.js');
 require('./src/objects/door.js');
 require('./src/objects/game-action.js');

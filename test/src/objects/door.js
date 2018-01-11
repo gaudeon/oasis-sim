@@ -5,7 +5,7 @@ describe('Door', () => {
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            door = new Door('north', '', '');
+            door = new Door({}, { name: 'Door-North-SomeId' });
 
             assert.isObject(door);
         });

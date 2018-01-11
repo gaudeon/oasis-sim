@@ -3,13 +3,13 @@ import ChangeRoomAction from './game-actions/change-room';
 import TextAction from './game-actions/text';
 
 export default class Room {
-    constructor (world, node) {
+    constructor (world = {}, node = {}) {
         this.world = world;
         this.game = world.game;
         this.node = node;
 
-        this._name = node.name;
-        this._description = node.description;
+        this._name = node.name || 'undefined';
+        this._description = node.description || 'undefined';
 
         // items in the room
         this._inventory = new Inventory(this.world);
@@ -17,19 +17,21 @@ export default class Room {
         // doors
         this._doors = [];
 
-        node.childrenNames.forEach(child => {
-            let id = child.replace(/^\[\[/, '').replace(/\]\]$/, '');
-            let idParts = id.split(/-/);
+        if (node.childrenNames) {
+            node.childrenNames.forEach(child => {
+                let id = child.replace(/^\[\[/, '').replace(/\]\]$/, '');
+                let idParts = id.split(/-/);
 
-            switch (idParts[0].toLowerCase()) {
-                case 'door': // FORMAT: Door-<direction>-<id>
-                    this._doors.push(id);
-                    break;
-                case 'item': // FORMAT: Item-<id>
-                    this._inventory.addItem(id);
-                    break;
-            }
-        });
+                switch (idParts[0].toLowerCase()) {
+                    case 'door': // FORMAT: Door-<direction>-<id>
+                        this._doors.push(id);
+                        break;
+                    case 'item': // FORMAT: Item-<id>
+                        this._inventory.addItem(id);
+                        break;
+                }
+            });
+        }
     }
 
     // room info

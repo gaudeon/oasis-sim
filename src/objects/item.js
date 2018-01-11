@@ -1,5 +1,5 @@
 export default class Item {
-    constructor (world, node) {
+    constructor (world = {}, node = {}) {
         this.world = world;
         this.game = world.game;
         this.node = node;

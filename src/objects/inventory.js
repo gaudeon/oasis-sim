@@ -1,5 +1,5 @@
 export default class Inventory {
-    constructor (world) {
+    constructor (world = {}) {
         this.world = world;
         this.game = world.game;
 

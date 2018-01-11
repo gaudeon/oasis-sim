@@ -5,17 +5,11 @@ describe('Room', () => {
 
     describe('constructor()', () => {
         it('generates an object', () => {
-            room = new Room(global.game);
+            room = new Room({ game: global.game });
 
             assert.isObject(room);
         });
     });
-
-    describe('key', () => {
-        it('is defined', () => {
-            assert.isDefined(room.key);
-        });
-    })
 
     describe('name', () => {
         it('is defined', () => {
