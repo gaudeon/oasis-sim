@@ -2,14 +2,13 @@ player-command = player-verb-phrase | player-verb-noun-phrase ;
 admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase ;
 player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb | put-verb ) { article | preposition } noun { article | preposition };
 player-verb-string-phrase = help-verb string;
-player-verb-phrase = look-verb | brief-verb | north-verb | south-verb | east-verb
+player-verb-phrase = look-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
             | southwest-verb | up-verb | down-verb | help-verb | history-verb
             | inventory-verb | exits ;
 admin-verb-string-phrase = admin-verb string ;
 admin-verb = error-verb ;
 look-verb = "l" | "look" ;
-brief-verb = "brief" ;
 north-verb = "n" | "north" ;
 south-verb = "s" | "south" ;
 east-verb = "e" | "east" ;

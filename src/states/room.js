@@ -65,13 +65,13 @@ export default class RoomState extends Phaser.State {
             this.rgi.outputCommand(this.lastCommand);
         }
 
-        // run actions prior to brief (preRoomDesc)
+        // run actions prior to look (preRoomDesc)
         this.rgi.executeActions(this.preRoomDesc, this.room, this.player);
 
-        // output brief description of room
-        this.rgi.exec('brief', this.room, this.player, false, 'player');
+        // output look description of room
+        this.rgi.exec('look', this.room, this.player, false, 'player');
 
-        // run actions after brief (postRoomDesc)
+        // run actions after look (postRoomDesc)
         this.rgi.executeActions(this.postRoomDesc, this.room, this.player);
     }
 };

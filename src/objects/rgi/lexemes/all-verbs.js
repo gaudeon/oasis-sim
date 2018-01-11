@@ -1,5 +1,4 @@
 import LookVerb from './verbs/look';
-import BriefVerb from './verbs/brief';
 import NorthVerb from './verbs/north';
 import SouthVerb from './verbs/south';
 import EastVerb from './verbs/east';
@@ -35,7 +34,6 @@ export default class AllVerbs {
 
     get verbList () {
         return [
-            BriefVerb,
             LookVerb,
             NorthVerb,
             SouthVerb,

@@ -125,7 +125,7 @@ export default class Room {
     }
 
     // command methods
-    commandBrief () {
+    commandLook () {
         let description = '{{defaultDescription}}' + this.allDetails.general;
 
         this.allDetails.items.forEach((item) => {
@@ -143,10 +143,6 @@ export default class Room {
         let description = firstNewLine ? '\n' : '';
         description = description + this.getExitsDescription().join('\n');
         return description;
-    };
-
-    commandLook () {
-        return this.commandBrief();
     };
 
     _directionCommandEvent (direction) {

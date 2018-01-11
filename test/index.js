@@ -18,7 +18,6 @@ require('./src/objects/rgi/lexer.js');
 require('./src/objects/rgi/parser.js');
 require('./src/objects/rgi/lexemes/all-verbs.js');
 require('./src/objects/rgi/lexemes/verb.js');
-require('./src/objects/rgi/lexemes/verbs/brief.js');
 require('./src/objects/rgi/lexemes/verbs/down.js');
 require('./src/objects/rgi/lexemes/verbs/east.js');
 require('./src/objects/rgi/lexemes/verbs/error.js');
