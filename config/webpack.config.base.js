@@ -23,7 +23,7 @@ const config = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: [/node_modules/],
+                exclude: [/node_modules/, /src/],
                 use: [{
                     loader: 'babel-loader',
                     options: { presets: ['es2015'] }
@@ -62,7 +62,7 @@ const config = {
                 }]
             },
             {
-                test: /assets\/.*\.(css|CSS|jpe?g|JPE?G|gif|GIF|png|PNG|svg|SVG|woff|WOFF|ttf|TTF|wav|WAV|mp3|MP3|html|HTML|ico)$/,
+                test: /assets\/.*\.(css|CSS|jpe?g|JPE?G|gif|GIF|png|PNG|svg|SVG|woff|WOFF|ttf|TTF|wav|WAV|mp3|MP3|html|HTML|ico|ICO|txt|TXT)$/,
                 use: [{
                     loader: "file-loader",
                     options: {
