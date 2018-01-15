@@ -1,7 +1,7 @@
 export default class Inventory {
-    constructor (world = {}) {
-        this.world = world;
-        this.game = world.game;
+    constructor (universe = {}) {
+        this.universe = universe;
+        this.game = universe.game;
 
         this._items = [];
     }
@@ -17,7 +17,7 @@ export default class Inventory {
 
         id = this._cleanId(id);
 
-        return this.world.items[ id ] ? this.world.items[ id ] : id; // return the object form of an item as soon as we can (inital loads will just have the string name of items)
+        return this.universe.items[ id ] ? this.universe.items[ id ] : id; // return the object form of an item as soon as we can (inital loads will just have the string name of items)
     }
 
     get items () { return this._items.map(i => { return this._loadItem(i); }); }

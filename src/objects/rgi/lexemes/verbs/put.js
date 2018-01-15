@@ -21,7 +21,7 @@ export default class PutVerb extends Verb {
         if (typeof this.source !== 'undefined' && this.source instanceof Item && this.source.from instanceof Player) {
             let actions = [];
 
-            let removeItemAction = new RemoveInventoryAction({ target: player, items: [this.source] });
+            let removeItemAction = new RemoveInventoryAction({ target: player.avatar, items: [this.source] });
             actions.push(removeItemAction);
 
             this.source.containerOrientation = 'on the ground'; // TODO: make handling container orientation more robust

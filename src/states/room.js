@@ -1,29 +1,35 @@
 import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 import RGI from '../objects/rgi';
-import World from '../objects/world';
+import Universe from '../objects/universe';
 import Player from '../objects/player';
 
 export default class RoomState extends Phaser.State {
     init (room = '', preRoomDesc = [], postRoomDesc = [], lastCommand) {
-        if (this.game.theWorld) {
-            this.theWorld = this.game.theWorld;
+        if (this.game.universe) {
+            this.universe = this.game.universe;
         } else {
-            this.theWorld = this.game.theWorld = new World(this.game);
+            this.universe = this.game.universe = new Universe(this.game);
         }
 
+        // load player if not defined yet
         if (this.game.player) {
             this.player = this.game.player;
         } else {
-            this.player = this.game.player = new Player(this.theWorld);
+            this.player = this.game.player = new Player();
         }
 
-        if (typeof this.theWorld.rooms[room] !== 'object') { // set the starting room if we don't have one defined
-            room = this.theWorld.startingRoomId;
+        // load player avatar if not defined yet
+        if (! this.player.avatar) {
+            this.player.loadAvatar(this.universe);
+        }
+
+        if (typeof this.universe.rooms[room] !== 'object') { // set the starting room if we don't have one defined
+            room = this.universe.startingRoomId;
         }
 
         // retrieve the room
-        this.room = this.theWorld.rooms[room];
+        this.room = this.universe.rooms[room];
 
         if (this.game.textBuffer) {
             this.textBuffer = this.game.textBuffer;

@@ -3,7 +3,7 @@ import Room from './room';
 import Item from './item';
 import Door from './door';
 
-export default class World {
+export default class Universe {
     constructor (game) {
         this.game = game;
         this.loadMap();

@@ -13,7 +13,7 @@ export default class InventoryVerb extends Verb {
     actions (room, player, lexemePhrase) {
         super.actions(room, player, lexemePhrase);
 
-        let description = player.commandLook();
+        let description = player.avatar.commandLook();
 
         let itemsTextAction = new TextAction('{{itemDescription}}' + description.items);
 

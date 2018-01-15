@@ -148,7 +148,7 @@ export default class Lexer {
                 match = matches[0];
                 match.from = room;
             } else {
-                player.items.forEach((item) => {
+                player.avatar.items.forEach((item) => {
                     if (item.key.match(new RegExp(word, 'i'))) {
                         matches.push(item);
                     }

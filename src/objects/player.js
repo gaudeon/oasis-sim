@@ -1,32 +1,15 @@
-import Inventory from './inventory';
+import PlayerAvatar from './player/avatar';
 
 export default class Player {
-    constructor (world) {
-        this.world = world;
-        this.game = world.game;
-
-        this._inventory = new Inventory(world);
+    constructor () {
+        this._avatar = undefined;
     }
 
-    get inventory () { return this._inventory; }
+    get avatar () { return this._avatar; }
 
-    get items () { return this._inventory.items; }
+    loadAvatar (universe) {
+        this._avatar = new PlayerAvatar(universe);
 
-    commandLook () {
-        let description = {};
-
-        if (this.items.length) {
-            description.items = 'You are carrying: \n';
-
-            this.items.forEach((item) => {
-                let article = '\t\t\t\tA';
-
-                description.items = description.items + article + ' ' + item.description + '\n';
-            });
-        } else {
-            description.items = 'You are not carrying anything.';
-        }
-
-        return description;
-    };
+        return this._avatar;
+    }
 }

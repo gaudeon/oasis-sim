@@ -3,16 +3,16 @@ import ChangeRoomAction from './game-actions/change-room';
 import TextAction from './game-actions/text';
 
 export default class Room {
-    constructor (world = {}, node = {}) {
-        this.world = world;
-        this.game = world.game;
+    constructor (universe = {}, node = {}) {
+        this.universe = universe;
+        this.game = universe.game;
         this.node = node;
 
         this._name = node.name || 'undefined';
         this._description = node.description || 'undefined';
 
         // items in the room
-        this._inventory = new Inventory(this.world);
+        this._inventory = new Inventory(this.universe);
 
         // doors
         this._doors = [];
@@ -77,7 +77,7 @@ export default class Room {
             return id;
         }
 
-        return this.world.items[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
+        return this.universe.items[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
     }
 
     _loadDoor (id = '') {
@@ -85,7 +85,7 @@ export default class Room {
             return id;
         }
 
-        return this.world.doors[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
+        return this.universe.doors[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
     }
 
     // the room description
