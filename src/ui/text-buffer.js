@@ -7,21 +7,25 @@ export default class TextBuffer extends Phaser.Group {
         super(game);
 
         this._lineQueue = []; // all lines get added here
-        this._queueProcessing = false; // used to make sure addNextTextLine isn't called multiple times
+        this._queueProcessing = false; // used to make sure _addNextTextLine isn't called multiple times
 
         this._paddingLeft = 20;
         this._fontSize = fontConfig.globalTextStyle.fontSize;
         this._lineSpacing = 1.5;
         this._lastTextStyle = this.defaultTextStyle;
+
         this.y = this.bottomY - this.lineHeight;
+        
         this.events = {
             onStartAddingLines: new Phaser.Signal(),
             onDoneAddingLines: new Phaser.Signal()
         };
     }
 
-    addText (text, overrideStyle = {}, fontKey = 'rubik') {
-        let displayLines = this.splitTextIntoLines(text);
+    // Public Methods
+
+    addText (text) {
+        let displayLines = this._splitTextIntoLines(text);
 
         if (displayLines.length <= 0) { // no lines just just be done
             return;
@@ -38,7 +42,7 @@ export default class TextBuffer extends Phaser.Group {
                 if (i === 0 || colorChanges.length <= i - 1) {
                     textStyle = this._lastTextStyle || this.defaultTextStyle;
                 } else {
-                    let styleTag = this.getTextStyleFromTag(colorChanges[i - 1]);
+                    let styleTag = this._getTextStyleFromTag(colorChanges[i - 1]);
                     let styleByDimension;
                     if (fontConfig.textStyles[styleTag]) {
                         styleByDimension = fontConfig.textStyles[styleTag][this.currentDimension];
@@ -46,7 +50,7 @@ export default class TextBuffer extends Phaser.Group {
                     textStyle = styleByDimension || this.defaultTextStyle;
                 }
 
-                this._lastTextStyle = this.convertStyle(textStyle);
+                this._lastTextStyle = this._convertStyle(textStyle);
 
                 lineParts.push({
                     text: textByColor[i],
@@ -61,73 +65,16 @@ export default class TextBuffer extends Phaser.Group {
 
         if (!this._queueProcessing) {
             this._queueProcessing = true;
-            this.addNextTextLine();
+            this._addNextTextLine();
         }
     }
 
-    addNextTextPart (x, y, text, style, remainingParts, partsGroup) {
-        let textLine = new TextLine(this.game, x, y, text, style);
-
-        partsGroup.add(textLine);
-
-        if (remainingParts.length) {
-            let part = remainingParts.shift();
-
-            textLine.events.onTextAnimationComplete.addOnce(() => {
-                this.addNextTextPart(x + textLine.width, y, part.text, part.style, remainingParts, partsGroup);
-            });
-        } else {
-            if (this._lineQueue.length) {
-                this._queueProcessing = true;
-                textLine.events.onTextAnimationComplete.addOnce(() => {
-                    this.addNextTextLine();
-                })
-            } else {
-                this.events.onDoneAddingLines.dispatch();
-                this._queueProcessing = false;
-            }
-        }
-    }
-
-    addNextTextLine () {
-        this.events.onStartAddingLines.dispatch();
-
-        this.y -= this.lineHeight;
-        let x = this.paddingLeft;
-        let y = this.lineHeight + this.children.length * this.lineHeight;
-        let queueItem = this._lineQueue.shift();
-
-        if (queueItem.lineParts) {
-            this._queueProcessing = true; // queue is processing while it is processing all parts of a line
-
-            let partsList = queueItem.lineParts;
-            let part = partsList.shift();
-            let partsGroup = new Phaser.Group(this.game);
-
-            this.add(partsGroup);
-
-            this.addNextTextPart(x, y, part.text, part.style, partsList, partsGroup);
-        } else {
-            let textLine = new TextLine(this.game, x, y, queueItem.text, queueItem.style);
-
-            this.add(textLine);
-
-            if (this._lineQueue.length) {
-                this._queueProcessing = true;
-                textLine.events.onTextAnimationComplete.addOnce(() => {
-                    this.addNextTextLine();
-                })
-            } else {
-                this.events.onDoneAddingLines.dispatch();
-                this._queueProcessing = false;
-            }
-        }
-    };
+    // Accessors
 
     get currentDimension () { return 'earth'; } // earth or oasis
 
     get defaultTextStyle () {
-        return this.convertStyle(fontConfig.textStyles['default'][this.currentDimension]);
+        return this._convertStyle(fontConfig.textStyles['default'][this.currentDimension]);
     }
 
     get fontSize () { return this._fontSize; }
@@ -158,28 +105,89 @@ export default class TextBuffer extends Phaser.Group {
         return this._textStyleRegExp;
     }
 
-    convertColorWord (color) {
+    // Private Methods
+
+    _addNextTextPart (x, y, text, style, remainingParts, partsGroup) {
+        let textLine = new TextLine(this.game, x, y, text, style);
+
+        partsGroup.add(textLine);
+
+        if (remainingParts.length) {
+            let part = remainingParts.shift();
+
+            textLine.events.onTextAnimationComplete.addOnce(() => {
+                this._addNextTextPart(x + textLine.width, y, part.text, part.style, remainingParts, partsGroup);
+            });
+        } else {
+            if (this._lineQueue.length) {
+                this._queueProcessing = true;
+                textLine.events.onTextAnimationComplete.addOnce(() => {
+                    this._addNextTextLine();
+                })
+            } else {
+                this.events.onDoneAddingLines.dispatch();
+                this._queueProcessing = false;
+            }
+        }
+    }
+
+    _addNextTextLine () {
+        this.events.onStartAddingLines.dispatch();
+
+        this.y -= this.lineHeight;
+        let x = this.paddingLeft;
+        let y = this.lineHeight + this.children.length * this.lineHeight;
+        let queueItem = this._lineQueue.shift();
+
+        if (queueItem.lineParts) {
+            this._queueProcessing = true; // queue is processing while it is processing all parts of a line
+
+            let partsList = queueItem.lineParts;
+            let part = partsList.shift();
+            let partsGroup = new Phaser.Group(this.game);
+
+            this.add(partsGroup);
+
+            this._addNextTextPart(x, y, part.text, part.style, partsList, partsGroup);
+        } else {
+            let textLine = new TextLine(this.game, x, y, queueItem.text, queueItem.style);
+
+            this.add(textLine);
+
+            if (this._lineQueue.length) {
+                this._queueProcessing = true;
+                textLine.events.onTextAnimationComplete.addOnce(() => {
+                    this._addNextTextLine();
+                })
+            } else {
+                this.events.onDoneAddingLines.dispatch();
+                this._queueProcessing = false;
+            }
+        }
+    };
+
+    _convertColorWord (color) {
         return colorConfig[color] ? colorConfig[color] : color; // if the color word isn't found just return the arg because it could be a hex color
     }
 
-    convertFontKey (font) {
+    _convertFontKey (font) {
         return fontConfig.fonts[font] ? fontConfig.fonts[font].familyName : font;
     }
 
-    convertStyle (style) {
-        style.font = this.convertFontKey(style.font);
-        style.fill = this.convertColorWord(style.fill);
-        style.stroke = this.convertColorWord(style.stroke);
+    _convertStyle (style) {
+        style.font = this._convertFontKey(style.font);
+        style.fill = this._convertColorWord(style.fill);
+        style.stroke = this._convertColorWord(style.stroke);
         style.fontSize = this._fontSize;
 
         return style;
     }
 
-    getTextStyleFromTag (tag) {
+    _getTextStyleFromTag (tag) {
         return tag.replace(/\{\{\s*/, '').replace(/\s*\}\}/, '');
     }
 
-    splitTextIntoLines (text) {
+    _splitTextIntoLines (text) {
         if (typeof text === 'undefined') { // no lines returned if nothing given as a param
             return [];
         }

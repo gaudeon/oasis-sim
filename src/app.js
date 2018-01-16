@@ -1,5 +1,6 @@
 // import states
 import BootState from './states/boot';
+import LoginState from './states/login';
 import RoomState from './states/room';
 
 // import of non-js / non-json files
@@ -20,6 +21,7 @@ Phaser.Device.whenReady(function () {
 
     // states
     game.state.add('Boot', BootState);
+    game.state.add('Login', LoginState);
     game.state.add('Room', RoomState);
 
     game.state.start('Boot');

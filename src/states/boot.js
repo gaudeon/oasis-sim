@@ -4,12 +4,7 @@ import fontConfig from '../../assets/json/fonts.json';
 // web fonts
 import WebFont from 'webfontloader';
 
-// require in other assets to be included but not added to cache at this time
-// require('../../assets/sounds/sound.wav');
-// require('../../assets/json/tilemap.json');
-// require('../../assets/images/tileset.png');
-
-export default class LoadingState extends Phaser.State {
+export default class BootState extends Phaser.State {
     init () {
         // font loading requirements
         this.requireWebFont('arcade');
@@ -21,25 +16,13 @@ export default class LoadingState extends Phaser.State {
     }
 
     preload () {
-        // load json configuration files
-        // this.game.cache.addJSON('jsonConfig', null, jsonConfig);
-
         // font loading (only call loadWebFonts once)
         this.loadWebFonts('arcade', 'arcade-classic', 'atarian-system', 'rubik');
     }
 
-    create () {
-        // p2 physics
-        /* this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.setImpactEvents(true);
-        this.game.physics.p2.restitution = 0.8; */
-
-        // arcade physics
-        // this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    }
-
     update () {
         if (this.areWebfontsLoaded()) {
+            //this.state.start('Login');
             this.state.start('Room');
         }
     }
