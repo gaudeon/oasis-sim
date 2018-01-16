@@ -18,7 +18,7 @@ export default class Universe {
         Map.forEach(node => {
             let type = node.tags[0] || 'broken';
 
-            switch (type) {
+            switch (type.toLowerCase()) {
                 case 'room':
                     this.rooms[node.name] = new Room(this, node);
                     if (node.isStartingRoom) {
@@ -31,6 +31,8 @@ export default class Universe {
                 case 'door':
                     this.doors[node.name] = new Door(this, node);
                     break;
+                default:
+                    throw('Could not identify type of node for ' + node.name, node);
             }
         });
     }

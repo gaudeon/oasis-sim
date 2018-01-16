@@ -2,21 +2,22 @@
   {
     "pid": 1,
     "position": {
-      "x": 412,
+      "x": 407,
       "y": 200
     },
-    "name": "Room-YourTrailerLivingRoom",
+    "name": "Room-IncipioPlayerHubParkCenter",
     "tags": [
       "room"
     ],
-    "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You are in the living room of your trailer in the stacks. There are several large stains in what remains of the carpet on the floor.{{/description}} [[Item-SleepingBag]] {{Item-SleepingBag-Location}}on the floor in the corner of the room{{/Item-SleepingBag-Location}} [[Door-North-YourTrailerLivingRoom]]",
+    "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
     "childrenNames": [
-      "[[Item-SleepingBag]]",
-      "[[Door-North-YourTrailerLivingRoom]]"
+      "[[Item-Rock]]",
+      "[[Door-North-IncipioMegaMallEntrance]]"
     ],
     "isStartingRoom": "1",
-    "description": "You are in the living room of your trailer in the stacks. There are several large stains in what remains of the carpet on the floor.",
-    "Item-SleepingBag-Location": "on the floor in the corner of the room"
+    "description": "You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.",
+    "Item-Rock-Location": "on the ground",
+    "onNorth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You walk down the path towards the megamall.\"\r\n} ]"
   },
   {
     "pid": 2,
@@ -24,112 +25,62 @@
       "x": 133,
       "y": 218
     },
-    "name": "Item-SleepingBag",
+    "name": "Item-Rock",
     "tags": [
       "item"
     ],
-    "content": "{{key}}sleeping bag{{/key}} {{description}}mildly worn out sleeping bag{{/description}}",
+    "content": "{{key}}rock{{/key}} {{description}}rock{{/description}}",
     "childrenNames": [],
-    "key": "sleeping bag",
-    "description": "mildly worn out sleeping bag"
+    "key": "rock",
+    "description": "rock"
   },
   {
     "pid": 3,
     "position": {
-      "x": 412,
-      "y": 350
+      "x": 659,
+      "y": 204
     },
-    "name": "Room-YourTrailerPorch",
+    "name": "Door-North-IncipioMegaMallEntrance",
     "tags": [
-      "room"
+      "Door"
     ],
-    "content": "{{description}}You are standing outside on the porch of your trailer. You are ten stories up from the ground. Out from where you stand you see several other stacks across the flat dirt plain.{{/description}} [[Door-South-TrailerPorch]] [[Door-Down-YourTrailerPorch]] {{onDown}}[ {  \t'type': 'TextAction',  \t'text': 'You climb down past the many trailers in the stack below your trailer.' } ]{{/onDown}}",
+    "content": "{{description}}a walkway leading to the megamall{{/description}} [[Room-IncipioMegaMallEntrance]]",
     "childrenNames": [
-      "[[Door-South-TrailerPorch]]",
-      "[[Door-Down-YourTrailerPorch]]"
+      "[[Room-IncipioMegaMallEntrance]]"
     ],
-    "description": "You are standing outside on the porch of your trailer. You are ten stories up from the ground. Out from where you stand you see several other stacks across the flat dirt plain.",
-    "onDown": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You climb down past the many trailers in the stack below your trailer.\"\r\n} ]"
+    "description": "a walkway leading to the megamall"
   },
   {
     "pid": 4,
     "position": {
-      "x": 412,
-      "y": 500
+      "x": 687,
+      "y": 433
     },
-    "name": "Room-YourTrailerGround",
+    "name": "Room-IncipioMegaMallEntrance",
     "tags": [
-      "room"
+      "Room"
     ],
-    "content": "{{description}}You are on the ground by your stack. It's dark other than the weak makeshift lighting on the outside of the trailers of you stack and other surrounding stacks.{{/description}} [[Door-Up-YourTrailerGround]] {{onUp}}[ {  \t'type': 'TextAction',  \t'text': 'You climb up past the many trailers in the stack situated below your destination.' } ]{{/onUp}}",
+    "content": "{{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
     "childrenNames": [
-      "[[Door-Up-YourTrailerGround]]"
+      "[[Door-South-IncipioPlayerHubParkCenter]]"
     ],
-    "description": "You are on the ground by your stack. It's dark other than the weak makeshift lighting on the outside of the trailers of you stack and other surrounding stacks.",
-    "onUp": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You climb up past the many trailers in the stack situated below your destination.\"\r\n} ]"
+    "description": "You stand at the doorway leading into the megamall.",
+    "onSouth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You walk along the path towards the center of the player hub.\"\r\n} ]"
   },
   {
     "pid": 5,
     "position": {
-      "x": 600,
-      "y": 207
+      "x": 420,
+      "y": 434
     },
-    "name": "Door-North-YourTrailerLivingRoom",
+    "name": "Door-South-IncipioPlayerHubParkCenter",
     "tags": [
-      "door"
+      "Door"
     ],
-    "content": "{{description}}a door leading outside{{/description}} [[Room-YourTrailerPorch]]",
+    "content": "{{description}}a walkway leading to the center of the player hub{{/description}} [[Room-IncipioPlayerHubParkCenter]]",
     "childrenNames": [
-      "[[Room-YourTrailerPorch]]"
+      "[[Room-IncipioPlayerHubParkCenter]]"
     ],
-    "description": "a door leading outside"
-  },
-  {
-    "pid": 6,
-    "position": {
-      "x": 598,
-      "y": 354
-    },
-    "name": "Door-South-TrailerPorch",
-    "tags": [
-      "door"
-    ],
-    "content": "{{description}}a door leading inside your trailer{{/description}} [[Room-YourTrailerLivingRoom]]",
-    "childrenNames": [
-      "[[Room-YourTrailerLivingRoom]]"
-    ],
-    "description": "a door leading inside your trailer"
-  },
-  {
-    "pid": 7,
-    "position": {
-      "x": 741,
-      "y": 351
-    },
-    "name": "Door-Down-YourTrailerPorch",
-    "tags": [
-      "door"
-    ],
-    "content": "{{description}}a peicemeal metal ladder leading{{/description}} [[Room-YourTrailerGround]]",
-    "childrenNames": [
-      "[[Room-YourTrailerGround]]"
-    ],
-    "description": "a peicemeal metal ladder leading"
-  },
-  {
-    "pid": 8,
-    "position": {
-      "x": 600,
-      "y": 499
-    },
-    "name": "Door-Up-YourTrailerGround",
-    "tags": [
-      "door"
-    ],
-    "content": "{{description}}a piecemeal metal ladder leading{{/description}} [[Room-YourTrailerPorch]]",
-    "childrenNames": [
-      "[[Room-YourTrailerPorch]]"
-    ],
-    "description": "a piecemeal metal ladder leading"
+    "description": "a walkway leading to the center of the player hub"
   }
 ]

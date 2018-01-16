@@ -1,0 +1,31 @@
+Initiating Login Sequences…
+
+< wait for a couple seconds then prompt >
+
+Enter your ID >
+Enter your Password >
+
+Identity Verification Successful
+Welcome to the OASIS <ID>
+Login Completed
+07:53:21 OST 02-10-2045
+
+<blank screen>
+
+Ready Player One
+
+——————
+
+Starting world -> Incipio
+
+Starting Location Planet at Center of Sector 1
+
+Wasn’t much to do on Incipio other than…
+
+Chat with newbs
+
+Shop in one of the giant virtual malls that cover the planet
+
+Have to pay to teleport to other locations
+
+Teleportation Vouchers
