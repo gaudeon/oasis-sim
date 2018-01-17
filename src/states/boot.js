@@ -22,18 +22,17 @@ export default class BootState extends Phaser.State {
 
     update () {
         if (this.areWebfontsLoaded()) {
-            //this.state.start('Login');
-            this.state.start('Room');
+            this.state.start('Login');
         }
     }
 
     showLoading () {
-        var loadingText = 'Loading...';
+        var loadingText = 'INITIATING LOGIN SEQUENCE';
 
         var text = this.add.text(0, 0, loadingText, {
             font: 'Helvetica, Arial, Sans-Serif',
             fill: '#ffffff',
-            fontSize: 48,
+            fontSize: 32,
             boundsAlignH: 'center',
             boundsAlignV: 'middle'
         });

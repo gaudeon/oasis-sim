@@ -37,8 +37,8 @@ export default class RoomState extends Phaser.State {
             this.textBuffer = this.game.textBuffer = new TextBuffer(this.game);
 
             // disable text input while buffer is adding text
-            this.textBuffer.events.onStartAddingLines.add(() => { this.input.enabled = false; });
-            this.textBuffer.events.onDoneAddingLines.add(() => { this.input.enabled = true; });
+            this.textBuffer.events.onStartPrinting.add(() => { this.input.enabled = false; });
+            this.textBuffer.events.onDonePrinting.add(() => { this.input.enabled = true; });
         }
 
         if (this.game.rgi) {

@@ -74,6 +74,18 @@
             "font": "rubik",
             "fill": "LightGreen",
             "stroke": "LightGreen"
+        },
+        "loginText": {
+            "font": "arcade",
+            "fontSize": 32,
+            "fill": "SkyBlue",
+            "stroke": "SkyBlue"
+        },
+        "readyPlayerOneLoginText": {
+            "font": "arcade-classic",
+            "fontSize": 64,
+            "fill": "LightPink",
+            "stroke": "LightPink"
         }
     }
 }

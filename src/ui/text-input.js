@@ -39,7 +39,7 @@ export default class TextInput extends Phaser.Group {
         this.y = this.game.height - 30;
 
         // events
-        this.events = this.events || {};
+        this.events = this.events || new Phaser.Events();
         this.events.onEnterPressed = new Phaser.Signal();
 
         // command history

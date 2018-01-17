@@ -1,188 +1,88 @@
-import colorConfig from '../../assets/json/colors.json';
-import fontConfig from '../../assets/json/fonts.json';
-import TextPart from './text-part';
+import AllTextStyles from './all-text-styles';
+import TextLine from './text-line';
 
 export default class TextBuffer extends Phaser.Group {
     constructor (game) {
         super(game);
 
         this._lineQueue = []; // all lines get added here
-        this._queueProcessing = false; // used to make sure _addNextTextLine isn't called multiple times
+        this._isPrinting = false; // used to make sure _addNextTextLine isn't called multiple times
 
         this._paddingLeft = 20;
-        this._fontSize = fontConfig.defaultTextStyle.fontSize;
         this._lineSpacing = 1.5;
         this._lastTextStyle = this.defaultTextStyle;
 
-        this.y = this.bottomY - this.lineHeight;
+        this._styles = new AllTextStyles();
+        this._fontSize = this._styles.defaultStyle.fontSize;
 
-        this.events = {
-            onStartAddingLines: new Phaser.Signal(),
-            onDoneAddingLines: new Phaser.Signal()
-        };
+        this.y = this._startY = this.bottomY - this.lineHeight;
+
+        this.events = this.events || new Phaser.Events();
+        this.events.onStartPrinting = new Phaser.Signal();
+        this.events.onDonePrinting = new Phaser.Signal();
     }
 
     // Public Methods
 
     addText (text) {
-        let displayLines = this._splitTextIntoLines(text);
+        this._lineQueue = this._lineQueue.concat(this._splitTextIntoLines(text));
+    }
 
-        if (displayLines.length <= 0) { // no lines just just be done
-            return;
+    update () {
+        if (this._lineQueue.length > 0 && this._isPrinting == false) {
+            this._isPrinting = true;
+
+            this.events.onStartPrinting.dispatch();
+
+            this._printNextLine();
         }
 
-        displayLines.forEach((line) => {
-            let colorChanges = line.match(this.textStyleRegExp);
+        super.update();
+    }
 
-            let textByColor = line.split(this.textStyleRegExp);
+    clear () {
+        this.removeAll(true);
 
-            let lineParts = [];
-            for (let i = 0; i < textByColor.length; i++) { // add each part of the line and it's style
-                let textStyle;
-                if (i === 0 || colorChanges.length <= i - 1) {
-                    textStyle = this._lastTextStyle || this.defaultTextStyle;
-                } else {
-                    let styleTag = this._getTextStyleFromTag(colorChanges[i - 1]);
-                    let styleByDimension;
-                    if (fontConfig.textStyles[styleTag]) {
-                        styleByDimension = fontConfig.textStyles[styleTag];
-                    }
-                    textStyle = styleByDimension || this.defaultTextStyle;
-                }
-
-                this._lastTextStyle = this._convertStyle(textStyle);
-
-                lineParts.push({
-                    text: textByColor[i],
-                    style: this._lastTextStyle
-                });
-            }
-
-            this._lineQueue.push({
-                lineParts: lineParts
-            });
-        });
-
-        if (!this._queueProcessing) {
-            this._queueProcessing = true;
-            this._addNextTextLine();
-        }
+        this.y = this._startY;
     }
 
     // Accessors
-
-    get defaultTextStyle () {
-        return this._convertStyle(fontConfig.defaultTextStyle);
-    }
-
-    get fontSize () { return this._fontSize; }
-
     get paddingLeft () { return this._paddingLeft; }
 
     get lineSpacing () { return this._lineSpacing; }
 
     get lineHeight () { return this._fontSize * this._lineSpacing; }
 
-    get lineCharWidth () { return this.game.width / (this.fontSize / 2); }
+    get lineCharWidth () { return this.game.width / (this._fontSize / 2); }
 
     get bottomY () { return this.game.height - this.lineHeight; }
 
-    get queueProcessing () { return this._queueProcessing; }
-
-    get textStyleRegExp () {
-        if (this._textStyleRegExp) {
-            return this._textStyleRegExp;
-        }
-
-        let regExp = '\\{\\{\\s*(?:' +
-                     Object.keys(fontConfig.textStyles).join('|') +
-                     ')\\s*\\}\\}'; // \{\{\s*(?:Color|AnotherColor|Etc)\s*\}\}
-
-        this._textStyleRegExp = new RegExp(regExp, 'g');
-
-        return this._textStyleRegExp;
-    }
+    get isPrinting () { return this._isPrinting; }
 
     // Private Methods
 
-    _addNextTextPart (x, y, text, style, remainingParts, partsGroup) {
-        let textLine = new TextPart(this.game, x, y, text, style);
-
-        partsGroup.add(textLine);
-
-        if (remainingParts.length) {
-            let part = remainingParts.shift();
-
-            textLine.events.onTextAnimationComplete.addOnce(() => {
-                this._addNextTextPart(x + textLine.width, y, part.text, part.style, remainingParts, partsGroup);
-            });
-        } else {
-            if (this._lineQueue.length) {
-                this._queueProcessing = true;
-                textLine.events.onTextAnimationComplete.addOnce(() => {
-                    this._addNextTextLine();
-                })
-            } else {
-                this.events.onDoneAddingLines.dispatch();
-                this._queueProcessing = false;
-            }
-        }
-    }
-
-    _addNextTextLine () {
-        this.events.onStartAddingLines.dispatch();
+    _printNextLine (lastTextStyle) {
+        let line = this._lineQueue.shift();
 
         this.y -= this.lineHeight;
         let x = this.paddingLeft;
         let y = this.lineHeight + this.children.length * this.lineHeight;
-        let queueItem = this._lineQueue.shift();
 
-        if (queueItem.lineParts) {
-            this._queueProcessing = true; // queue is processing while it is processing all parts of a line
+        let startX = 0;
 
-            let partsList = queueItem.lineParts;
-            let part = partsList.shift();
-            let partsGroup = new Phaser.Group(this.game);
+        let textLine = new TextLine(this.game, x, y, line, lastTextStyle); // this helps maintain the last text style set from the previous line
 
-            this.add(partsGroup);
+        textLine.events.onDonePrinting.addOnce(lastTextStyle => {
+            if (this._lineQueue.length == 0) {
+                this._isPrinting = false;
 
-            this._addNextTextPart(x, y, part.text, part.style, partsList, partsGroup);
-        } else {
-            let textLine = new TextPart(this.game, x, y, queueItem.text, queueItem.style);
-
-            this.add(textLine);
-
-            if (this._lineQueue.length) {
-                this._queueProcessing = true;
-                textLine.events.onTextAnimationComplete.addOnce(() => {
-                    this._addNextTextLine();
-                })
+                this.events.onDonePrinting.dispatch();
             } else {
-                this.events.onDoneAddingLines.dispatch();
-                this._queueProcessing = false;
+                this._printNextLine(lastTextStyle);
             }
-        }
-    };
+        });
 
-    _convertColorWord (color) {
-        return colorConfig[color] ? colorConfig[color] : color; // if the color word isn't found just return the arg because it could be a hex color
-    }
-
-    _convertFontKey (font) {
-        return fontConfig.fonts[font] ? fontConfig.fonts[font].familyName : font;
-    }
-
-    _convertStyle (style) {
-        style.font = this._convertFontKey(style.font);
-        style.fill = this._convertColorWord(style.fill);
-        style.stroke = this._convertColorWord(style.stroke);
-        style.fontSize = this._fontSize;
-
-        return style;
-    }
-
-    _getTextStyleFromTag (tag) {
-        return tag.replace(/\{\{\s*/, '').replace(/\s*\}\}/, '');
+        this.add(textLine);
     }
 
     _splitTextIntoLines (text) {
@@ -196,8 +96,8 @@ export default class TextBuffer extends Phaser.Group {
 
             words.forEach((word) => {
                 let currentLine = lines.length - 1;
-                let lineWithoutTags = lines[currentLine].replace(this.textStyleRegExp, '');
-                let wordWithoutTags = word.replace(this.textStyleRegExp, ''); // we don't want to account for tags in the length of text when splitting up lines
+                let lineWithoutTags = lines[currentLine].replace(this._styles.textStyleTagRegExp, '');
+                let wordWithoutTags = word.replace(this._styles.textStyleTagRegExp, ''); // we don't want to account for tags in the length of text when splitting up lines
                 let tmpText = lineWithoutTags + ' ' + wordWithoutTags;
 
                 if (tmpText.length > this.lineCharWidth) {

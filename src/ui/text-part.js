@@ -5,34 +5,43 @@ export default class TextPart extends Phaser.Text {
     constructor (game, x = 0, y = 0, text = '', style = {}) {
         super(game, x, y, '', (style instanceof TextStyle) ? style.toPhaserTextStyle() : style);
 
-        this._animSpeed = style.animSpeed || 100;
-        this._animSize = 0;
-        this._animText = text;
-        this._animTime = 0;
-        this._animating = true;
+        this._printSpeed = 15;
+        this._printedCount = 0;
+        this._printText = text;
+        this._elapsedMS = 0;
+        this._isInitialized = false;
+        this._isPrinting = false;
 
-        this.events.onTextAnimationComplete = new Phaser.Signal();
-
-        this.game.time.events.repeat(Phaser.Timer.SECOND / this._animSpeed, text.length, this.animateText, this);
+        this.events = this.events || new Phaser.Events();
+        this.events.onStartPrinting = new Phaser.Signal();
+        this.events.onDonePrinting = new Phaser.Signal();
     }
+
+    get isPrinting () { return this._isPrinting; }
 
     update () {
-        if (this._animating == true) {
-            this._animTime += this.game.time.elapsedMS;
+        if (this._isInitialized == false) {
+            this._isPrinting = this._isInitialized = true;
 
-            if (this._animTime > this._animSpeed) {
-                this._animTime = 0;
+            this.events.onStartPrinting.dispatch();
+        }
+        else if (this._isPrinting) {
+            this._elapsedMS += this.game.time.elapsedMS;
+
+            if (this._elapsedMS > this._printSpeed) {
+                this._printedCount++;
+                this.text = this._printText.substr(0, this._printedCount);
+
+                this._elapsedMS = 0;
+
+                if (this.text.length >= this._printText.length) {
+                    this._isPrinting = false;
+
+                    this.events.onDonePrinting.dispatch();
+                }
             }
         }
-    }
 
-    animateText () {
-        this._animSize++;
-        this.text = this._animText.substr(0, this._animSize);
-
-        if (this._animText.length === this.text.length) {
-            this._animating = false;
-            this.events.onTextAnimationComplete.dispatch();
-        }
+        super.update();
     }
 }

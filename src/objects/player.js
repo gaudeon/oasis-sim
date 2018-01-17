@@ -2,6 +2,9 @@ import PlayerAvatar from './player/avatar';
 
 export default class Player {
     constructor () {
+        this.id = '';
+        this.password = '';
+
         this._avatar = undefined;
     }
 

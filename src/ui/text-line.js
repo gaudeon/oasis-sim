@@ -3,7 +3,7 @@ import TextPart from './text-part';
 
 // A group of text parts (parsed from a line of parts) displayed on one 'line' of the display
 export default class TextLine extends Phaser.Group {
-    constructor (game, x = 0, y = 0, text = '') {
+    constructor (game, x = 0, y = 0, text = '', startingTextStyle) {
         super(game);
 
         this.x = x;
@@ -12,32 +12,79 @@ export default class TextLine extends Phaser.Group {
 
         this._styles = new AllTextStyles();
 
-        this._textParts = TextLine.parseText(this.text, this._styles);
+        this._startingTextStyle = startingTextStyle || this._styles.styleMap['default']; // useful for a text buffer to maintain a text style across lines
+        this._lastTextStyle; // last text style used
+
+        this._isInitialized = false;
+        this._isPrinting = false;
+
+        this.events = this.events || new Phaser.Events();
+        this.events.onStartPrinting = new Phaser.Signal();
+        this.events.onDonePrinting = new Phaser.Signal();
+
+        this._textPartQueue = this._textPartArchive = this._parseText(this.text);
     }
 
-    static parseText (text, styles = new AllTextStyles()) {
-        let colorChanges = text.match(styles.textStyleRegExp);
+    _parseText (text) {
+        let colorChanges = text.match(this._styles.textStyleTagRegExp);
 
-        let textByColor = text.split(styles.textStyleRegExp);
+        let textByColor = text.split(this._styles.textStyleTagRegExp);
 
         let lineParts = [];
-        let lastTextStyle;
         for (let i = 0; i < textByColor.length; i++) { // add each part of the line and it's style
             let textStyle;
             if (i === 0 || colorChanges.length <= i - 1) {
-                textStyle = lastTextStyle || styles.styleMap['default'];
+                textStyle = this._lastTextStyle || this._startingTextStyle;
             } else {
-                textStyle = styles.tagToTextStyle(colorChanges[i - 1]);
+                textStyle = this._styles.tagToTextStyle(colorChanges[i - 1]);
             }
 
-            lastTextStyle = textStyle;
+            this._lastTextStyle = textStyle;
 
             lineParts.push({
                 text: textByColor[i],
-                style: lastTextStyle
+                style: this._lastTextStyle
             });
         }
 
         return lineParts;
+    }
+
+    get isPrinting () { return this._isPrinting; }
+
+    _printNextPart () {
+        let part = this._textPartQueue.shift();
+
+        let x = 0;
+
+        if (this.children.length > 0) {
+            x += this.children[this.children.length - 1].x + this.children[this.children.length - 1].width;
+        }
+
+        let textPart = new TextPart(this.game, x, 0, part.text, part.style);
+
+        textPart.events.onDonePrinting.addOnce(() => {
+            if (this._textPartQueue.length == 0) {
+                this._isPrinting = false;
+
+                this.events.onDonePrinting.dispatch(this._lastTextStyle);
+            } else {
+                this._printNextPart();
+            }
+        });
+
+        this.add(textPart);
+    }
+
+    update () {
+        if (this._isInitialized == false) {
+            this._isPrinting = this._isInitialized = true;
+
+            this.events.onStartPrinting.dispatch();
+
+            this._printNextPart();
+        }
+
+        super.update();
     }
 }

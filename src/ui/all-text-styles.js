@@ -48,6 +48,8 @@ export default class AllTextStyles {
 
     get styleKeys () { return Object.keys(this._styleMap); }
 
+    get defaultStyle () { return this._styleMap['default']; }
+
     // used for matching text style tags in text
     get textStyleTagRegExp () {
         if (this._textStyleRegExp) {
