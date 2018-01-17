@@ -33,65 +33,47 @@
             "familyName": "Rubik"
         }
     },
-    "globalTextStyle": {
-        "fontSize": 20
+    "defaultTextStyle": {
+        "font": "rubik",
+        "fontSize": 20,
+        "fill": "White",
+        "stroke": "White"
     },
     "textStyles": {
-        "default": {
-            "earth": {
-                "font": "rubik",
-                "fill": "White",
-                "stroke": "White"
-            }
-        },
         "error": {
-            "earth": {
-                "font": "rubik",
-                "fill": "LightPink",
-                "stroke": "LightPink"
-            }
+            "font": "rubik",
+            "fill": "LightPink",
+            "stroke": "LightPink"
         },
         "helpDescription": {
-            "earth": {
-                "font": "rubik",
-                "fill": "Plum",
-                "stroke": "Plum"
-            }
+            "font": "rubik",
+            "fill": "Plum",
+            "stroke": "Plum"
         },
         "historyTitle": {
-            "earth": {
-                "font": "rubik",
-                "fill": "Plum",
-                "stroke": "Plum"
-            }
+            "font": "rubik",
+            "fill": "Plum",
+            "stroke": "Plum"
         },
         "historyText": {
-            "earth": {
-                "font": "rubik",
-                "fill": "Orchid",
-                "stroke": "Orchid"
-            }
+            "font": "rubik",
+            "fill": "Orchid",
+            "stroke": "Orchid"
         },
         "defaultDescription": {
-            "earth": {
-                "font": "rubik",
-                "fill": "SkyBlue",
-                "stroke": "SkyBlue"
-            }
+            "font": "rubik",
+            "fill": "SkyBlue",
+            "stroke": "SkyBlue"
         },
         "exitDescription": {
-            "earth": {
-                "font": "rubik",
-                "fill": "LightGreen",
-                "stroke": "LightGreen"
-            }
+            "font": "rubik",
+            "fill": "LightGreen",
+            "stroke": "LightGreen"
         },
         "itemDescription": {
-            "earth": {
-                "font": "rubik",
-                "fill": "LightGreen",
-                "stroke": "LightGreen"
-            }
+            "font": "rubik",
+            "fill": "LightGreen",
+            "stroke": "LightGreen"
         }
     }
 }

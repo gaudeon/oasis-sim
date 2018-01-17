@@ -1,22 +1,43 @@
-export default class TextLine extends Phaser.Text {
-    constructor (game, x = 0, y = 0, text = '', style = {}) {
-        super(game, x, y, '', style);
+import AllTextStyles from './all-text-styles';
+import TextPart from './text-part';
 
-        this._animSpeed = style.animSpeed || 100;
-        this._animSize = 0;
-        this._animText = text;
+// A group of text parts (parsed from a line of parts) displayed on one 'line' of the display
+export default class TextLine extends Phaser.Group {
+    constructor (game, x = 0, y = 0, text = '') {
+        super(game);
 
-        this.events.onTextAnimationComplete = new Phaser.Signal();
+        this.x = x;
+        this.y = y;
+        this.text = text;
 
-        this.game.time.events.repeat(Phaser.Timer.SECOND / this._animSpeed, text.length, this.animateText, this);
+        this._styles = new AllTextStyles();
+
+        this._textParts = TextLine.parseText(this.text, this._styles);
     }
 
-    animateText () {
-        this._animSize++;
-        this.text = this._animText.substr(0, this._animSize);
+    static parseText (text, styles = new AllTextStyles()) {
+        let colorChanges = text.match(styles.textStyleRegExp);
 
-        if (this._animText.length === this.text.length) {
-            this.events.onTextAnimationComplete.dispatch();
+        let textByColor = text.split(styles.textStyleRegExp);
+
+        let lineParts = [];
+        let lastTextStyle;
+        for (let i = 0; i < textByColor.length; i++) { // add each part of the line and it's style
+            let textStyle;
+            if (i === 0 || colorChanges.length <= i - 1) {
+                textStyle = lastTextStyle || styles.styleMap['default'];
+            } else {
+                textStyle = styles.tagToTextStyle(colorChanges[i - 1]);
+            }
+
+            lastTextStyle = textStyle;
+
+            lineParts.push({
+                text: textByColor[i],
+                style: lastTextStyle
+            });
         }
+
+        return lineParts;
     }
 }

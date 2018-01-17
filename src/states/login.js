@@ -1,4 +1,5 @@
 import TextBuffer from '../ui/text-buffer';
+import TextLine from '../ui/text-line';
 import TextInput from '../ui/text-input'
 
 export default class LoginState extends Phaser.State {
@@ -16,7 +17,9 @@ export default class LoginState extends Phaser.State {
         // reset text input timers
         this.textInput.resetTimers();
         this.textInput.kill();
-        this.textBuffer.add('Initiating Login Sequences…');
+        //this.textBuffer.addText('Initiating Login Sequences…');
+        let tl = new TextLine(this.game, 0, 0, 'This is a test!');
+        console.log(tl);
     }
 
     update () {

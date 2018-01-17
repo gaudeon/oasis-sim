@@ -1,6 +1,6 @@
 import colorConfig from '../../assets/json/colors.json';
 import fontConfig from '../../assets/json/fonts.json';
-import TextLine from './text-line';
+import TextPart from './text-part';
 
 export default class TextBuffer extends Phaser.Group {
     constructor (game) {
@@ -10,12 +10,12 @@ export default class TextBuffer extends Phaser.Group {
         this._queueProcessing = false; // used to make sure _addNextTextLine isn't called multiple times
 
         this._paddingLeft = 20;
-        this._fontSize = fontConfig.globalTextStyle.fontSize;
+        this._fontSize = fontConfig.defaultTextStyle.fontSize;
         this._lineSpacing = 1.5;
         this._lastTextStyle = this.defaultTextStyle;
 
         this.y = this.bottomY - this.lineHeight;
-        
+
         this.events = {
             onStartAddingLines: new Phaser.Signal(),
             onDoneAddingLines: new Phaser.Signal()
@@ -45,7 +45,7 @@ export default class TextBuffer extends Phaser.Group {
                     let styleTag = this._getTextStyleFromTag(colorChanges[i - 1]);
                     let styleByDimension;
                     if (fontConfig.textStyles[styleTag]) {
-                        styleByDimension = fontConfig.textStyles[styleTag][this.currentDimension];
+                        styleByDimension = fontConfig.textStyles[styleTag];
                     }
                     textStyle = styleByDimension || this.defaultTextStyle;
                 }
@@ -71,10 +71,8 @@ export default class TextBuffer extends Phaser.Group {
 
     // Accessors
 
-    get currentDimension () { return 'earth'; } // earth or oasis
-
     get defaultTextStyle () {
-        return this._convertStyle(fontConfig.textStyles['default'][this.currentDimension]);
+        return this._convertStyle(fontConfig.defaultTextStyle);
     }
 
     get fontSize () { return this._fontSize; }
@@ -108,7 +106,7 @@ export default class TextBuffer extends Phaser.Group {
     // Private Methods
 
     _addNextTextPart (x, y, text, style, remainingParts, partsGroup) {
-        let textLine = new TextLine(this.game, x, y, text, style);
+        let textLine = new TextPart(this.game, x, y, text, style);
 
         partsGroup.add(textLine);
 
@@ -150,7 +148,7 @@ export default class TextBuffer extends Phaser.Group {
 
             this._addNextTextPart(x, y, part.text, part.style, partsList, partsGroup);
         } else {
-            let textLine = new TextLine(this.game, x, y, queueItem.text, queueItem.style);
+            let textLine = new TextPart(this.game, x, y, queueItem.text, queueItem.style);
 
             this.add(textLine);
 
