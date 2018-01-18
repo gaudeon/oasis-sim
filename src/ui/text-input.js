@@ -121,7 +121,7 @@ export default class TextInput extends Phaser.Group {
 
     keyPress (chr, ev) {
         if (this._enabled) {
-            if (ev.charCode === 13) {
+            if (ev.keyCode === 13) {
                 if (!this._inputValue.match(/^[\s\n\r]*$/)) {
                     this._inputValue = this._inputValue.replace(/[\n\r]/, '');
 
