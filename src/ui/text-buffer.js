@@ -2,20 +2,19 @@ import AllTextStyles from './all-text-styles';
 import TextLine from './text-line';
 
 export default class TextBuffer extends Phaser.Group {
-    constructor (game) {
+    constructor (game, x = 0, y = 0) {
         super(game);
+
+        this.x = x;
+        this.y = this._startY = y;
 
         this._lineQueue = []; // all lines get added here
         this._isPrinting = false; // used to make sure _addNextTextLine isn't called multiple times
 
-        this._paddingLeft = 20;
-        this._lineSpacing = 1.5;
         this._lastTextStyle = this.defaultTextStyle;
 
         this._styles = new AllTextStyles();
         this._fontSize = this._styles.defaultStyle.fontSize;
-
-        this.y = this._startY = this.bottomY - this.lineHeight;
 
         this.events = this.events || new Phaser.Events();
         this.events.onStartPrinting = new Phaser.Signal();
@@ -47,15 +46,7 @@ export default class TextBuffer extends Phaser.Group {
     }
 
     // Accessors
-    get paddingLeft () { return this._paddingLeft; }
-
-    get lineSpacing () { return this._lineSpacing; }
-
-    get lineHeight () { return this._fontSize * this._lineSpacing; }
-
     get lineCharWidth () { return this.game.width / (this._fontSize / 2); }
-
-    get bottomY () { return this.game.height - this.lineHeight; }
 
     get isPrinting () { return this._isPrinting; }
 
@@ -64,13 +55,12 @@ export default class TextBuffer extends Phaser.Group {
     _printNextLine (lastTextStyle) {
         let line = this._lineQueue.shift();
 
-        this.y -= this.lineHeight;
-        let x = this.paddingLeft;
-        let y = this.lineHeight + this.children.length * this.lineHeight;
-
-        let startX = 0;
+        let x = 0;
+        let y = this.children.length > 0 ? this.children[this.children.length - 1].y + this.children[this.children.length - 1].height : 0;
 
         let textLine = new TextLine(this.game, x, y, line, lastTextStyle); // this helps maintain the last text style set from the previous line
+
+        this.y -= textLine.lineHeight; // move buffer up by new lines lineheight
 
         textLine.events.onDonePrinting.addOnce(lastTextStyle => {
             if (this._lineQueue.length == 0) {

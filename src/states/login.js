@@ -14,8 +14,8 @@ export default class LoginState extends Phaser.State {
 
         this.state = 'PROMPT_ID';
 
-        this.textBuffer = new TextBuffer(this.game);
-        this.textInput = new TextInput(this.game);
+        this.textBuffer = new TextBuffer(this.game, 25, this.game.height - 30);
+        this.textInput = new TextInput(this.game, 25, this.game.height - 30);
     }
 
     create () {

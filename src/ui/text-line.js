@@ -50,6 +50,19 @@ export default class TextLine extends Phaser.Group {
         return lineParts;
     }
 
+    get lineHeight () {
+        if (this._lineHeight) {
+            return this._lineHeight;
+        }
+
+        this._lineHeight = _.reduce(this._textPartArchive, (max, part) => {
+            let pt = new Phaser.Text(this.game, 0, 0, '|MÉq', part.style.toPhaserTextStyle());
+            return max > pt.height ? max : pt.height;
+        }, 0);
+
+        return this._lineHeight;
+    }
+
     get isPrinting () { return this._isPrinting; }
 
     _printNextPart () {

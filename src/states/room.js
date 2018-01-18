@@ -31,10 +31,17 @@ export default class RoomState extends Phaser.State {
         // retrieve the room
         this.room = this.universe.rooms[room];
 
+        if (this.game.textInput) {
+            this.textInput = this.game.textInput;
+        } else {
+            this.textInput = this.game.textInput = new TextInput(this.game, 25, this.game.height - 30);
+            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
+        }
+
         if (this.game.textBuffer) {
             this.textBuffer = this.game.textBuffer;
         } else {
-            this.textBuffer = this.game.textBuffer = new TextBuffer(this.game);
+            this.textBuffer = this.game.textBuffer = new TextBuffer(this.game, 25, this.game.height - 30);
 
             // disable text input while buffer is adding text
             this.textBuffer.events.onStartPrinting.add(() => { this.input.enabled = false; });
@@ -46,13 +53,6 @@ export default class RoomState extends Phaser.State {
         } else {
             const DEBUG_RGI = false; // set to true to see command processing
             this.rgi = this.game.rgi = new RGI(this.textBuffer, DEBUG_RGI);
-        }
-
-        if (this.game.textInput) {
-            this.textInput = this.game.textInput;
-        } else {
-            this.textInput = this.game.textInput = new TextInput(this.game);
-            this.textInput.events.onEnterPressed.add((text) => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
         }
 
         this.preRoomDesc = preRoomDesc;

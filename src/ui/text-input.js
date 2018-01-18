@@ -1,8 +1,11 @@
 import CommandHistory from '../objects/command-history';
 
 export default class TextInput extends Phaser.Group {
-    constructor (game) {
+    constructor (game, x = 0, y = 0) {
         super(game);
+
+        this.x = x;
+        this.y = y;
 
         // our data
         this._fontSize = 20;
@@ -33,10 +36,6 @@ export default class TextInput extends Phaser.Group {
         this.textInput.stroke = 'white';
         this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
         this.add(this.textInput);
-
-        // reset position to bottom
-        this.x = 25;
-        this.y = this.game.height - 30;
 
         // events
         this.events = this.events || new Phaser.Events();
