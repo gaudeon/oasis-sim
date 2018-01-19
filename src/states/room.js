@@ -1,6 +1,6 @@
 import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
-import RGI from '../objects/rgi';
+import RGI from '../engine/rgi';
 import Universe from '../objects/universe';
 import Player from '../objects/player';
 

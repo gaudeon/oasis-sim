@@ -1,7 +1,7 @@
 import Verb from '../verb';
 import TextAction from '../../../game-actions/text';
-import Player from '../../../player';
-import Room from '../../../room';
+import Player from '../../../../objects/player';
+import Room from '../../../../objects/room';
 
 export default class LookVerb extends Verb {
     constructor () {

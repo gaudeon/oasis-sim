@@ -1,4 +1,4 @@
-import CommandHistory from '../objects/command-history';
+import CommandHistory from '../engine/command-history';
 
 export default class TextInput extends Phaser.Group {
     constructor (game, x = 0, y = 0) {

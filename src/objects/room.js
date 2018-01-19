@@ -1,6 +1,6 @@
 import Inventory from './inventory';
-import ChangeRoomAction from './game-actions/change-room';
-import TextAction from './game-actions/text';
+import ChangeRoomAction from '../engine/game-actions/change-room';
+import TextAction from '../engine/game-actions/text';
 
 export default class Room {
     constructor (universe = {}, node = {}) {
