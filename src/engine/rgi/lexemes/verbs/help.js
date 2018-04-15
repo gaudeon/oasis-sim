@@ -1,5 +1,6 @@
 import Verb from '../verb';
 import TextAction from '../../../game-actions/text';
+import AllVerbs from '../all-verbs';
 
 export default class HelpVerb extends Verb {
     constructor () {
@@ -16,8 +17,6 @@ export default class HelpVerb extends Verb {
         super.actions(room, player, lexemePhrase);
 
         let actionPromise = new Promise((resolve, reject) => {
-            import('../all-verbs').then(Module => {
-                let AllVerbs = Module.default;
                 let verbs = new AllVerbs();
                 let output = '';
 
@@ -61,7 +60,6 @@ export default class HelpVerb extends Verb {
                 let action = new TextAction(output);
 
                 resolve(action);
-            });
         });
 
         return actionPromise;

@@ -1,4 +1,4 @@
-import fontConfig from '../../assets/json/fonts.json';
+import fontConfig from '../config/fonts.json';
 import TextStyle from './text-style';
 
 // Represents the list of all text styles defined in assets/json/fonts.json
@@ -17,7 +17,7 @@ export default class AllTextStyles {
             // use default values whenever a textStyle doesn't set it
             let textStyleObj = new TextStyle(
                 textStyle,
-                fontConfig.textStyles[textStyle].font || fontConfig.defaultTextStyle.font,
+                fontConfig.textStyles[textStyle].fontFamily || fontConfig.defaultTextStyle.fontFamily,
                 fontConfig.textStyles[textStyle].fontSize || fontConfig.defaultTextStyle.fontSize,
                 fontConfig.textStyles[textStyle].fill || fontConfig.defaultTextStyle.fill,
                 fontConfig.textStyles[textStyle].stroke || fontConfig.defaultTextStyle.stroke
@@ -31,7 +31,7 @@ export default class AllTextStyles {
         // Add in the default style
         let defaultStyleObj = new TextStyle(
             'default',
-            fontConfig.defaultTextStyle.font,
+            fontConfig.defaultTextStyle.fontFamily,
             fontConfig.defaultTextStyle.fontSize,
             fontConfig.defaultTextStyle.fill,
             fontConfig.defaultTextStyle.stroke

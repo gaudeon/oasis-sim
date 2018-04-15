@@ -1,8 +1,8 @@
 import CommandHistory from '../engine/command-history';
 
-export default class TextInput extends Phaser.Group {
-    constructor (game, x = 0, y = 0) {
-        super(game);
+export default class TextInput extends Phaser.GameObjects.Container {
+    constructor (scene, x = 0, y = 0) {
+        super(scene);
 
         this.x = x;
         this.y = y;
@@ -15,7 +15,7 @@ export default class TextInput extends Phaser.Group {
         this._enabled = true;
 
         // text cursor
-        this.textCursor = new Phaser.Text(game);
+        this.textCursor = new Phaser.GameObjects.Text(scene);
         this.textCursor.fontSize = this._fontSize;
         this.textCursor.fill = 'white';
         this.textCursor.stroke = 'white';
@@ -23,59 +23,85 @@ export default class TextInput extends Phaser.Group {
         this.add(this.textCursor);
 
         // hidden input
-        this.hiddenInput = new Phaser.Text(game);
+        this.hiddenInput = new Phaser.GameObjects.Text(scene);
         this.hiddenInput.fontSize = this._fontSize;
         this.hiddenInput.fill = 'white';
         this.hiddenInput.stroke = 'white';
         this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
 
         // text input
-        this.textInput = new Phaser.Text(game);
+        this.textInput = new Phaser.GameObjects.Text(scene);
         this.textInput.fontSize = this._fontSize;
         this.textInput.fill = 'white';
         this.textInput.stroke = 'white';
         this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
         this.add(this.textInput);
 
-        // events
-        this.events = this.events || new Phaser.Events();
-        this.events.onEnterPressed = new Phaser.Signal();
-
         // command history
         const HISTORY_LIMIT = 20;
-        this._commandHistory = this.game.commandHistory = new CommandHistory(HISTORY_LIMIT);
+        this._commandHistory = this.commandHistory = new CommandHistory(HISTORY_LIMIT);
 
         // capture delete, backspace and arrow keys
-        this.game.input.keyboard.addKeyCapture([
-            Phaser.KeyCode.DELETE,
-            Phaser.KeyCode.BACKSPACE,
-            Phaser.KeyCode.UP,
-            Phaser.KeyCode.DOWN,
-            Phaser.KeyCode.LEFT,
-            Phaser.KeyCode.RIGHT
+        this.scene.input.keyboard.addKeyCapture([
+            Phaser.Input.Keyboard.KeyCodes.DELETE,
+            Phaser.Input.Keyboard.KeyCodes.BACKSPACE,
+            Phaser.Input.Keyboard.KeyCodes.UP,
+            Phaser.Input.Keyboard.KeyCodes.DOWN,
+            Phaser.Input.Keyboard.KeyCodes.LEFT,
+            Phaser.Input.Keyboard.KeyCodes.RIGHT
         ]);
 
-        this.specialKeys = this.game.input.keyboard.addKeys({
-            del: Phaser.KeyCode.DELETE,
-            bs: Phaser.KeyCode.BACKSPACE,
-            up: Phaser.KeyCode.UP,
-            down: Phaser.KeyCode.DOWN,
-            left: Phaser.KeyCode.LEFT,
-            right: Phaser.KeyCode.RIGHT
+        this.specialKeys = this.scene.input.keyboard.addKeys({
+            del: Phaser.Input.Keyboard.KeyCodes.DELETE,
+            bs: Phaser.Input.Keyboard.KeyCodes.BACKSPACE,
+            up: Phaser.Input.Keyboard.KeyCodes.UP,
+            down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+            left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+            right: Phaser.Input.Keyboard.KeyCodes.RIGHT
         });
 
+        // map special keys by keyCode from special key validation tests
+        this.specialKeysMap = {};
+        Object.keys(this.specialKeys).forEach(key => { this.specialKeys[key].keyCode = key });
+
         // other character key presses can be handle with a callback
-        this.game.input.keyboard.addCallbacks(this, null, null, this.keyPress);
+        this.scene.input.keyboard.on('keydown', ev => this.keyPress(ev.key, ev));
 
         this.resetInput();
     }
 
+    get children () { return this.getAll(); }
+
     get history () { return this._commandHistory; }
 
-    resetTimers () {
-        this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.toggleCursor, this);
+    isTextKey (keyCode) {
+        if (this.specialKeysMap[keyCode]) {
+            return false;
+        }
 
-        this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.checkForSpecialKeys, this);
+        if (keyCode < 48) { // ! == 48
+            return false;
+        }
+
+        if (keyCode >= 112 && keyCode <= 123) { // F keys
+            return false;
+        }
+
+        return true;
+    }
+
+    resetTimers () {
+        const SECOND = 1000;
+
+        if (this.toggleCursorTimer && this.toggleCursorTimer.remove) {
+            this.toggleCursorTimer.remove(false);
+        }
+        this.toggleCursorTimer = this.scene.time.addEvent({ delay: SECOND * 0.5, callback: this.toggleCursor, callbackScope: this, loop: true });
+
+        if (this.checkForSpecialKeysTimer && this.checkForSpecialKeysTimer.remove) {
+            this.checkForSpecialKeysTimer.remove(false);
+        }
+        this.checkForSpecialKeysTimer = this.scene.time.addEvent({ delay: SECOND * 0.1, callback: this.checkForSpecialKeys, callbackScope: this, loop: true });
     }
 
     get lineSpacingRatio () { return this._lineSpacingRatio; }
@@ -126,11 +152,11 @@ export default class TextInput extends Phaser.Group {
 
                     this._commandHistory.add(this._inputValue);
 
-                    this.events.onEnterPressed.dispatch(this._inputValue);
+                    this.emit('EnterPressed', this._inputValue, this);
                 }
 
                 this.resetInput();
-            } else {
+            } else if (this.isTextKey(ev.keyCode)) { // ignore delete / backspace
                 if (this._cursorPosition <= -1) { // insert at end of text
                     this._inputValue = this._inputValue + chr;
                 } else if (this._cursorPosition - this._inputIndicator.length === 0) { // insert at beginning of text
@@ -202,9 +228,19 @@ export default class TextInput extends Phaser.Group {
         }
     }
 
-    update () {
+    kill () {
+        this.setActive(false);
+        this.setVisible(false);
+    }
+
+    revive () {
+        this.setActive(true);
+        this.setVisible(true);
+    }
+
+    preUpdate () {
         this.hiddenInput.setText(this.hiddenOutput);
-        this.textCursor.reset(this.cursorPosition, 0);
+        this.textCursor.setPosition(this.cursorPosition, 0);
         this.textCursor.setText(this.cursorOutput);
         this.textInput.setText(this.textOutput);
     }

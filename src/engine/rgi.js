@@ -6,6 +6,7 @@ import GameAction from './game-action';
 export default class RGI {
     constructor (buffer, debug = false) {
         this.textBuffer = buffer;
+        this.scene = buffer.scene;
         this.debug = debug;
         this.lexer = new Lexer(this, debug);
         this.parser = new Parser(this, debug);

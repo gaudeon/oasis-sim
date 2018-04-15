@@ -1,9 +1,9 @@
 import AllTextStyles from './all-text-styles';
 import TextLine from './text-line';
 
-export default class TextBuffer extends Phaser.Group {
-    constructor (game, x = 0, y = 0) {
-        super(game);
+export default class TextBuffer extends Phaser.GameObjects.Container {
+    constructor (scene, x = 0, y = 0) {
+        super(scene);
 
         this.x = x;
         this.y = this._startY = y;
@@ -15,10 +15,6 @@ export default class TextBuffer extends Phaser.Group {
 
         this._styles = new AllTextStyles();
         this._fontSize = this._styles.defaultStyle.fontSize;
-
-        this.events = this.events || new Phaser.Events();
-        this.events.onStartPrinting = new Phaser.Signal();
-        this.events.onDonePrinting = new Phaser.Signal();
     }
 
     // Public Methods
@@ -27,16 +23,20 @@ export default class TextBuffer extends Phaser.Group {
         this._lineQueue = this._lineQueue.concat(this._splitTextIntoLines(text));
     }
 
-    update () {
+    preUpdate (time, delta) {
         if (this._lineQueue.length > 0 && this._isPrinting == false) {
             this._isPrinting = true;
 
-            this.events.onStartPrinting.dispatch();
+            this.emit('StartPrinting', this);
 
             this._printNextLine();
         }
 
-        super.update();
+        this.children.forEach(child => {
+            if (child.update) {
+                child.update(time, delta);
+            }
+        });
     }
 
     clear () {
@@ -46,7 +46,9 @@ export default class TextBuffer extends Phaser.Group {
     }
 
     // Accessors
-    get lineCharWidth () { return this.game.width / (this._fontSize / 2); }
+    get children () { return this.getAll(); }
+
+    get lineCharWidth () { return this.scene.sys.game.config.width / (this._fontSize / 2); }
 
     get isPrinting () { return this._isPrinting; }
 
@@ -56,17 +58,17 @@ export default class TextBuffer extends Phaser.Group {
         let line = this._lineQueue.shift();
 
         let x = 0;
-        let y = this.children.length > 0 ? this.children[this.children.length - 1].y + this.children[this.children.length - 1].height : 0;
+        let y = this.children.length > 0 ? this.children[this.children.length - 1].y + this.children[this.children.length - 1].lineHeight : 0;
 
-        let textLine = new TextLine(this.game, x, y, line, lastTextStyle); // this helps maintain the last text style set from the previous line
+        let textLine = new TextLine(this.scene, x, y, line, lastTextStyle); // this helps maintain the last text style set from the previous line
 
         this.y -= textLine.lineHeight; // move buffer up by new lines lineheight
 
-        textLine.events.onDonePrinting.addOnce(lastTextStyle => {
+        textLine.once('DonePrinting', lastTextStyle => {
             if (this._lineQueue.length == 0) {
                 this._isPrinting = false;
 
-                this.events.onDonePrinting.dispatch();
+                this.emit('DonePrinting', this);
             } else {
                 this._printNextLine(lastTextStyle);
             }

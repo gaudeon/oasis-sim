@@ -1,3 +1,28 @@
+import 'phaser';
+import 'lodash';
+import 'webfontloader';
+
+import BootScene from './scenes/boot';
+import LoginScene from './scenes/login';
+import RoomScene from './scenes/room';
+
+var gameConfig = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: '#000000',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            //debug: true, // enable to see physics bodies outlined
+        }
+    },
+    scene: [BootScene, LoginScene, RoomScene]
+};
+
+let game = new Phaser.Game(gameConfig);
+
+/*
 // import states
 import BootState from './states/boot';
 import LoginState from './states/login';
@@ -26,3 +51,4 @@ Phaser.Device.whenReady(function () {
 
     game.state.start('Boot');
 });
+*/

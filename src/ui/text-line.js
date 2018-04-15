@@ -2,9 +2,9 @@ import AllTextStyles from './all-text-styles';
 import TextPart from './text-part';
 
 // A group of text parts (parsed from a line of parts) displayed on one 'line' of the display
-export default class TextLine extends Phaser.Group {
-    constructor (game, x = 0, y = 0, text = '', startingTextStyle) {
-        super(game);
+export default class TextLine extends Phaser.GameObjects.Container {
+    constructor (scene, x = 0, y = 0, text = '', startingTextStyle) {
+        super(scene);
 
         this.x = x;
         this.y = y;
@@ -17,10 +17,6 @@ export default class TextLine extends Phaser.Group {
 
         this._isInitialized = false;
         this._isPrinting = false;
-
-        this.events = this.events || new Phaser.Events();
-        this.events.onStartPrinting = new Phaser.Signal();
-        this.events.onDonePrinting = new Phaser.Signal();
 
         this._textPartQueue = this._textPartArchive = this._parseText(this.text);
     }
@@ -50,13 +46,15 @@ export default class TextLine extends Phaser.Group {
         return lineParts;
     }
 
+    get children () { return this.getAll(); }
+
     get lineHeight () {
         if (this._lineHeight) {
             return this._lineHeight;
         }
 
         this._lineHeight = _.reduce(this._textPartArchive, (max, part) => {
-            let pt = new Phaser.Text(this.game, 0, 0, '|MÉq', part.style.toPhaserTextStyle());
+            let pt = new Phaser.GameObjects.Text(this.scene, 0, 0, '|MÉq', part.style.toPhaserTextStyle());
             return max > pt.height ? max : pt.height;
         }, 0);
 
@@ -74,13 +72,13 @@ export default class TextLine extends Phaser.Group {
             x += this.children[this.children.length - 1].x + this.children[this.children.length - 1].width;
         }
 
-        let textPart = new TextPart(this.game, x, 0, part.text, part.style);
+        let textPart = new TextPart(this.scene, x, 0, part.text, part.style);
 
-        textPart.events.onDonePrinting.addOnce(() => {
+        textPart.once('DonePrinting', () => {
             if (this._textPartQueue.length == 0) {
                 this._isPrinting = false;
 
-                this.events.onDonePrinting.dispatch(this._lastTextStyle);
+                this.emit('DonePrinting', this._lastTextStyle, this);
             } else {
                 this._printNextPart();
             }
@@ -89,15 +87,19 @@ export default class TextLine extends Phaser.Group {
         this.add(textPart);
     }
 
-    update () {
+    update (time, delta) {
         if (this._isInitialized == false) {
             this._isPrinting = this._isInitialized = true;
 
-            this.events.onStartPrinting.dispatch();
+            this.emit('StartPrinting', this);
 
             this._printNextPart();
         }
 
-        super.update();
+        this.children.forEach(child => {
+            if (child.update) {
+                child.update(time, delta);
+            }
+        });
     }
 }

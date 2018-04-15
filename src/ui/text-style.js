@@ -1,5 +1,5 @@
-import colorConfig from '../../assets/json/colors.json';
-import fontConfig from '../../assets/json/fonts.json'
+import colorConfig from '../config/colors.json';
+import fontConfig from '../config/fonts.json'
 
 // Represents one of the available text styles defined in assets/json/fonts.json
 export default class TextStyle {
@@ -24,7 +24,7 @@ export default class TextStyle {
     toPhaserTextStyle () {
         let style = {};
 
-        style.font = fontConfig.fonts[this._font] ? fontConfig.fonts[this._font].familyName : this._font;
+        style.fontFamily = fontConfig.fonts[this._font] ? fontConfig.fonts[this._font].familyName : this._font;
 
         style.fontSize = this._fontSize;
 

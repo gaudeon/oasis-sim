@@ -1,11 +1,11 @@
-import Map from '../../assets/json/map';
+import Map from '../config/map';
 import Room from './room';
 import Item from './item';
 import Door from './door';
 
 export default class Universe {
-    constructor (game) {
-        this.game = game;
+    constructor (scene) {
+        this.scene = scene;
         this.loadMap();
     }
 
