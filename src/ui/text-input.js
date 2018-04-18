@@ -16,7 +16,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
 
         // text cursor
         this.textCursor = new Phaser.GameObjects.Text(scene);
-        this.textCursor.fontSize = this._fontSize;
+        this.textCursor.fontSize = this._fontSize + 'px';
         this.textCursor.fill = 'white';
         this.textCursor.stroke = 'white';
         this.textCursor.lineSpacing = this._fontSize * this._lineSpacingRatio;
@@ -24,14 +24,14 @@ export default class TextInput extends Phaser.GameObjects.Container {
 
         // hidden input
         this.hiddenInput = new Phaser.GameObjects.Text(scene);
-        this.hiddenInput.fontSize = this._fontSize;
+        this.hiddenInput.fontSize = this._fontSize + 'px';
         this.hiddenInput.fill = 'white';
         this.hiddenInput.stroke = 'white';
         this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
 
         // text input
         this.textInput = new Phaser.GameObjects.Text(scene);
-        this.textInput.fontSize = this._fontSize;
+        this.textInput.fontSize = this._fontSize + 'px';
         this.textInput.fill = 'white';
         this.textInput.stroke = 'white';
         this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;

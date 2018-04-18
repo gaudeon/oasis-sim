@@ -32,7 +32,9 @@ export default class BootScene extends Phaser.Scene {
     update () {
         if (this.areWebfontsLoaded()) {
             this.input.stopPropagation();
-            this.scene.start('Login');
+            this.time.delayedCall(2000, () => {
+                this.scene.start('Login');
+            });
         }
     }
 
