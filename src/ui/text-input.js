@@ -7,35 +7,34 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this.x = x;
         this.y = y;
 
-        // our data
+        // our private data
         this._fontSize = 20;
         this._lineSpacingRatio = 1.5;
         this._inputIndicator = '> ';
         this._cursorVisible = true;
+
+        // our public attributes
+        this._passwordMode = false;
         this._enabled = true;
 
         // text cursor
         this.textCursor = new Phaser.GameObjects.Text(scene);
-        this.textCursor.fontSize = this._fontSize + 'px';
         this.textCursor.fill = 'white';
         this.textCursor.stroke = 'white';
-        this.textCursor.lineSpacing = this._fontSize * this._lineSpacingRatio;
         this.add(this.textCursor);
 
         // hidden input
         this.hiddenInput = new Phaser.GameObjects.Text(scene);
-        this.hiddenInput.fontSize = this._fontSize + 'px';
         this.hiddenInput.fill = 'white';
         this.hiddenInput.stroke = 'white';
-        this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
 
         // text input
         this.textInput = new Phaser.GameObjects.Text(scene);
-        this.textInput.fontSize = this._fontSize + 'px';
         this.textInput.fill = 'white';
         this.textInput.stroke = 'white';
-        this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
         this.add(this.textInput);
+
+        this.resetTextSizeAndSpacing();
 
         // command history
         const HISTORY_LIMIT = 20;
@@ -68,6 +67,33 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this.scene.input.keyboard.on('keydown', ev => this.keyPress(ev.key, ev));
 
         this.resetInput();
+    }
+
+    resetTextSizeAndSpacing () {
+        this.textCursor.fontSize = this._fontSize + 'px';
+        this.textCursor.lineSpacing = this._fontSize * this._lineSpacingRatio;
+
+        this.hiddenInput.fontSize = this._fontSize + 'px';
+        this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
+
+        this.textInput.fontSize = this._fontSize + 'px';
+        this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
+    }
+
+    get fontSize () { return this._fontSize; }
+
+    set fontSize (size) {
+        this._fontSize = size;
+
+        this.resetTextSizeAndSpacing();
+    }
+
+    get lineSpacingRatio () { return this._lineSpacingRatio; }
+
+    set lineSpacingRatio (ratio) {
+        this._lineSpacingRatio = ratio;
+
+        this.resetTextSizeAndSpacing();
     }
 
     get children () { return this.getAll(); }
@@ -104,13 +130,17 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this.checkForSpecialKeysTimer = this.scene.time.addEvent({ delay: SECOND * 0.1, callback: this.checkForSpecialKeys, callbackScope: this, loop: true });
     }
 
-    get lineSpacingRatio () { return this._lineSpacingRatio; }
-
-    set lineSpacingRatio (ratio) { this._lineSpacingRatio = ratio; }
-
     get lineHeight () { return this._fontSize * this._lineSpacingRatio; }
 
-    get textOutput () { return this._inputIndicator + this._inputValue; }
+    get textOutput () { 
+        let inputValue = this._inputValue;
+
+        if (this.passwordMode) {
+            inputValue = _.repeat('*', this._inputValue.length);
+        }
+
+        return this._inputIndicator + inputValue;
+    }
 
     get hiddenOutput () {
         let text = this.textOutput;
