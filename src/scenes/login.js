@@ -54,7 +54,6 @@ export default class LoginScene extends Phaser.Scene {
                 this.textBuffer.addText('{{loginText}}ENTER YOUR PASSWORD');
                 this.textBuffer.once('DonePrinting', () => {
                     this.textInput.passwordMode = true;
-                    this.textInput.fontSize = 40;
                     this.textInput.revive();
                     this.textInput.once('EnterPressed', (text) => {
                         this.textInput.passwodMode = false;

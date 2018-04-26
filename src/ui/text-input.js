@@ -12,6 +12,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this._lineSpacingRatio = 1.5;
         this._inputIndicator = '> ';
         this._cursorVisible = true;
+        this._textColor = 'white';
 
         // our public attributes
         this._passwordMode = false;
@@ -19,22 +20,16 @@ export default class TextInput extends Phaser.GameObjects.Container {
 
         // text cursor
         this.textCursor = new Phaser.GameObjects.Text(scene);
-        this.textCursor.fill = 'white';
-        this.textCursor.stroke = 'white';
         this.add(this.textCursor);
 
         // hidden input
         this.hiddenInput = new Phaser.GameObjects.Text(scene);
-        this.hiddenInput.fill = 'white';
-        this.hiddenInput.stroke = 'white';
 
         // text input
         this.textInput = new Phaser.GameObjects.Text(scene);
-        this.textInput.fill = 'white';
-        this.textInput.stroke = 'white';
         this.add(this.textInput);
 
-        this.resetTextSizeAndSpacing();
+        this.updateTextStyle();
 
         // command history
         const HISTORY_LIMIT = 20;
@@ -69,15 +64,13 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this.resetInput();
     }
 
-    resetTextSizeAndSpacing () {
-        this.textCursor.fontSize = this._fontSize + 'px';
-        this.textCursor.lineSpacing = this._fontSize * this._lineSpacingRatio;
-
-        this.hiddenInput.fontSize = this._fontSize + 'px';
-        this.hiddenInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
-
-        this.textInput.fontSize = this._fontSize + 'px';
-        this.textInput.lineSpacing = this._fontSize * this._lineSpacingRatio;
+    updateTextStyle() {
+        [this.textCursor, this.hiddenInput, this.textInput].forEach(txt => txt.setStyle({
+            fontSize: this._fontSize + 'px',
+            lineSpacing: this._fontSize * this._lineSpacingRatio,
+            fill: this._textColor,
+            stroke: this._textColor
+        }));
     }
 
     get fontSize () { return this._fontSize; }
@@ -85,7 +78,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
     set fontSize (size) {
         this._fontSize = size;
 
-        this.resetTextSizeAndSpacing();
+        this.updateTextStyle();
     }
 
     get lineSpacingRatio () { return this._lineSpacingRatio; }
@@ -93,7 +86,15 @@ export default class TextInput extends Phaser.GameObjects.Container {
     set lineSpacingRatio (ratio) {
         this._lineSpacingRatio = ratio;
 
-        this.resetTextSizeAndSpacing();
+        this.updateTextStyle();
+    }
+
+    get textColor () { return this._textColor; }
+
+    set textColor (color) {
+        this._textColor = color;
+
+        this.updateTextStyle();
     }
 
     get children () { return this.getAll(); }
