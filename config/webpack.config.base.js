@@ -5,6 +5,8 @@ const path = require('path');
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 const config = {
+    mode: 'production',
+
     context: path.resolve(__dirname, '../src'),
 
     entry: {
@@ -25,13 +27,8 @@ const config = {
                 exclude: [/node_modules/],
                 use: [{
                     loader: 'babel-loader',
-                    options: { presets: ['es2015'] }
+                    options: { presets: ['env'] }
                 }]
-            },
-            {
-                test: /\.json$/,
-                exclude: [/node_modules/, /assets/],
-                use: 'json-loader'
             },
             {
                 test: [/\.vert$/, /\.frag$/],
@@ -61,10 +58,12 @@ const config = {
         new webpack.DefinePlugin({ 'CANVAS_RENDERER': JSON.stringify(true), 'WEBGL_RENDERER': JSON.stringify(true) })
     ],
 
-    node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
+    resolve: {
+        fallback: {
+            fs: false,
+            net: false,
+            tls: false
+        }
     }
 };
 

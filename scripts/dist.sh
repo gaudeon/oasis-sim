@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-rm -rf dist/; BUILD_DEV=false ./node_modules/webpack/bin/webpack.js -p --config config/webpack.config.base.js
+rm -rf dist/; BUILD_DEV=false 
+
+npm run packfiles
 
 cd dist
 
