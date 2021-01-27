@@ -2,6 +2,7 @@ import TextBuffer from '../ui/text-buffer';
 import TextLine from '../ui/text-line';
 import TextInput from '../ui/text-input';
 import Player from '../objects/player';
+import CommandHistory from '../engine/command-history';
 
 export default class LoginScene extends Phaser.Scene {
     constructor (config, key = 'Login') {
@@ -9,7 +10,8 @@ export default class LoginScene extends Phaser.Scene {
     }
 
     init () {
-        this.player = new Player();
+        let commandHistory = new CommandHistory();
+        this.player = new Player(commandHistory);
 
         this.events.on('shutdown', () => {
             // when we move on to the next scene store the current state of the player in the game data registry

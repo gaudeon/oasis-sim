@@ -1,9 +1,14 @@
 import PlayerAvatar from './player/avatar';
 
 export default class Player {
-    constructor () {
+    constructor (commandHistory) {
         this.id = '';
         this.password = '';
+
+        if(commandHistory === undefined) {
+            throw new Error("CommandHistory is not defined");
+        }
+        this.commandHistory = commandHistory; 
 
         this._avatar = undefined;
     }

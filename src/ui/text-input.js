@@ -36,13 +36,14 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this._commandHistory = this.commandHistory = new CommandHistory(HISTORY_LIMIT);
 
         // capture delete, backspace and arrow keys
-        this.scene.input.keyboard.addKeyCapture([
+        this.scene.input.keyboard.addCapture([
             Phaser.Input.Keyboard.KeyCodes.DELETE,
             Phaser.Input.Keyboard.KeyCodes.BACKSPACE,
             Phaser.Input.Keyboard.KeyCodes.UP,
             Phaser.Input.Keyboard.KeyCodes.DOWN,
             Phaser.Input.Keyboard.KeyCodes.LEFT,
-            Phaser.Input.Keyboard.KeyCodes.RIGHT
+            Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            Phaser.Input.Keyboard.KeyCodes.SPACE
         ]);
 
         this.specialKeys = this.scene.input.keyboard.addKeys({
@@ -51,7 +52,8 @@ export default class TextInput extends Phaser.GameObjects.Container {
             up: Phaser.Input.Keyboard.KeyCodes.UP,
             down: Phaser.Input.Keyboard.KeyCodes.DOWN,
             left: Phaser.Input.Keyboard.KeyCodes.LEFT,
-            right: Phaser.Input.Keyboard.KeyCodes.RIGHT
+            right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
         // map special keys by keyCode from special key validation tests
@@ -128,7 +130,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
         if (this.checkForSpecialKeysTimer && this.checkForSpecialKeysTimer.remove) {
             this.checkForSpecialKeysTimer.remove(false);
         }
-        this.checkForSpecialKeysTimer = this.scene.time.addEvent({ delay: SECOND * 0.1, callback: this.checkForSpecialKeys, callbackScope: this, loop: true });
+        this.checkForSpecialKeysTimer = this.scene.time.addEvent({ delay: SECOND * 0.05, callback: this.checkForSpecialKeys, callbackScope: this, loop: true });
     }
 
     get lineHeight () { return this._fontSize * this._lineSpacingRatio; }
@@ -221,6 +223,20 @@ export default class TextInput extends Phaser.GameObjects.Container {
                  if (this._cursorPosition - this._inputIndicator.length >= this._inputValue.length) {
                      this._cursorPosition = -1;
                  }
+            }
+
+            if (this.specialKeys.space.isDown) {
+                if (this._cursorPosition <= -1) {
+                    this._inputValue = this._inputValue + " ";
+                } else if (this._cursorPosition - this._inputIndicator.length === 0) {
+                    this._inputValue = " " + this._inputValue;
+                } else {
+                    let pos = this._cursorPosition - this._inputIndicator.length;
+                    let text = this._inputValue;
+
+                    this._inputValue = text.substring(0, pos) +  " " + text.substring(pos, text.length);
+                    this._cursorPosition--;
+                }
             }
 
             if (this.specialKeys.left.isDown) {

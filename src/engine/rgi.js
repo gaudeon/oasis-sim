@@ -42,6 +42,11 @@ export default class RGI {
             return;
         }
 
+        // track player commands
+        if (source === 'player') {
+            player.commandHistory.add(command);
+        }
+
         let actions = [];
 
         commands.forEach((command) => {

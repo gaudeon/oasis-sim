@@ -18,11 +18,9 @@ export default class HistoryVerb extends Verb {
 
         let output = '';
 
-        if (player.game.commandHistory.length > 0) {
-            player.game.commandHistory.forEach(c => {
-                output += '\t' + c + '\n';
-            });
-        }
+        player.commandHistory.forEach(c => {
+            output += '\t' + c + '\n';
+        });
 
         if (output !== '') {
             let titleAction = new TextAction('{{historyTitle}}History:');

@@ -2,7 +2,6 @@ import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 import RGI from '../engine/rgi';
 import Universe from '../objects/universe';
-import Player from '../objects/player';
 
 export default class RoomScene extends Phaser.Scene {
     constructor (config, key = 'Room') {
@@ -26,8 +25,7 @@ export default class RoomScene extends Phaser.Scene {
         if (this.registry.has('player')) {
             this.player = this.registry.get('player');
         } else {
-            this.player = new Player();
-            this.registry.set('player', this.player);
+            throw new Error("Player not found in room!");
         }
 
         // save the player when we change rooms
@@ -82,7 +80,7 @@ export default class RoomScene extends Phaser.Scene {
         this.rgi.executeActions(this.preRoomDesc, this.room, this.player);
 
         // output look description of room
-        this.rgi.exec('look', this.room, this.player, false, 'player');
+        this.rgi.exec('look', this.room, this.player, false, 'room');
 
         // run actions after look (postRoomDesc)
         this.rgi.executeActions(this.postRoomDesc, this.room, this.player);
