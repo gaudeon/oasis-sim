@@ -62,6 +62,7 @@ Where ITEMNAME is whatever the name of item actually is
 They are tagged as type: item
 
 They have the following content format:
+
     {{key}}unique item key{{/key}}
     {{description}}the item's basic description used when looking at a room{{/description}}
 
@@ -86,6 +87,7 @@ Where the DIRECTION is one of the supported cardinal directions (North, Sounth, 
 They are tagged as type: door
 
 They hav ethe following content format:
+
     {{description}}The description displayed when a door is looked at directly by a player{{description}}
     [[Room-ROOMNAMETARGET]]
 
@@ -110,6 +112,7 @@ Where the ROOMNAME is the unique name of the room
 They are tagged as type: room
 
 They have the following content format:
+
     {{isStartingRoom}}This is included as set to one (1) if this is the first room a player starts in{{/isStartingRoom}}
     {{description}}The room description when a player looks at the room{{/description}}
     [[Item-ITEMNAME]]
