@@ -33,7 +33,6 @@ export default class Parser {
     }
 
     processPhraseVerbString (lexemePhrase) {
-        // no need to take further action
         let verb = lexemePhrase.tokenSentence[0];
         verb.stringData = lexemePhrase.tokenSentence[1];
 

@@ -2,6 +2,7 @@ import Map from '../config/map';
 import Room from './room';
 import Item from './item';
 import Door from './door';
+import Npc from './npc';
 
 export default class Universe {
     constructor (scene) {
@@ -13,6 +14,7 @@ export default class Universe {
         this.rooms = {};
         this.items = {};
         this.doors = {};
+        this.npcs = {};
         this.startingRoomId = undefined;
 
         Map.forEach(node => {
@@ -30,6 +32,9 @@ export default class Universe {
                     break;
                 case 'door':
                     this.doors[node.name] = new Door(this, node);
+                    break;
+                case 'npc':
+                    this.npcs[node.name] = new Npc(this, node);
                     break;
                 default:
                     throw('Could not identify type of node for ' + node.name, node);

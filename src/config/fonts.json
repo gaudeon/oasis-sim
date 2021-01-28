@@ -65,12 +65,17 @@
             "fill": "SkyBlue",
             "stroke": "SkyBlue"
         },
-        "exitDescription": {
+        "exitHighlight": {
             "fontFamily": "rubik",
             "fill": "LightGreen",
             "stroke": "LightGreen"
         },
-        "itemDescription": {
+        "itemHighlight": {
+            "fontFamily": "rubik",
+            "fill": "LightGreen",
+            "stroke": "LightGreen"
+        },
+        "npcHighlight": {
             "fontFamily": "rubik",
             "fill": "LightGreen",
             "stroke": "LightGreen"

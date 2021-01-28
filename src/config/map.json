@@ -2,16 +2,17 @@
     {
         "pid": 1,
         "position": {
-            "x": 407,
-            "y": 200
+            "x": 382,
+            "y": 175
         },
         "name": "Room-IncipioPlayerHubParkCenter",
         "tags": [
             "room"
         ],
-        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
+        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
         "childrenNames": [
             "[[Item-Rock]]",
+            "[[Npc-Tron]]",
             "[[Door-North-IncipioMegaMallEntrance]]"
         ],
         "isStartingRoom": "1",
@@ -22,17 +23,17 @@
     {
         "pid": 2,
         "position": {
-            "x": 133,
-            "y": 218
+            "x": 132,
+            "y": 217
         },
         "name": "Item-Rock",
         "tags": [
             "item"
         ],
-        "content": "{{key}}rock{{/key}} {{description}}rock{{/description}}",
+        "content": "{{key}}rock{{/key}} {{description}}a <itemHighlight>rock<defaultDescription>{{/description}}",
         "childrenNames": [],
         "key": "rock",
-        "description": "rock"
+        "description": "a <itemHighlight>rock<defaultDescription>"
     },
     {
         "pid": 3,
@@ -42,7 +43,7 @@
         },
         "name": "Door-North-IncipioMegaMallEntrance",
         "tags": [
-            "Door"
+            "door"
         ],
         "content": "{{description}}a walkway leading to the megamall{{/description}} [[Room-IncipioMegaMallEntrance]]",
         "childrenNames": [
@@ -58,7 +59,7 @@
         },
         "name": "Room-IncipioMegaMallEntrance",
         "tags": [
-            "Room"
+            "room"
         ],
         "content": "{{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
         "childrenNames": [
@@ -71,16 +72,31 @@
         "pid": 5,
         "position": {
             "x": 420,
-            "y": 434
+            "y": 433
         },
         "name": "Door-South-IncipioPlayerHubParkCenter",
         "tags": [
-            "Door"
+            "door"
         ],
         "content": "{{description}}a walkway leading to the center of the player hub{{/description}} [[Room-IncipioPlayerHubParkCenter]]",
         "childrenNames": [
             "[[Room-IncipioPlayerHubParkCenter]]"
         ],
         "description": "a walkway leading to the center of the player hub"
+    },
+    {
+        "pid": 6,
+        "position": {
+            "x": 168,
+            "y": 410
+        },
+        "name": "Npc-Tron",
+        "tags": [
+            "npc"
+        ],
+        "content": "{{key}}tron{{/key}} {{description}}an adult male in a blue glowing digital light suit. His name is <npcHighlight>Tron<defaultDescription>{{/description}}",
+        "childrenNames": [],
+        "key": "tron",
+        "description": "an adult male in a blue glowing digital light suit. His name is <npcHighlight>Tron<defaultDescription>"
     }
 ]

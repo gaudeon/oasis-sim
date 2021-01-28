@@ -29,7 +29,7 @@ export default class ChangeRoomAction extends GameAction {
         rgi.executeActions(this.data.preRoomDesc, nextRoom, player);
 
         // output look description of room
-        rgi.exec('look', nextRoom, player, false, 'player');
+        rgi.exec('look', nextRoom, player, false, 'room');
 
         // run actions after look (postRoomDesc)
         rgi.executeActions(this.data.postRoomDesc, nextRoom, player);

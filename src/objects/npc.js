@@ -1,4 +1,4 @@
-export default class Item {
+export default class Npc {
     constructor (universe = {}, node = {}) {
         this.universe = universe;
         this.game = universe.game;
@@ -22,6 +22,6 @@ export default class Item {
 
         return text.replaceAll(textStylesRegEx, (match, style) => {
             return `{{${style}}}`;
-        })
+        });
     }
 }

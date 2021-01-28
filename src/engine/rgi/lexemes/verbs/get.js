@@ -29,7 +29,7 @@ export default class GetVerb extends Verb {
             let addItemAction = new AddInventoryAction({ target: player.avatar, items: [this.source] });
             actions.push(addItemAction);
 
-            let getTextAction = new TextAction('{{itemDescription}}You obtained a ' + this.source.description + '.');
+            let getTextAction = new TextAction('{{itemHighlight}}You obtained ' + this.source.description + '.');
             actions.push(getTextAction);
 
             return actions;

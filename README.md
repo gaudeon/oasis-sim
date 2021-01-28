@@ -50,6 +50,7 @@ Each Twine passage should have a name tag identifying the kind of thing it is. C
 - item
 - room
 - door
+- npc
 
 #### item
 
@@ -57,7 +58,7 @@ Item Passages represent template descriptions of a given item associated with ro
 
 Their title is formated as: Item-ITEMNAME
 
-Where ITEMNAME is whatever the name of item actually is
+Where ITEMNAME is whatever the name of the item actually is
 
 They are tagged as type: item
 
@@ -134,8 +135,34 @@ Example Room:
         {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}}
         [[Item-Rock]]
         {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}}
+        [[Npc-Tron]]
         [[Door-North-IncipioMegaMallEntrance]]
         {{onNorth}}[ { 
         	"type": "TextAction", 
         	"text": "You walk down the path towards the megamall."
         } ]{{/onNorth}}
+
+#### npc
+
+Npc Passages represent template descriptions of a given non player character associated with rooms. 
+
+Their title is formated as: Npc-NPCNAME
+
+Where NPCNAME is whatever the name of the Npc actually is
+
+They are tagged as type: npc 
+
+They have the following content format:
+
+    {{key}}unique npc key{{/key}}
+    {{description}}the npc's basic description used when looking at a room{{/description}}
+
+Example Npc:
+
+    Title: Npc-Tron 
+
+    Tag: npc 
+
+    Content:
+        {{key}}tron{{/key}}
+        {{description}}an adult male in a blue glowing digital light suit{{/description}}

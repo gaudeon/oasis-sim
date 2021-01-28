@@ -6,6 +6,7 @@ export default class PhraseVerbNoun extends LexemePhrase {
 
         this._phraseTemplate = ['verb', 'noun'];
 
+        // verbs allowed to be a part of this lexeme phrase
         this._phraseTemplateACL = [
             {
                 look: true,

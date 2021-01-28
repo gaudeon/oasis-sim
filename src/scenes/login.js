@@ -68,7 +68,7 @@ export default class LoginScene extends Phaser.Scene {
                 break;
 
             case 'VERIFY_ID':
-                this.textBuffer.addText('{{loginText}}IDENTIFY VERIFICATION SUCCESSFUL');
+                this.textBuffer.addText('{{loginText}}IDENTITY VERIFICATION SUCCESSFUL');
                 this.textBuffer.addText('{{loginText}}WELCOME TO THE OASIS ' + this.player.id.toUpperCase());
                 this.textBuffer.addText('{{loginText}}LOGIN COMPLETED');
                 this.textBuffer.addText('{{loginText}}07:53:21 OST 02-10-2045');

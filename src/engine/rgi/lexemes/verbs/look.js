@@ -47,7 +47,7 @@ export default class LookVerb extends Verb {
     lookAtPlayer (player) {
         let description = player.avatar.commandLook();
 
-        let itemsTextAction = new TextAction('{{itemDescription}}' + description.items);
+        let itemsTextAction = new TextAction('{{itemHighlight}}' + description.items);
 
         return [itemsTextAction];
     }

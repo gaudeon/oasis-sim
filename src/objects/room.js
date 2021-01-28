@@ -17,6 +17,9 @@ export default class Room {
         // doors
         this._doors = [];
 
+        // npcs
+        this._npcs = [];
+
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
                 let id = child.replace(/^\[\[/, '').replace(/\]\]$/, '');
@@ -28,6 +31,9 @@ export default class Room {
                         break;
                     case 'item': // FORMAT: Item-<id>
                         this._inventory.addItem(id);
+                        break;
+                    case 'npc': // FORMATE: Npc-<id>
+                        this._npcs.push(id);
                         break;
                 }
             });
@@ -43,9 +49,46 @@ export default class Room {
 
     get items () { return this._inventory.items; }
 
+    // npcs
+    get npcs () { return this._npcs; }
+
+    findNpcByName (name) {
+       let npcId = (_.filter(this._npcs, npc => { return npc.match(new RegExp('^npc-' + name, 'i')); }))[0];
+
+       if (npcId) {
+           return this._loadNpc(npcId);
+       }
+
+       return undefined;
+    }
+
+    _loadNpc (id = '') {
+        if (typeof id === 'object') {
+            return id;
+        }
+
+        return this.universe.npcs[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
+    }
+
+    getNpcsDescription (firstNewLine = false) {
+        let npcDescriptions = [];
+
+        this.npcs.forEach(npc => {
+            npcDescriptions.push('{{defaultDescription}} There is ' + this._loadNpc(npc).description + '.');
+        });
+
+        return npcDescriptions;
+    }
+
     // doors
     _filterDoorByDirection (direction) {
         return (_.filter(this._doors, door => { return door.match(new RegExp('^door-' + direction + '-', 'i')); }))[0];
+    }
+
+    findDoorByDirection (direction) {
+        let doorId = this._filterDoorByDirection(direction);
+
+        return doorId ? this._loadDoor(doorId) : undefined;
     }
 
     get north () { return this._filterDoorByDirection('north'); }
@@ -72,14 +115,6 @@ export default class Room {
     get doors () { return this._doors; }
     get exits () { return this._doors; }
 
-    _loadItem (id = '') {
-        if (typeof id === 'object') {
-            return id;
-        }
-
-        return this.universe.items[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
-    }
-
     _loadDoor (id = '') {
         if (typeof id === 'object') {
             return id;
@@ -88,9 +123,26 @@ export default class Room {
         return this.universe.doors[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
     }
 
-    // the room description
-    getGeneralDescription () {
-        return this.description;
+    // the room exits
+    getExitsDescription (firstNewLine = false) {
+        let exitDescriptions = [];
+
+        this.exits.forEach(door => {
+            exitDescriptions.push('{{defaultDescription}} There is ' + this._loadDoor(door).description + '.');
+        });
+
+        return exitDescriptions;
+    }
+
+    // items
+    findItemByName (name) { return this._inventory.findItem(name) }
+
+    _loadItem (id = '') {
+        if (typeof id === 'object') {
+            return id;
+        }
+
+        return this.universe.items[ id.replace(/^\[\[/, '').replace(/\]\]$/, '') ]; // get rid of [[ ]] if still there
     }
 
     // the room inventory
@@ -98,21 +150,18 @@ export default class Room {
         let itemDescriptions = [];
 
         this.items.forEach(item => {
-            itemDescriptions.push('There is a {{itemDescription}}' + this._loadItem(item).description + '{{defaultDescription}}' + (this.node[item + '-Location'] ? ' ' + this.node[item + '-Location'] : '') + '.');
+            let itemNode = this._loadItem(item);
+            let itemLocation = this.node[itemNode.name + '-Location'];
+
+            itemDescriptions.push('{{defaultDescription}} There is ' + itemNode.description + (itemLocation ? ' ' + itemLocation : '') + '.');
         });
 
         return itemDescriptions;
     }
 
-    // the room exits
-    getExitsDescription (firstNewLine = false) {
-        let exitDescriptions = [];
-
-        this.exits.forEach(door => {
-            exitDescriptions.push('There is ' + this._loadDoor(door).description + '.');
-        });
-
-        return exitDescriptions;
+    // the room description
+    getGeneralDescription () {
+        return this.description;
     }
 
     // all descriptive details about a room
@@ -120,7 +169,8 @@ export default class Room {
         return {
             general: this.getGeneralDescription(),
             items: this.getInventoryDescription(),
-            exits: this.getExitsDescription()
+            exits: this.getExitsDescription(),
+            npcs: this.getNpcsDescription()
         };
     }
 
@@ -134,6 +184,10 @@ export default class Room {
 
         this.allDetails.exits.forEach((exit) => {
             description = description + ' ' + exit;
+        });
+
+        this.allDetails.npcs.forEach((npc) => {
+            description = description + ' ' + npc;
         });
 
         return description;

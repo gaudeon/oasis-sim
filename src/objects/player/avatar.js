@@ -12,6 +12,10 @@ export default class PlayerAvatar {
 
     get items () { return this._inventory.items; }
 
+    findItemByName (name) {
+       return this._inventory.findItem(name);
+    }
+
     commandLook () {
         let description = {};
 
@@ -19,7 +23,7 @@ export default class PlayerAvatar {
             description.items = 'You are carrying: \n';
 
             this.items.forEach((item) => {
-                let article = '\t\t\t\tA';
+                let article = '\t\t\t\t';
 
                 description.items = description.items + article + ' ' + item.description + '\n';
             });

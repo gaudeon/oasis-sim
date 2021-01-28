@@ -28,7 +28,7 @@ export default class Lexer {
             let foundPhrase = [];
             let phrase = this.lexemePhrases[lexemePhraseIndex];
 
-            if (wordsCopy.length < phrase.phraseTemplate.length) { // no need to match on phrases to don't support a short command
+            if (wordsCopy.length < phrase.phraseTemplate.length) { // no need to match on phrases that don't support a short command
                 continue;
             }
 
@@ -129,34 +129,67 @@ export default class Lexer {
     findNoun (word, wordACL, words, room, player, source) {
         let match;
 
+        if (this.debug && console) {
+            console.log(`Lexer: name -> ${word}`);
+        }
+
         if (word.match(/^(self|myself|me)$/)) {
             match = player;
+
+            if (this.debug && console) {
+                console.log(`Lexer: subject matched the player`);
+            }
         } else if (word.match(/^(room|surroundings)$/)) {
             match = room
+
+            if (this.debug && console) {
+                console.log(`Lexer: subject matched the room`);
+            }
         } else if (word.match(/^(north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/)) {
-            match = room.doors[word] || '';
-        } else {
-            let matches = [];
+            let door = room.findDoorByDirection(word);
 
-            room.items.forEach((item) => {
-                if (item.key.match(new RegExp(word, 'i'))) {
-                    matches.push(item);
+            if (door !== undefined) {
+                match = door;
+
+                if (this.debug && console) {
+                    console.log(`Lexer: subject matched an exit`);
                 }
-            });
+            }
+        } else {
+            if (this.debug && console) {
+                console.log(`Lexer: subject was not player/room/exit looking for an item or npc`);
+            }
 
-            if (matches.length >= 1) {
-                match = matches[0];
+            let roomItem = room.findItemByName(word);
+
+            if (roomItem !== undefined) {
+                match = roomItem;
                 match.from = room;
-            } else {
-                player.avatar.items.forEach((item) => {
-                    if (item.key.match(new RegExp(word, 'i'))) {
-                        matches.push(item);
-                    }
-                });
 
-                if (matches.length >= 1) {
-                    match = matches[0];
+                if (this.debug && console) {
+                    console.log(`Lexer: subject matched an item in the room`);
+                }
+            } else {
+                let playerItem = player.avatar.findItemByName(word);
+
+                if (playerItem !== undefined) {
+                    match = playerItem;
                     match.from = player;
+
+                    if (this.debug && console) {
+                        console.log(`Lexer: subject matched an item on the player`);
+                    }
+                } else {
+                    let npc = room.findNpcByName(word);
+
+                    if (npc !== undefined) {
+                        match = npc;
+                        match.from = room;
+
+                        if (this.debug && console) {
+                            console.log(`Lexer: subject matched an npc`);
+                        }
+                    } 
                 }
             }
         }

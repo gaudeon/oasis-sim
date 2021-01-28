@@ -54,7 +54,7 @@ export default class RoomScene extends Phaser.Scene {
         this.textBuffer.on('StartPrinting', () => { this.input.enabled = false; });
         this.textBuffer.on('DonePrinting', () => { this.input.enabled = true; });
 
-        const DEBUG_RGI = false; // set to true to see command processing
+        const DEBUG_RGI = true; // set to true to see command processing
         this.rgi = new RGI(this.textBuffer, DEBUG_RGI);
 
         this.preRoomDesc = preRoomDesc;

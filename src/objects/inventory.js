@@ -20,7 +20,7 @@ export default class Inventory {
         return this.universe.items[ id ] ? this.universe.items[ id ] : id; // return the object form of an item as soon as we can (inital loads will just have the string name of items)
     }
 
-    get items () { return this._items.map(i => { return this._loadItem(i); }); }
+    get items () { return this._items; }
 
     addItem (item) { this._items.push(this._loadItem(item)); }
 
@@ -28,5 +28,15 @@ export default class Inventory {
         _.remove(this._items, item => {
             return this._loadItem(item).key === this._loadItem(removeItem).key;
         });
+    }
+
+    findItem (name) {
+       let item = (_.filter(this._items, item => { 
+           return this._loadItem(item).key.match(new RegExp(name, 'i')); 
+       }))[0];
+
+       console.log(item);
+
+       return item ? this._loadItem(item) : undefined;
     }
 }

@@ -29,13 +29,13 @@ export default class Door {
 
         switch (this._direction) {
             case 'up':
-                preposition = '{{exitDescription}}upward{{defaultDescription}}';
+                preposition = '{{exitHighlight}}upward{{defaultDescription}}';
                 break;
             case 'down':
-                preposition = '{{exitDescription}}downward{{defaultDescription}}';
+                preposition = '{{exitHighlight}}downward{{defaultDescription}}';
                 break;
             default:
-                preposition = 'to the {{exitDescription}}' + this._direction + '{{defaultDescription}}';
+                preposition = 'to the {{exitHighlight}}' + this._direction + '{{defaultDescription}}';
                 break;
         };
 
