@@ -68,9 +68,6 @@ export default class RoomScene extends Phaser.Scene {
         this.add.existing(this.textBuffer);
         this.add.existing(this.textInput);
 
-        // reset text input timers
-        this.textInput.resetTimers();
-
         // output the last command that lead us to this line
         if (this.lastCommand) {
             this.rgi.outputCommand(this.lastCommand);

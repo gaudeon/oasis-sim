@@ -30,7 +30,6 @@ export default class LoginScene extends Phaser.Scene {
         this.add.existing(this.textInput);
 
         // reset text input timers
-        this.textInput.resetTimers();
         this.textInput.kill();
     }
 
@@ -39,7 +38,6 @@ export default class LoginScene extends Phaser.Scene {
 
         switch (this.state) {
             case 'PROMPT_ID':
-                this.textBuffer.addText('{{loginText}}ENTER YOUR OASIS ID');
                 this.textBuffer.once('DonePrinting', () => {
                     this.textInput.revive();
                     this.textInput.once('EnterPressed', (text) => {
@@ -49,6 +47,7 @@ export default class LoginScene extends Phaser.Scene {
                         this.state = 'PROMPT_PASSWORD';
                     });
                 });
+                this.textBuffer.addText('{{loginText}}ENTER YOUR OASIS ID');
                 this.state = 'WAITING'; // bunk state so we wait until next change
                 break;
 
