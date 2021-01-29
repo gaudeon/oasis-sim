@@ -20,7 +20,7 @@ export default class PlayerAvatar {
         let description = {};
 
         if (this.items.length) {
-            description.items = 'You are carrying: \n';
+            description.items = '{{defaultDescription}}You are carrying: \n';
 
             this.items.forEach((item) => {
                 let article = '\t\t\t\t';
@@ -28,7 +28,7 @@ export default class PlayerAvatar {
                 description.items = description.items + article + ' ' + item.description + '\n';
             });
         } else {
-            description.items = 'You are not carrying anything.';
+            description.items = '{{defaultDescription}}You are not carrying anything.';
         }
 
         return description;
