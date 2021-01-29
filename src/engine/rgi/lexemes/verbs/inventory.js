@@ -15,7 +15,7 @@ export default class InventoryVerb extends Verb {
 
         let description = player.avatar.commandLook();
 
-        let itemsTextAction = new TextAction('{{itemDescription}}' + description.items);
+        let itemsTextAction = new TextAction('{{defaultDescription}}' + description.items);
 
         return [itemsTextAction];
     }
