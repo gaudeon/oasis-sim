@@ -4,15 +4,16 @@ import GameAction from './game-action';
 
 // RGI === Regular Grammar Interpreter
 export default class RGI {
-    constructor (buffer, debug = false) {
+    constructor (buffer, playerCommandHistory, debug = false) {
         this.textBuffer = buffer;
         this.scene = buffer.scene;
+        this.playerCommandHistory = playerCommandHistory;
         this.debug = debug;
         this.lexer = new Lexer(this, debug);
         this.parser = new Parser(this, debug);
     }
 
-    exec (command, room, player, outputCommand = true, source = 'admin') {
+    exec (command, room, universe, outputCommand = true, source = 'admin') {
         let lexemePhrase;
         let commands;
         const outputText = () => {
@@ -25,11 +26,11 @@ export default class RGI {
             console.log(`--- Start RGI Exec ---`);
             console.log(`RGI: Command: ${command}`);
             console.log(`RGI: Room: `, room);
-            console.log(`RGI: Player: `, player);
+            console.log(`RGI: Universe: `, universe);
         }
 
         try {
-            lexemePhrase = this.lexer.tokenize(command, room, player, source);
+            lexemePhrase = this.lexer.tokenize(command, room, universe, source);
 
             commands = this.parser.parse(lexemePhrase, source);
         } catch (error) {
@@ -37,20 +38,20 @@ export default class RGI {
 
             const errorText = 'I don\'t know how to do that.';
 
-            this.exec('error ' + errorText, room, player, false);
+            this.exec('error ' + errorText, room, universe, false);
 
             return;
         }
 
         // track player commands
         if (source === 'player') {
-            player.commandHistory.add(command);
+            this.playerCommandHistory.add(command);
         }
 
         let actions = [];
 
         commands.forEach((command) => {
-            actions = _.concat(actions, command.actions(room, player, lexemePhrase));
+            actions = _.concat(actions, command.actions(this, room, universe, lexemePhrase));
         });
 
         if (this.debug && console) {
@@ -62,7 +63,7 @@ export default class RGI {
             outputText();
         }
 
-        this.executeActions(actions, room, player, outputCommand ? command : undefined);
+        this.executeActions(actions, room, universe, outputCommand ? command : undefined);
 
         if (this.debug && console) {
             console.log(`--- Finish RGI Exec ---`);
@@ -70,7 +71,7 @@ export default class RGI {
     }
 
     // run each action in a list of game actions
-    executeActions (actions, room, player, lastCommand) {
+    executeActions (actions, room, universe, lastCommand) {
         if (!Array.isArray(actions)) {
             throw new Error('actions is not an array', actions);
         }
@@ -79,14 +80,14 @@ export default class RGI {
             if (action instanceof Promise) {
                 action.then(realAction => {
                     if (realAction instanceof GameAction) {
-                        realAction.run(this, this.textBuffer, room, player, lastCommand);
+                        realAction.run(this, this.textBuffer, room, universe, lastCommand);
                     } else {
                         throw new Error('Not a valid game action', action);
                     }
                 })
             } else {
                 if (action instanceof GameAction) {
-                    action.run(this, this.textBuffer, room, player, lastCommand);
+                    action.run(this, this.textBuffer, room, universe, lastCommand);
                 } else {
                     throw new Error('Not a valid game action', action);
                 }

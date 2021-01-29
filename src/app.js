@@ -4,6 +4,7 @@ import 'webfontloader';
 
 import BootScene from './scenes/boot';
 import LoginScene from './scenes/login';
+import OasisScene from './scenes/oasis';
 import RoomScene from './scenes/room';
 
 var gameConfig = {
@@ -17,7 +18,7 @@ var gameConfig = {
             //debug: true, // enable to see physics bodies outlined
         }
     },
-    scene: [BootScene, LoginScene, RoomScene]
+    scene: [BootScene, LoginScene, OasisScene, RoomScene]
 };
 
 let game = new Phaser.Game(gameConfig);

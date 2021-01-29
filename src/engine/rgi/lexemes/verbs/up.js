@@ -10,8 +10,8 @@ export default class UpVerb extends Verb {
         this._aliases = ['u'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         try {
             return room.commandUp();

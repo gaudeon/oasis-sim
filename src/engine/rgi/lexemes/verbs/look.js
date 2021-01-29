@@ -12,8 +12,8 @@ export default class LookVerb extends Verb {
         this._aliases = ['l'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, player, lexemePhrase) {
+        super.actions(rgi, room, player, lexemePhrase);
 
         let actions;
 

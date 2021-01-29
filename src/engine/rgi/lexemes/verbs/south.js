@@ -10,8 +10,8 @@ export default class SouthVerb extends Verb {
         this._aliases = ['s'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         try {
             return room.commandSouth();

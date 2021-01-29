@@ -10,10 +10,10 @@ export default class InventoryVerb extends Verb {
         this._aliases = ['inv', 'i'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
-        let description = player.avatar.commandLook();
+        let description = universe.player.avatar.commandLook();
 
         let itemsTextAction = new TextAction('{{defaultDescription}}' + description.items);
 

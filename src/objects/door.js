@@ -1,8 +1,7 @@
 export default class Door {
-    constructor (universe = {}, node = {}) {
-        this.universe = universe;
-        this.game = universe.game;
-        this.node = node;
+    constructor (universe, node) {
+        this._universe = universe;
+        this._node = node;
 
         let direction;
         if (node.name) {
@@ -21,6 +20,10 @@ export default class Door {
             this._room = this.node.childrenNames[0].replace(/^\[\[/, '').replace(/\]\]$/, '');
         }
     }
+
+    get universe () { return this._universe; }
+
+    get node () { return this._node; }
 
     get direction () { return this._direction; }
 

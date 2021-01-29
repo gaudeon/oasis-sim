@@ -75,7 +75,7 @@ Example Item:
 
     Content:
         {{key}}rock{{/key}}
-        {{description}}rock{{/description}}
+        {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}
 
 #### door
 
@@ -165,4 +165,5 @@ Example Npc:
 
     Content:
         {{key}}tron{{/key}}
-        {{description}}an adult male in a blue glowing digital light suit{{/description}}
+        {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
+        {{onPlayerEnter}}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.{{onPlayerEnter}}

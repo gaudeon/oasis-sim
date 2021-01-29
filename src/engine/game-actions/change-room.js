@@ -7,7 +7,7 @@ export default class ChangeRoomAction extends GameAction {
         this._type = 'change-room';
     }
 
-    run (rgi, buffer, room, player, lastCommand) {
+    run (rgi, buffer, room, universe, lastCommand) {
         // get next room
         let nextRoom;
         if (typeof rgi.scene.universe.rooms[this.data.room] !== 'object') { // set the starting room if we don't have one defined
@@ -26,12 +26,12 @@ export default class ChangeRoomAction extends GameAction {
         rgi.scene.lastCommand = lastCommand;
 
         // run actions prior to look (preRoomDesc)
-        rgi.executeActions(this.data.preRoomDesc, nextRoom, player);
+        rgi.executeActions(this.data.preRoomDesc, nextRoom, universe);
 
         // output look description of room
-        rgi.exec('look', nextRoom, player, false, 'room');
+        rgi.exec('look', nextRoom, universe, false, 'room');
 
         // run actions after look (postRoomDesc)
-        rgi.executeActions(this.data.postRoomDesc, nextRoom, player);
+        rgi.executeActions(this.data.postRoomDesc, nextRoom, universe);
     }
 }

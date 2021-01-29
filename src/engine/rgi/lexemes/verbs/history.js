@@ -13,12 +13,12 @@ export default class HistoryVerb extends Verb {
         this.colorCommands = '#DA70D6'; // Orchid
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi. room, universe, lexemePhrase);
 
         let output = '';
 
-        player.commandHistory.forEach(c => {
+        rgi.playerCommandHistory.forEach(c => {
             output += '\t' + c + '\n';
         });
 

@@ -25,8 +25,8 @@ export default class Verb extends Lexeme {
 
     get source () { return this._source; }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         if (typeof this.word === 'undefined') {
             throw new Error('Current word is not defined.');

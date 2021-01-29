@@ -13,8 +13,8 @@ export default class HelpVerb extends Verb {
         this.colorHelp = '#DDA0DD'; // Plum
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         let actionPromise = new Promise((resolve, reject) => {
                 let verbs = new AllVerbs();

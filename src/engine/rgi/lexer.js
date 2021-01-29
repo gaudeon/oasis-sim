@@ -12,7 +12,7 @@ export default class Lexer {
         this.debug = debug;
     }
 
-    tokenize (command, room, player, source = 'admin') {
+    tokenize (command, room, universe, source = 'admin') {
         let words = this.cleanPrepositions(this.cleanArticles(command.replace(/\s+$/, '').split(/\s+/)));
 
         if (!words.length) { // no command found
@@ -49,7 +49,7 @@ export default class Lexer {
                 }
 
                 let findMethod = this.lexemeToFindMethod[phrase.phraseTemplate[lexemeIndex]];
-                let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room, player, source);
+                let lexeme = findMethod.call(this, word, phrase.phraseTemplateACL[lexemeIndex], wordsCopy, room, universe, source);
 
                 if (typeof lexeme !== 'undefined') {
                     foundPhrase.push(lexeme);
@@ -102,8 +102,8 @@ export default class Lexer {
         }
     }
 
-    findVerb (word, wordACL, words, room, player, source) {
-        let verb = this.verbs.findVerb(word, wordACL, words, room, player);
+    findVerb (word, wordACL, words, room, universe, source) {
+        let verb = this.verbs.findVerb(word, wordACL, words, room, universe);
 
         if (this.debug && console) {
             console.log(`Lexer: FindVerb Result: ${typeof verb === 'undefined' ? 'undefined' : verb.constructor.name}`);
@@ -116,7 +116,7 @@ export default class Lexer {
         return verb;
     }
 
-    findString (word, wordACL, words, room, player, source) {
+    findString (word, wordACL, words, room, universe, source) {
         let s = word + ' ' + words.join(' ');
 
         if (this.debug && console) {
@@ -126,7 +126,7 @@ export default class Lexer {
         return s;
     }
 
-    findNoun (word, wordACL, words, room, player, source) {
+    findNoun (word, wordACL, words, room, universe, source) {
         let match;
 
         if (this.debug && console) {
@@ -134,7 +134,7 @@ export default class Lexer {
         }
 
         if (word.match(/^(self|myself|me)$/)) {
-            match = player;
+            match = universe.player;
 
             if (this.debug && console) {
                 console.log(`Lexer: subject matched the player`);
@@ -170,11 +170,11 @@ export default class Lexer {
                     console.log(`Lexer: subject matched an item in the room`);
                 }
             } else {
-                let playerItem = player.avatar.findItemByName(word);
+                let playerItem = universe.player.avatar.findItemByName(word);
 
                 if (playerItem !== undefined) {
                     match = playerItem;
-                    match.from = player;
+                    match.from = universe.player;
 
                     if (this.debug && console) {
                         console.log(`Lexer: subject matched an item on the player`);

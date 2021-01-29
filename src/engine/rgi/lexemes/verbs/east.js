@@ -10,8 +10,8 @@ export default class EastVerb extends Verb {
         this._aliases = ['e'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         try {
             return room.commandEast();

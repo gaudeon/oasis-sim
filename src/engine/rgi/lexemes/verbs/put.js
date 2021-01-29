@@ -15,13 +15,13 @@ export default class PutVerb extends Verb {
         this._aliases = ['p', 'drop', 'set'];
     }
 
-    actions (room, player, lexemePhrase) {
-        super.actions(room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         if (typeof this.source !== 'undefined' && this.source instanceof Item && this.source.from instanceof Player) {
             let actions = [];
 
-            let removeItemAction = new RemoveInventoryAction({ target: player.avatar, items: [this.source] });
+            let removeItemAction = new RemoveInventoryAction({ target: universe.player.avatar, items: [this.source] });
             actions.push(removeItemAction);
 
             this.source.containerOrientation = 'on the ground'; // TODO: make handling container orientation more robust

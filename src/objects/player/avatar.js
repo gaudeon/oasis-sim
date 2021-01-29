@@ -1,12 +1,13 @@
 import Inventory from '../inventory';
 
 export default class PlayerAvatar {
-    constructor (universe) {
-        this.universe = universe;
-        this.game = universe.game;
+    constructor (name, inventory) {
+        this._name = name;
 
-        this._inventory = new Inventory(universe);
+        this._inventory = inventory;
     }
+
+    get name () { return this._name; }
 
     get inventory () { return this._inventory; }
 

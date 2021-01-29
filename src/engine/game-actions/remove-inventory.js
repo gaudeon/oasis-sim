@@ -23,7 +23,7 @@ export default class RemoveInventoryAction extends GameAction {
 
     get items () { return this._items; }
 
-    run (rgi, buffer, room, player, lastCommand) {
+    run (rgi, buffer, room, universe2, lastCommand) {
         this.items.forEach(item => {
             this.target.inventory.removeItem(item);
         });

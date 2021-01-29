@@ -1,8 +1,6 @@
 import TextBuffer from '../ui/text-buffer';
-import TextLine from '../ui/text-line';
 import TextInput from '../ui/text-input';
-import Player from '../objects/player';
-import CommandHistory from '../engine/command-history';
+
 
 export default class LoginScene extends Phaser.Scene {
     constructor (config, key = 'Login') {
@@ -10,19 +8,13 @@ export default class LoginScene extends Phaser.Scene {
     }
 
     init () {
-        let commandHistory = new CommandHistory();
-        this.player = new Player(commandHistory);
-
-        this.events.on('shutdown', () => {
-            // when we move on to the next scene store the current state of the player in the game data registry
-            this.registry.set('player', this.player);
-        });
-
         this.state = 'PROMPT_ID';
 
         this.textBuffer = new TextBuffer(this, 25, this.sys.game.config.height - 30);
-
         this.textInput = new TextInput(this, 25, this.sys.game.config.height - 30);
+
+        this.player_id = '';
+        this.player_password = '';
     }
 
     create () {
@@ -42,7 +34,7 @@ export default class LoginScene extends Phaser.Scene {
                     this.textInput.revive();
                     this.textInput.once('EnterPressed', (text) => {
                         this.textInput.kill();
-                        this.player.id = text;
+                        this.player_id = text;
                         this.textBuffer.clear();
                         this.state = 'PROMPT_PASSWORD';
                     });
@@ -59,7 +51,7 @@ export default class LoginScene extends Phaser.Scene {
                     this.textInput.once('EnterPressed', (text) => {
                         this.textInput.passwodMode = false;
                         this.textInput.kill();
-                        this.player.password = text;
+                        this.player_password = text;
                         this.textBuffer.clear();
                         this.state = 'VERIFY_ID';
                     });
@@ -69,28 +61,17 @@ export default class LoginScene extends Phaser.Scene {
 
             case 'VERIFY_ID':
                 this.textBuffer.addText('{{loginText}}IDENTITY VERIFICATION SUCCESSFUL');
-                this.textBuffer.addText('{{loginText}}WELCOME TO THE OASIS ' + this.player.id.toUpperCase());
+                this.textBuffer.addText('{{loginText}}WELCOME TO THE OASIS ' + this.player_id.toUpperCase());
                 this.textBuffer.addText('{{loginText}}LOGIN COMPLETED');
                 this.textBuffer.addText('{{loginText}}07:53:21 OST 02-10-2045');
                 this.textBuffer.once('DonePrinting', () => {
                     this.time.addEvent({ delay: SECOND * 3, callback: () => {
                         this.textBuffer.clear();
-                        this.state = 'READY_PLAYER_ONE';
-                    } });
-                });
-                this.state = 'WAITING'; // bunk state so we wait until next change
-                break;
-
-            case 'READY_PLAYER_ONE':
-                this.textBuffer.addText('{{readyPlayerOneLoginText}}READY PLAYER ONE');
-                this.textBuffer.once('DonePrinting', () => {
-                    this.time.addEvent({ delay: SECOND * 3, callback: () => {
-                        this.textBuffer.clear();
-                        this.scene.start('Room');
+                        this.scene.start('Oasis', this.player_id, this.player_password);
                     } });
                 });
                 this.state = 'WAITING'; // bunk state so we wait until next change
                 break;
         }
-    } 
+    }
 }

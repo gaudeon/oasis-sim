@@ -57,7 +57,7 @@ export default class AllVerbs {
 
     get verbMap () { return this._verbMap; }
 
-    findVerb (word, wordACL, words, room, player) {
+    findVerb (word, wordACL, words, room, universe) {
         let letters = word.toLowerCase().split('');
         let key = '';
 

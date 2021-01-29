@@ -30,10 +30,10 @@
         "tags": [
             "item"
         ],
-        "content": "{{key}}rock{{/key}} {{description}}a <itemHighlight>rock<defaultDescription>{{/description}}",
+        "content": "{{key}}rock{{/key}} {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}",
         "childrenNames": [],
         "key": "rock",
-        "description": "a <itemHighlight>rock<defaultDescription>"
+        "description": "a ${style-itemHighlight}rock${style-defaultDescription}"
     },
     {
         "pid": 3,
@@ -94,9 +94,10 @@
         "tags": [
             "npc"
         ],
-        "content": "{{key}}tron{{/key}} {{description}}an adult male in a blue glowing digital light suit. His name is <npcHighlight>Tron<defaultDescription>{{/description}}",
+        "content": "{{key}}tron{{/key}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{onPlayerEnter}}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.{{/onPlayerEnter}}",
         "childrenNames": [],
         "key": "tron",
-        "description": "an adult male in a blue glowing digital light suit. His name is <npcHighlight>Tron<defaultDescription>"
+        "description": "an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}",
+        "onPlayerEnter": "Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337."
     }
 ]

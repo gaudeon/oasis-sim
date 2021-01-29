@@ -7,7 +7,7 @@ export default class NullAction extends GameAction {
         this._type = 'null';
     }
 
-    run (rgi, buffer, room, player, lastCommand) {
+    run (rgi, buffer, room, universe, lastCommand) {
         // do nothing
     }
 }

@@ -7,7 +7,7 @@ export default class TextAction extends GameAction {
         this._type = 'text';
     }
 
-    run (rgi, buffer, room, player, lastCommand) {
+    run (rgi, buffer, room, universe, lastCommand) {
         buffer.addText(this.data);
     }
 }
