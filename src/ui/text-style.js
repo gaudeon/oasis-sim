@@ -29,10 +29,10 @@ export default class TextStyle {
         style.fontSize = this._fontSize;
 
         // if the color word isn't found just return the arg because it could be a hex color
-        style.fill = colorConfig[this._fill] ? colorConfig[this._fill] : this._fill;
+        style.fill = colorConfig[this._fill].str ? colorConfig[this._fill].str : this._fill;
 
         // if the color word isn't found just return the arg because it could be a hex color
-        style.stroke = colorConfig[this._stroke] ? colorConfig[this._stroke] : this._stroke;
+        style.stroke = colorConfig[this._stroke].str ? colorConfig[this._stroke].str : this._stroke;
 
         return style;
     }

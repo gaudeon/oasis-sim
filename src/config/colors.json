@@ -1,8 +1,30 @@
 {
-    "LightGreen": "#90EE90",
-    "LightPink": "#FFB6C1",
-    "Orchid": "#DA70D6",
-    "Plum": "#DDA0DD",
-    "SkyBlue": "#87CEEB",
-    "White": "#FFFFFF"
+    "LightGreen": {
+        "str": "#90EE90",
+        "int": 9498256 
+    },
+    "LightPink": {
+        "str": "#FFB6C1",
+        "int": 16758465
+    },
+    "Orchid": {
+        "str": "#DA70D6",
+        "int": 14315734
+    },
+    "Plum": {
+        "str": "#DDA0DD",
+        "int": 14524637
+    },
+    "SkyBlue": {
+        "str": "#87CEEB",
+        "int": 8900331
+    },
+    "White": {
+        "str": "#FFFFFF",
+        "int": 16777215
+    },
+    "Black": {
+        "str": "#000000",
+        "int": 0
+    }
 }

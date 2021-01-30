@@ -1,5 +1,6 @@
 import CommandHistory from '../engine/command-history';
 import AllTextStyles from './all-text-styles';
+import colors from '../config/colors.json';
 
 export default class TextInput extends Phaser.GameObjects.Container {
     constructor (scene, x = 0, y = 0) {
@@ -28,6 +29,12 @@ export default class TextInput extends Phaser.GameObjects.Container {
         // hidden input
         this.hiddenInput = new Phaser.GameObjects.Text(scene);
 
+        // background
+        this.inputBackground = new Phaser.GameObjects.Graphics(scene);
+        this.inputBackground.fillStyle(colors.Black.int, 1);
+        this.inputBackground.fillRect(0, 0, this.scene.sys.game.config.width, this.scene.sys.game.config.height);
+        this.add(this.inputBackground);
+
         // text input
         this.textInput = new Phaser.GameObjects.Text(scene);
         this.add(this.textInput);
@@ -55,30 +62,6 @@ export default class TextInput extends Phaser.GameObjects.Container {
     get enabled () { return this._enabled; }
 
     set enabled (bool) { this._enabled = !!bool; }
-
-    get fontSize () { return this._fontSize; }
-
-    set fontSize (size) {
-        this._fontSize = size;
-
-        this.updateTextStyle();
-    }
-
-    get lineSpacingRatio () { return this._lineSpacingRatio; }
-
-    set lineSpacingRatio (ratio) {
-        this._lineSpacingRatio = ratio;
-
-        this.updateTextStyle();
-    }
-
-    get textColor () { return this._textColor; }
-
-    set textColor (color) {
-        this._textColor = color;
-
-        this.updateTextStyle();
-    }
 
     get children () { return this.getAll(); }
 

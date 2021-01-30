@@ -6,12 +6,13 @@ import BootScene from './scenes/boot';
 import LoginScene from './scenes/login';
 import OasisScene from './scenes/oasis';
 import RoomScene from './scenes/room';
+import colors from './config/colors.json';
 
 var gameConfig = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    backgroundColor: '#000000',
+    backgroundColor: colors.Black.str,
     physics: {
         default: 'arcade',
         arcade: {
@@ -22,34 +23,3 @@ var gameConfig = {
 };
 
 let game = new Phaser.Game(gameConfig);
-
-/*
-// import states
-import BootState from './states/boot';
-import LoginState from './states/login';
-import RoomState from './states/room';
-
-// import of non-js / non-json files
-require('./index.html');
-require('./imports/fonts');
-
-let game = new Phaser.Game(800, 600);
-
-Phaser.Device.whenReady(function () {
-    // plugins
-    game.__plugins = game.__plugins || {};
-
-    // add plugins here
-    // ...
-
-    // setup global namespace under game for our global data
-    game.global = {};
-
-    // states
-    game.state.add('Boot', BootState);
-    game.state.add('Login', LoginState);
-    game.state.add('Room', RoomState);
-
-    game.state.start('Boot');
-});
-*/
