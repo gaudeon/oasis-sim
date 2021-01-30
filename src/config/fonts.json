@@ -41,9 +41,7 @@
     },
     "textStyles": {
          "default": {
-            "fontFamily": "rubik",
-            "fill": "White",
-            "stroke": "White"
+            "fontFamily": "this is ignored in code because defaultTextStyle is used but is in here just to show there is a default style"
         },
         "error": {
             "fontFamily": "rubik",

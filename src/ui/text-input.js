@@ -1,4 +1,5 @@
 import CommandHistory from '../engine/command-history';
+import AllTextStyles from './all-text-styles';
 
 export default class TextInput extends Phaser.GameObjects.Container {
     constructor (scene, x = 0, y = 0) {
@@ -7,12 +8,18 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this.x = x;
         this.y = y;
 
-        // our private data
-        this._fontSize = 20;
+        // font styling
+        this._allTextStyles = new AllTextStyles();
+        this._defaultStyle = this._allTextStyles.defaultStyle.toPhaserTextStyle();
         this._lineSpacingRatio = 1.5;
+        this._defaultStyle.lineSpacing = this._defaultStyle.fontSize * this._lineSpacingRatio;
+
+        // our private data
         this._inputIndicator = '> ';
+        this._cursorIndicator = '_';
         this._cursorVisible = true;
-        this._textColor = 'white';
+        this._cursorBlinkWait = 1000;
+        this._cursorBlinkTime = 0;
 
         // our public attributes
         this._passwordMode = false;
@@ -42,12 +49,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
     }
 
     updateTextStyle() {
-        [this.textCursor, this.hiddenInput, this.textInput].forEach(txt => txt.setStyle({
-            fontSize: this._fontSize + 'px',
-            lineSpacing: this._fontSize * this._lineSpacingRatio,
-            fill: this._textColor,
-            stroke: this._textColor
-        }));
+        [this.textCursor, this.hiddenInput, this.textInput].forEach(txt => txt.setStyle(this._defaultStyle));
     }
 
     get enabled () { return this._enabled; }
@@ -149,7 +151,7 @@ export default class TextInput extends Phaser.GameObjects.Container {
     }
 
     get cursorOutput () {
-        return this._enabled && this._cursorVisible ? '_' : '';
+        return this._enabled && this._cursorVisible ? this._cursorIndicator : '';
     }
 
     get cursorPosition () {
@@ -250,19 +252,30 @@ export default class TextInput extends Phaser.GameObjects.Container {
     }
 
     kill () {
+        this.enabled = false;
         this.setActive(false);
         this.setVisible(false);
     }
 
     revive () {
+        this.enabled = true;
         this.setActive(true);
         this.setVisible(true);
     }
 
-    preUpdate () {
+    preUpdate (time, delta) {
+        // make the cursor blink
+        this._cursorBlinkTime += delta;
+        if (this._cursorBlinkTime > this._cursorBlinkWait) {
+            this.toggleCursor();
+            this._cursorBlinkTime = 0;
+        }
+
         this.hiddenInput.setText(this.hiddenOutput);
+
         this.textCursor.setPosition(this.cursorPosition, 0);
         this.textCursor.setText(this.cursorOutput);
+
         this.textInput.setText(this.textOutput);
     }
 }
