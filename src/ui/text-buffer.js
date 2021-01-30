@@ -25,6 +25,9 @@ export default class TextBuffer extends Phaser.GameObjects.Container {
 
     preUpdate (time, delta) {
         if (this._lineQueue.length > 0 && this._isPrinting == false) {
+            // we have lines to print so reset our buffer position, set us to be in printing mode then start printing text
+            this.resetBuffer();
+
             this._isPrinting = true;
 
             this.emit('StartPrinting', this);
@@ -51,6 +54,38 @@ export default class TextBuffer extends Phaser.GameObjects.Container {
     get lineCharWidth () { return this.scene.sys.game.config.width / (this._fontSize / 2); }
 
     get isPrinting () { return this._isPrinting; }
+
+    get bufferHeight () {
+        return _.reduce(this.children, (sum, line) => { return sum + line.lineHeight }, 0);
+    }
+
+    shiftBufferUp () {
+        // if we are not printing and the buffer isn't yet showing the most recent text and the buffer is bigger than the screen, then we can move it up
+        if (!this.isPrinting && this.y > this._startY - this.bufferHeight && this.bufferHeight > this.scene.sys.game.config.height) {
+            this.y -= 16;
+        }
+    }
+
+    shiftBufferDown () {
+        // if we are not printing and the buffer isn't yet showing the earliest text and the buffer is bigger than the screen, then we can move it down
+        if (!this.isPrinting && this.y < 0 && this.bufferHeight > this.scene.sys.game.config.height) {
+            this.y += 16;
+        }
+    }
+
+    gotoBufferTop () {
+        // if we are not printing we can reset the position of the buffer
+        if (!this.isPrinting) {
+            this.y = 0;
+        }
+    }
+
+    resetBuffer () {
+        // if we are not printing we can reset the position of the buffer
+        if (!this.isPrinting && this.bufferHeight > this.scene.sys.game.config.height) {
+            this.y = this._startY - this.bufferHeight;
+        }
+    }
 
     // Private Methods
 

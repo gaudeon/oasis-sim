@@ -47,8 +47,14 @@ export default class RoomScene extends Phaser.Scene {
         this.textBuffer = new TextBuffer(this, 25, this.sys.game.config.height - 30);
 
         // disable text input while buffer is adding text
-        this.textBuffer.on('StartPrinting', () => { this.input.enabled = false; });
-        this.textBuffer.on('DonePrinting', () => { this.input.enabled = true; });
+        this.textBuffer.on('StartPrinting', () => { this.textInput.enabled = false; });
+        this.textBuffer.on('DonePrinting', () => { this.textInput.enabled = true; });
+
+        // have the text buffer shift up or down based on key inputs
+        this.textInput.on('ShiftBufferUpPressed', () => { this.textBuffer.shiftBufferUp() });
+        this.textInput.on('ShiftBufferDownPressed', () => { this.textBuffer.shiftBufferDown() });
+        this.textInput.on('ResetBufferPressed', () => { this.textBuffer.resetBuffer() });
+        this.textInput.on('GotoBufferTopPressed', () => { this.textBuffer.gotoBufferTop() });
 
         this.commandHistory = new CommandHistory();
 

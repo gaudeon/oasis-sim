@@ -18,16 +18,16 @@ export default class TextInput extends Phaser.GameObjects.Container {
         this._passwordMode = false;
         this._enabled = true;
 
-        // text cursor
-        this.textCursor = new Phaser.GameObjects.Text(scene);
-        this.add(this.textCursor);
-
         // hidden input
         this.hiddenInput = new Phaser.GameObjects.Text(scene);
 
         // text input
         this.textInput = new Phaser.GameObjects.Text(scene);
         this.add(this.textInput);
+
+        // text cursor
+        this.textCursor = new Phaser.GameObjects.Text(scene);
+        this.add(this.textCursor);
 
         this.updateTextStyle();
 
@@ -49,6 +49,10 @@ export default class TextInput extends Phaser.GameObjects.Container {
             stroke: this._textColor
         }));
     }
+
+    get enabled () { return this._enabled; }
+
+    set enabled (bool) { this._enabled = !!bool; }
 
     get fontSize () { return this._fontSize; }
 
@@ -88,6 +92,22 @@ export default class TextInput extends Phaser.GameObjects.Container {
 
     isRightKey (keyCode) {
         return keyCode === Phaser.Input.Keyboard.KeyCodes.RIGHT;
+    }
+
+    isPageUpKey (keyCode) {
+        return keyCode === Phaser.Input.Keyboard.KeyCodes.PAGE_UP;
+    }
+
+    isPageDownKey (keyCode) {
+        return keyCode === Phaser.Input.Keyboard.KeyCodes.PAGE_DOWN;
+    }
+
+    isHomeKey (keyCode) {
+        return keyCode === Phaser.Input.Keyboard.KeyCodes.HOME;
+    }
+
+    isEndKey (keyCode) {
+        return keyCode === Phaser.Input.Keyboard.KeyCodes.END;
     }
 
     isUpKey (keyCode) {
@@ -207,6 +227,14 @@ export default class TextInput extends Phaser.GameObjects.Container {
                 } else {
                     this._cursorPosition++;
                 }
+            } else if (this.isPageUpKey(keyCode)) {
+                 this.emit('ShiftBufferUpPressed', this._inputValue, this);
+            } else if (this.isPageDownKey(keyCode)) {
+                 this.emit('ShiftBufferDownPressed', this._inputValue, this);
+            } else if (this.isHomeKey(keyCode)) {
+                 this.emit('ResetBufferPressed', this._inputValue, this);
+            } else if (this.isEndKey(keyCode)) {
+                 this.emit('GotoBufferTopPressed', this._inputValue, this);
             } else if (this._commandHistory.length && this.isUpKey(keyCode) && this._commandHistoryIndex > 0) {
                     this._commandHistoryIndex--;
                     this.resetInput(this._commandHistory.history[this._commandHistoryIndex], this._commandHistoryIndex);

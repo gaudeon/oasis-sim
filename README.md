@@ -1,7 +1,7 @@
 # O.A.S.I.S. Sim
 Three hidden keys open three secret gates...
 
-Text based adventure simulation of the O.A.S.I.S. in homage to the Novel "Ready Player One" by Ernest Cline. 
+Text based adventure simulation of the O.A.S.I.S. in homage to the simulation from the RPO universe authored by Ernest Cline in his books "Ready Player One" and "Ready Player Two". Thanks Mr. Cline for a new dream landscape and the endless enjoyment found within it!  
 
 ## Setup
 - npm install
