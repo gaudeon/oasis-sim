@@ -52,7 +52,7 @@ export default class RoomScene extends Phaser.Scene {
 
         this.commandHistory = new CommandHistory();
 
-        const DEBUG_RGI = true; // set to true to see command processing
+        const DEBUG_RGI = false; // set to true to see command processing
         this.rgi = new RGI(this.textBuffer, this.commandHistory, DEBUG_RGI);
 
         this.preRoomDesc = preRoomDesc;

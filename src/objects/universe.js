@@ -19,8 +19,6 @@ export default class Universe {
         this.startingRoomId = undefined;
 
         this.buildNodeNameIndex();
-        
-        console.log(this);
     }
 
     get player () { return this._player; }

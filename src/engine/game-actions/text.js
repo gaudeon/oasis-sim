@@ -17,7 +17,7 @@ export default class TextAction extends GameAction {
             console.log(`RGI: Last Command: `, lastCommand);
         }
 
-        buffer.addText(this.data);
+        buffer.addText("\n\r" + this.data);
 
         if (this.debug && console) {
             console.log(`--- End Text Action ---`);
