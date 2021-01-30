@@ -12,6 +12,26 @@ export default class Npc {
 
         this._key = node.key;
 
+        if (node.childrenNames) {
+            node.childrenNames.forEach(child => {
+                let matches = child.match(/^\[\[((door|item|npc)(?:-([^\-]+))+)\]\]$/i);
+                const id = matches[1];
+                const type = matches[2];
+
+                switch (type.toLowerCase()) {
+                    case 'door': // FORMAT: Door-<direction>-<id>
+                        this._doors.push(universe.findDoor(id));
+                        break;
+                    case 'item': // FORMAT: Item-<id>
+                        this._inventory.addItem(universe.findItem(id));
+                        break;
+                    case 'npc': // FORMATE: Npc-<id>
+                        this._npcs.push(universe.findNpc(id));
+                        break;
+                }
+            });
+        }
+
         this._setupEvents(node);
     }
 

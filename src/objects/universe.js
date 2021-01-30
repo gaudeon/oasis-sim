@@ -11,55 +11,52 @@ export default class Universe {
 
         this._events = new Phaser.Events.EventEmitter();
 
+        this.nodeNameIndex = {};
         this.rooms = {};
         this.items = {};
         this.doors = {};
         this.npcs = {};
         this.startingRoomId = undefined;
 
-        this.loadMap();
+        this.buildNodeNameIndex();
     }
 
     get player () { return this._player; }
 
     get events () { return this._events; }
 
-    findRoom(id) { return this.rooms[id] ? this.rooms[id] : this.findNode(id) }
+    findRoom(id) { return this.rooms[id] !== undefined ? this.rooms[id] : this.loadNode(id) }
 
-    findItem(id) { return this.items[id] ? this.items[id] : this.findNode(id) }
+    findItem(id) { return this.items[id] !== undefined ? this.items[id] : this.loadNode(id) }
 
-    findDoor(id) { return this.doors[id] ? this.doors[id] : this.findNode(id) }
+    findDoor(id) { return this.doors[id] !== undefined ? this.doors[id] : this.loadNode(id) }
 
-    findNpc(id) { return this.npcs[id] ? this.npcs[id] : this.findNode(id) }
+    findNpc(id) { return this.npcs[id] !== undefined ? this.npcs[id] : this.loadNode(id) }
 
-    findNode(id) {
-        let node = (_.filter(Map, n => {
-            n.name === id
-        }))[0];
+    buildNodeNameIndex () {
+        Map.forEach(node => {
+            // index both the id and the [[id]] version
+            this.nodeNameIndex[node.name] = this.nodeNameIndex[`[[${node.name}]]`] = node;
 
-        if (node === undefined) {
-            return node;
+            if (node.isStartingRoom) {
+                this.startingRoomId = node.name;
+            }
+        });
+    }
+
+    loadNode (id) {
+        let result = undefined;
+
+        if (this.nodeNameIndex[id] === undefined) {
+            return result;
         }
 
-        console.log(node);
-
-        return this.loadNode(node);
-    }
-
-    loadMap () {
-        Map.forEach(node => { this.loadNode(node) });
-    }
-
-    loadNode (node) {
-        let type = node.tags[0] || 'broken';
-        let result = undefined;
+        let node = this.nodeNameIndex[id];
+        let type = node.tags[0];
 
         switch (type.toLowerCase()) {
             case 'room':
                 result = this.rooms[node.name] = new Room(this, new Inventory(), node);
-                if (node.isStartingRoom) {
-                    this.startingRoomId = node.name;
-                }
                 break;
             case 'item':
                 result = this.items[node.name] = new Item(this, new Inventory(), node);

@@ -10,17 +10,8 @@ export default class Room {
         this._name = node.name || 'undefined';
         this._description = node.description || 'undefined';
 
-        // doors
         this._doors = [];
-        this.doorsLoaded = false;
-
-        // npcs
         this._npcs = [];
-        this.npcsLoaded = false;
-
-        // items
-        this._items = [];
-        this.itemsLoaded = false;
 
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
@@ -30,13 +21,13 @@ export default class Room {
 
                 switch (type.toLowerCase()) {
                     case 'door': // FORMAT: Door-<direction>-<id>
-                        this._doors.push(id);
+                        this._doors.push(universe.findDoor(id));
                         break;
                     case 'item': // FORMAT: Item-<id>
-                        this._items.push(id);
+                        this._inventory.addItem(universe.findItem(id));
                         break;
                     case 'npc': // FORMATE: Npc-<id>
-                        this._npcs.push(id);
+                        this._npcs.push(universe.findNpc(id));
                         break;
                 }
             });
@@ -53,15 +44,7 @@ export default class Room {
     get universe () { return this._universe; }
 
     // npcs
-    get npcs () { 
-        if (!this.npcsLoaded) {
-            this._npcs = _.map(this._npcs, this.universe.findNpc); 
-
-            this.npcsLoaded = true;
-        }
-
-        return this._npcs;
-    }
+    get npcs () { return this._npcs }
 
     findNpcByName (name) {
        return (_.filter(this._npcs, npc => { return npc.name.match(new RegExp('^npc-' + name, 'i')); }))[0];
@@ -78,15 +61,7 @@ export default class Room {
     }
 
     // doors
-    get doors () { 
-        if (!this.doorsLoaded) {
-            this._doors = _.map(this._doors, this.universe.findDoor); 
-
-            this.doorsLoaded = true;
-        }
-
-        return this._doors;
-    }
+    get doors () { return this._doors }
 
     get exits () { return this.doors; }
 
@@ -126,19 +101,7 @@ export default class Room {
     }
 
     // items
-    get inventory () { 
-        if (!this.itemsLoaded) {
-            this._items = _.map(this._items, this.universe.findItem);
-
-            this._items.forEach(item => {
-                this._inventory.add(item);
-            });
-
-            this.itemsLoaded = true;
-        }
-
-        return this._inventory;
-    }
+    get inventory () { return this._inventory }
 
     get items () { return this.inventory.items; }
 
