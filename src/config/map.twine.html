@@ -15,23 +15,29 @@
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">
 
 
-</script><tw-tag name="Door" color="green"></tw-tag>,<tw-tag name="Room" color="blue"></tw-tag>,<tw-tag name="door" color="green"></tw-tag>,<tw-tag name="item" color="purple"></tw-tag>,<tw-tag name="room" color="blue"></tw-tag><tw-passagedata pid="1" name="Room-IncipioPlayerHubParkCenter" tags="room" position="407,200" size="100,100">{{isStartingRoom}}1{{/isStartingRoom}}
+</script><tw-tag name="Door" color="green"></tw-tag>,<tw-tag name="Room" color="blue"></tw-tag>,<tw-tag name="door" color="green"></tw-tag>,<tw-tag name="item" color="purple"></tw-tag>,<tw-tag name="npc" color="yellow"></tw-tag>,<tw-tag name="room" color="blue"></tw-tag><tw-passagedata pid="1" name="Room-IncipioPlayerHubParkCenter" tags="room" position="382,175" size="100,100">{{isStartingRoom}}1{{/isStartingRoom}}
 {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}}
 [[Item-Rock]]
 {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}}
+[[Npc-Tron]]
 [[Door-North-IncipioMegaMallEntrance]]
 {{onNorth}}[ { 
 	&quot;type&quot;: &quot;TextAction&quot;, 
-	&quot;text&quot;: &quot;You walk down the path towards the megamall.&quot;
-} ]{{/onNorth}}</tw-passagedata><tw-passagedata pid="2" name="Item-Rock" tags="item" position="133,218" size="100,100">{{key}}rock{{/key}}
-{{description}}rock{{/description}}</tw-passagedata><tw-passagedata pid="3" name="Door-North-IncipioMegaMallEntrance" tags="Door" position="659,204" size="100,100">{{description}}a walkway leading to the megamall{{/description}}
-[[Room-IncipioMegaMallEntrance]]</tw-passagedata><tw-passagedata pid="4" name="Room-IncipioMegaMallEntrance" tags="Room" position="687,433" size="100,100">{{description}}You stand at the doorway leading into the megamall.{{/description}}
+	&quot;data&quot;: &quot;You walk down the path towards the megamall.&quot;
+} ]{{/onNorth}}</tw-passagedata><tw-passagedata pid="2" name="Item-Rock" tags="item" position="132,217" size="100,100">{{key}}rock{{/key}}
+{{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}</tw-passagedata><tw-passagedata pid="3" name="Door-North-IncipioMegaMallEntrance" tags="door" position="659,204" size="100,100">{{description}}a walkway leading to the megamall{{/description}}
+[[Room-IncipioMegaMallEntrance]]</tw-passagedata><tw-passagedata pid="4" name="Room-IncipioMegaMallEntrance" tags="room" position="687,433" size="100,100">{{description}}You stand at the doorway leading into the megamall.{{/description}}
 [[Door-South-IncipioPlayerHubParkCenter]]
 {{onSouth}}[ { 
 	&quot;type&quot;: &quot;TextAction&quot;, 
-	&quot;text&quot;: &quot;You walk along the path towards the center of the player hub.&quot;
-} ]{{/onSouth}}</tw-passagedata><tw-passagedata pid="5" name="Door-South-IncipioPlayerHubParkCenter" tags="Door" position="420,434" size="100,100">{{description}}a walkway leading to the center of the player hub{{/description}}
-[[Room-IncipioPlayerHubParkCenter]]</tw-passagedata></tw-storydata>
+	&quot;data&quot;: &quot;You walk along the path towards the center of the player hub.&quot;
+} ]{{/onSouth}}</tw-passagedata><tw-passagedata pid="5" name="Door-South-IncipioPlayerHubParkCenter" tags="door" position="420,433" size="100,100">{{description}}a walkway leading to the center of the player hub{{/description}}
+[[Room-IncipioPlayerHubParkCenter]]</tw-passagedata><tw-passagedata pid="6" name="Npc-Tron" tags="npc" position="168,410" size="100,100">{{key}}tron{{/key}}
+{{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
+{{onPlayerEnter}}[ {
+	&quot;type&quot;: &quot;TextAction&quot;, 
+	&quot;data&quot;: &quot;${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}&quot;
+} ]{{/onPlayerEnter}}</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">"use strict";var _slicedToArray=function(){return function(e,t){if(Array.isArray(e))return e;if(Symbol.iterator in Object(e))return function(e,t){var n=[],r=!0,i=!1,a=void 0;try{for(var o,s=e[Symbol.iterator]();!(r=(o=s.next()).done)&&(n.push(o.value),!t||n.length!==t);r=!0);}catch(e){i=!0,a=e}finally{try{!r&&s.return&&s.return()}finally{if(i)throw a}}return n}(e,t);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,n=Array(e.length);t<e.length;t++)n[t]=e[t];return n}return Array.from(e)}!function(){
 /**
  * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
