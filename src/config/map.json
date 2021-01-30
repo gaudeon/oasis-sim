@@ -9,7 +9,7 @@
         "tags": [
             "room"
         ],
-        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
+        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
         "childrenNames": [
             "[[Item-Rock]]",
             "[[Npc-Tron]]",
@@ -18,7 +18,7 @@
         "isStartingRoom": "1",
         "description": "You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.",
         "Item-Rock-Location": "on the ground",
-        "onNorth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You walk down the path towards the megamall.\"\r\n} ]"
+        "onNorth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk down the path towards the megamall.\"\r\n} ]"
     },
     {
         "pid": 2,
@@ -61,12 +61,12 @@
         "tags": [
             "room"
         ],
-        "content": "{{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'text': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
+        "content": "{{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
         "childrenNames": [
             "[[Door-South-IncipioPlayerHubParkCenter]]"
         ],
         "description": "You stand at the doorway leading into the megamall.",
-        "onSouth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"text\": \"You walk along the path towards the center of the player hub.\"\r\n} ]"
+        "onSouth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk along the path towards the center of the player hub.\"\r\n} ]"
     },
     {
         "pid": 5,
@@ -94,10 +94,10 @@
         "tags": [
             "npc"
         ],
-        "content": "{{key}}tron{{/key}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{onPlayerEnter}}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.{{/onPlayerEnter}}",
+        "content": "{{key}}tron{{/key}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{onPlayerEnter}}[ { \t'type': 'TextAction',  \t'data': '${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}' } ]{{/onPlayerEnter}}",
         "childrenNames": [],
         "key": "tron",
         "description": "an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}",
-        "onPlayerEnter": "Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337."
+        "onPlayerEnter": "[ {\r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}\"\r\n} ]"
     }
 ]

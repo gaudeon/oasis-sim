@@ -1,5 +1,5 @@
 import ChangeRoomAction from '../engine/game-actions/change-room';
-import TextAction from '../engine/game-actions/text';
+import AllGameActions from '../engine/all-game-actions';
 
 export default class Room {
     constructor (universe, inventory, node) {
@@ -27,11 +27,15 @@ export default class Room {
                         this._inventory.addItem(universe.findItem(id));
                         break;
                     case 'npc': // FORMATE: Npc-<id>
-                        this._npcs.push(universe.findNpc(id));
+                        let npc = universe.findNpc(id);
+                        npc.room = this;
+                        this._npcs.push(npc);
                         break;
                 }
             });
         }
+
+        this._setupEvents(node);
     }
 
     // room info
@@ -160,68 +164,6 @@ export default class Room {
         return description;
     };
 
-    _directionCommandEvent (direction) {
-        let actions;
-
-        switch (direction) {
-            case 'north':
-                actions = this._getActions('onNorth');
-                break;
-            case 'south':
-                actions = this._getActions('onSouth');
-                break;
-            case 'east':
-                actions = this._getActions('onEast');
-                break;
-            case 'west':
-                actions = this._getActions('onWest');
-                break;
-            case 'northeast':
-                actions = this._getActions('onNortheast');
-                break;
-            case 'northwest':
-                actions = this._getActions('onNorthwest');
-                break;
-            case 'southeast':
-                actions = this._getActions('onSoutheast');
-                break;
-            case 'southwest':
-                actions = this._getActions('onSouthwest');
-                break;
-            case 'up':
-                actions = this._getActions('onUp');
-                break;
-            case 'down':
-                actions = this._getActions('onDown');
-                break;
-        }
-
-        if (!Array.isArray(actions)) {
-            return [actions];
-        }
-
-        return actions;
-    }
-
-    _getActions (event) {
-        let actions = [];
-
-        if (this.node[event]) {
-            // TODO, support escaped characters
-            let events = JSON.parse(this.node[event]);
-
-            events.forEach(e => {
-                switch (e.type) {
-                    case 'TextAction':
-                        actions.push(new TextAction('{{defaultDescription}}' + e.text + '\n'));
-                        break;
-                };
-            });
-        }
-
-        return actions;
-    }
-
     _directionCommand (direction) {
         let door = this.findDoorByDirection(direction);
 
@@ -231,8 +173,7 @@ export default class Room {
 
         return new ChangeRoomAction({
             room: door.room,
-            preRoomDesc: this._directionCommandEvent(direction),
-            postRoomDesc: []
+            direction: direction
         });
     }
 
@@ -274,5 +215,26 @@ export default class Room {
 
     commandDown () {
         return this._directionCommand('down');
+    }
+
+    // event handling
+    _setupEvents(node) {
+        const handledEvents = ['onNorth', 'onSouth', 'onEast', 'onWest', 'onNortheast', 'onNorthwest', 'onSoutheast', 'onSouthwest', 'onUp', 'onDown'];
+
+        handledEvents.forEach(event => {
+            if (node[event] === undefined) {
+                return;
+            }
+            
+            this.universe.events.on(event, (rgi, room, universe) => {
+                if (room === this) {
+                    let actionConfigList = JSON.parse(node[event]);
+
+                    let actions = new AllGameActions().createActionsFromList(actionConfigList);
+
+                    rgi.executeActions(actions, room, universe);
+                }
+            });
+        });
     }
 }

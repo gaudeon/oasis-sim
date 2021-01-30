@@ -1,4 +1,5 @@
 import interpolateDescription from "../utils/interpolate-description";
+import AllGameActions from "../engine/all-game-actions";
 
 export default class Npc {
     constructor (universe, inventory, node) {
@@ -11,6 +12,8 @@ export default class Npc {
         this._description = interpolateDescription(node.description);
 
         this._key = node.key;
+
+        this._room = undefined;
 
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
@@ -49,6 +52,11 @@ export default class Npc {
 
     get key () { return this._key; }
 
+    // room related
+    get room () { return this._room; }
+
+    set room (r) { this._room = r; }
+
     // items
     findItemByName (name) { return this._inventory.findItem(name) }
 
@@ -68,19 +76,20 @@ export default class Npc {
     _setupEvents(node) {
         const handledEvents = ['onPlayerEnter'];
 
-        let event;
-        for(event in handledEvents) {
+        handledEvents.forEach(event => {
             if (node[event] === undefined) {
-                continue;
+                return;
             }
             
-            this.universe.events.on(event, () => {
-                
+            this.universe.events.on(event, (rgi, room, universe) => {
+                if (room === this.room) {
+                    let actionConfigList = JSON.parse(node[event]);
+
+                    let actions = new AllGameActions().createActionsFromList(actionConfigList);
+
+                    rgi.executeActions(actions, room, universe);
+                }
             });
-        }
-        if (node.onPlayerEnter) {
-
-        }
-
+        });
     }
 }

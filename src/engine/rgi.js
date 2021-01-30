@@ -101,6 +101,6 @@ export default class RGI {
     }
 
     outputCommand (command) {
-        this.textBuffer.addText('\n{{default}}> ' + command);
+        this.textBuffer.addText('\n\n{{default}}> ' + command);
     }
 }

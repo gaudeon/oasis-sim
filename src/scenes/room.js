@@ -8,7 +8,7 @@ export default class RoomScene extends Phaser.Scene {
         super({ key: key });
     }
 
-    init (room = '', preRoomDesc = [], postRoomDesc = [], lastCommand) {
+    init (room = '', lastCommand) {
         // load player
         if (this.registry.has('player')) {
             this.player = this.registry.get('player');
@@ -55,10 +55,6 @@ export default class RoomScene extends Phaser.Scene {
         const DEBUG_RGI = false; // set to true to see command processing
         this.rgi = new RGI(this.textBuffer, this.commandHistory, DEBUG_RGI);
 
-        this.preRoomDesc = preRoomDesc;
-
-        this.postRoomDesc = postRoomDesc;
-
         this.lastCommand = lastCommand;
     }
 
@@ -66,18 +62,22 @@ export default class RoomScene extends Phaser.Scene {
         this.add.existing(this.textBuffer);
         this.add.existing(this.textInput);
 
+        this.enterRoom(this.lastCommand, this.room);
+    }
+
+    enterRoom (lastCommand, room) {
+        this.room = room;
+
+        this.lastCommand = lastCommand;
+
         // output the last command that lead us to this line
         if (this.lastCommand) {
             this.rgi.outputCommand(this.lastCommand);
         }
 
-        // run actions prior to look (preRoomDesc)
-        this.rgi.executeActions(this.preRoomDesc, this.room, this.universe);
-
         // output look description of room
-        this.rgi.exec('look', this.room, this.universe, false, 'room');
+        this.rgi.exec('look', room, this.universe, false, 'room');
 
-        // run actions after look (postRoomDesc)
-        this.rgi.executeActions(this.postRoomDesc, this.room, this.universe);
+        this.universe.events.emit("onPlayerEnter", this.rgi, this.room, this.universe);
     }
 };

@@ -40,6 +40,11 @@
         "stroke": "White"
     },
     "textStyles": {
+         "default": {
+            "fontFamily": "rubik",
+            "fill": "White",
+            "stroke": "White"
+        },
         "error": {
             "fontFamily": "rubik",
             "fill": "LightPink",
@@ -91,6 +96,11 @@
             "fontSize": 64,
             "fill": "LightPink",
             "stroke": "LightPink"
+        },
+        "npcSpeech": {
+            "fontFamily": "rubik",
+            "fill": "White",
+            "stroke": "White"
         }
     }
 }

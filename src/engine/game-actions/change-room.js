@@ -4,7 +4,16 @@ export default class ChangeRoomAction extends GameAction {
     constructor (data) {
         super(data);
 
+        // data
+        //  room - the target room object
+        //  direction - the direction of the door in the current room 
+
         this._type = 'change-room';
+
+        if (data.direction === undefined || !data.direction.match(/^(north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/i)) {
+            throw new Error("direction not provided in data for this action");
+        }
+        this._direction = data.direction;
     }
 
     run (rgi, buffer, room, universe, lastCommand) {
@@ -25,23 +34,12 @@ export default class ChangeRoomAction extends GameAction {
             nextRoom = universe.findRoom(this.data.room);
         }
 
-        // update scene data so we are tracking the current state somewhere
-        rgi.scene.room = nextRoom;
+        // call any actions related to player moving into this new room in based on the direction of the exit in the current room
+        let direction = this._direction;
+        direction = direction.replace(/^\w/, (c) => c.toUpperCase());
+        universe.events.emit(`on${direction}`, rgi, room, universe);
 
-        rgi.scene.preRoomDesc = this.data.preRoomDesc;
-
-        rgi.scene.postRoomDesc = this.data.postRoomDesc;
-
-        rgi.scene.lastCommand = lastCommand;
-
-        // run actions prior to look (preRoomDesc)
-        rgi.executeActions(this.data.preRoomDesc, nextRoom, universe);
-
-        // output look description of room
-        rgi.exec('look', nextRoom, universe, false, 'room');
-
-        // run actions after look (postRoomDesc)
-        rgi.executeActions(this.data.postRoomDesc, nextRoom, universe);
+        rgi.scene.enterRoom(lastCommand, nextRoom);
 
         if (this.debug && console) {
             console.log(`--- End Change Room Action ---`);

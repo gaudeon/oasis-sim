@@ -1,10 +1,15 @@
 import GameAction from '../game-action';
+import interpolateDescription from "../../utils/interpolate-description";
 
 export default class TextAction extends GameAction {
     constructor (data) {
         super(data);
 
         this._type = 'text';
+
+        if (this.data === undefined || typeof(this.data) !== "string") {
+            throw new Error("data is not a string");
+        }
     }
 
     run (rgi, buffer, room, universe, lastCommand) {
@@ -17,7 +22,9 @@ export default class TextAction extends GameAction {
             console.log(`RGI: Last Command: `, lastCommand);
         }
 
-        buffer.addText("\n\r" + this.data);
+        let text = interpolateDescription(this.data, universe);
+
+        buffer.addText("\n\r{{defaultDescription}}" + text);
 
         if (this.debug && console) {
             console.log(`--- End Text Action ---`);

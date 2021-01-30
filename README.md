@@ -139,7 +139,7 @@ Example Room:
         [[Door-North-IncipioMegaMallEntrance]]
         {{onNorth}}[ { 
         	"type": "TextAction", 
-        	"text": "You walk down the path towards the megamall."
+        	"data": "You walk down the path towards the megamall."
         } ]{{/onNorth}}
 
 #### npc
@@ -166,4 +166,7 @@ Example Npc:
     Content:
         {{key}}tron{{/key}}
         {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
-        {{onPlayerEnter}}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.{{onPlayerEnter}}
+        {{onPlayerEnter}}[ {
+            "type": "TextAction",
+            "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDesccription}"
+        } ]{{onPlayerEnter}}
