@@ -42,7 +42,7 @@ export default class RoomScene extends Phaser.Scene {
         this.room = this.universe.findRoom(room);
 
         this.textInput = new TextInput(this, 25, this.sys.game.config.height - 30);
-        this.textInput.on('EnterPressed', text => { this.rgi.exec(text, this.room, this.player, true, 'player'); });
+        this.textInput.on('EnterPressed', text => { this.rgi.exec(text, this.room, this.universe, true, 'player'); });
 
         this.textBuffer = new TextBuffer(this, 25, this.sys.game.config.height - 30);
 
@@ -52,7 +52,7 @@ export default class RoomScene extends Phaser.Scene {
 
         this.commandHistory = new CommandHistory();
 
-        const DEBUG_RGI = false; // set to true to see command processing
+        const DEBUG_RGI = true; // set to true to see command processing
         this.rgi = new RGI(this.textBuffer, this.commandHistory, DEBUG_RGI);
 
         this.preRoomDesc = preRoomDesc;

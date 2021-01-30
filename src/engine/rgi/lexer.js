@@ -130,7 +130,12 @@ export default class Lexer {
         let match;
 
         if (this.debug && console) {
-            console.log(`Lexer: name -> ${word}`);
+            console.log('Lexer findNoun: word -> ', word);
+            console.log('Lexe findNoun: wordACL -> ', wordACL);
+            console.log('Lexer findNoun: words -> ', words);
+            console.log('Lexer findNoun: room -> ', room);
+            console.log('Lexer findNoun: universe -> ', universe);
+            console.log('Lexer findNoun: source -> ', source);
         }
 
         if (word.match(/^(self|myself|me)$/)) {

@@ -3,8 +3,10 @@ export default class Door {
         this._universe = universe;
         this._node = node;
 
+        this._name = node.name;
+
         let direction;
-        if (node.name) {
+        if (this._name) {
             let nameParts = node.name.split(/-/); // FORMAT: Door-<direction>-<id>
             direction = nameParts[1];
         }
@@ -24,6 +26,8 @@ export default class Door {
     get universe () { return this._universe; }
 
     get node () { return this._node; }
+
+    get name () { return this._name; }
 
     get direction () { return this._direction; }
 

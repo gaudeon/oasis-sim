@@ -19,6 +19,8 @@ export default class Universe {
         this.startingRoomId = undefined;
 
         this.buildNodeNameIndex();
+        
+        console.log(this);
     }
 
     get player () { return this._player; }
@@ -28,7 +30,6 @@ export default class Universe {
     findRoom(id) { return this.rooms[id] !== undefined ? this.rooms[id] : this.loadNode(id) }
 
     findItem(id) { return this.items[id] !== undefined ? this.items[id] : this.loadNode(id) }
-
     findDoor(id) { return this.doors[id] !== undefined ? this.doors[id] : this.loadNode(id) }
 
     findNpc(id) { return this.npcs[id] !== undefined ? this.npcs[id] : this.loadNode(id) }

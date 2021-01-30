@@ -12,8 +12,8 @@ export default class LookVerb extends Verb {
         this._aliases = ['l'];
     }
 
-    actions (rgi, room, player, lexemePhrase) {
-        super.actions(rgi, room, player, lexemePhrase);
+    actions (rgi, room, universe, lexemePhrase) {
+        super.actions(rgi, room, universe, lexemePhrase);
 
         let actions;
 
@@ -22,7 +22,7 @@ export default class LookVerb extends Verb {
             case 'PhraseVerbNoun':
                 if (typeof this.source !== 'undefined') {
                     if (this.source instanceof Player) {
-                        actions = this.lookAtPlayer(player);
+                        actions = this.lookAtPlayer(universe.player);
                     } else if (this.source instanceof Room) {
                         actions = this.lookAtRoom(room);
                     } else if (typeof this.source.description !== 'undefined') {

@@ -8,12 +8,21 @@ export default class ChangeRoomAction extends GameAction {
     }
 
     run (rgi, buffer, room, universe, lastCommand) {
+        if (this.debug && console) {
+            console.log(`--- Start Change Room Action ---`);
+            console.log(`RGI: `, rgi);
+            console.log(`RGI: Buffer: `, buffer);
+            console.log(`RGI: Room: `, room);
+            console.log(`RGI: Universe: `, universe);
+            console.log(`RGI: Last Command: `, lastCommand);
+        }
+
         // get next room
         let nextRoom;
-        if (typeof rgi.scene.universe.rooms[this.data.room] !== 'object') { // set the starting room if we don't have one defined
-            nextRoom = rgi.scene.universe.startingRoomId;
+        if (typeof universe.findRoom(this.data.room) !== 'object') { // set the starting room if we don't have one defined
+            nextRoom = universe.findRoom(universe.startingRoomId);
         } else {
-            nextRoom = rgi.scene.universe.rooms[this.data.room];
+            nextRoom = universe.findRoom(this.data.room);
         }
 
         // update scene data so we are tracking the current state somewhere
@@ -33,5 +42,9 @@ export default class ChangeRoomAction extends GameAction {
 
         // run actions after look (postRoomDesc)
         rgi.executeActions(this.data.postRoomDesc, nextRoom, universe);
+
+        if (this.debug && console) {
+            console.log(`--- End Change Room Action ---`);
+        }
     }
 }

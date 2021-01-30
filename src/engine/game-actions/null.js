@@ -9,5 +9,14 @@ export default class NullAction extends GameAction {
 
     run (rgi, buffer, room, universe, lastCommand) {
         // do nothing
+        if (this.debug && console) {
+            console.log(`--- Start Null Action ---`);
+            console.log(`RGI: `, rgi);
+            console.log(`RGI: Buffer: `, buffer);
+            console.log(`RGI: Room: `, room);
+            console.log(`RGI: Universe: `, universe);
+            console.log(`RGI: Last Command: `, lastCommand);
+            console.log(`--- End Null Action ---`);
+        }
     }
 }

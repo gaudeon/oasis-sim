@@ -24,8 +24,25 @@ export default class AddInventoryAction extends GameAction {
     get items () { return this._items; }
 
     run (rgi, buffer, room, universe, lastCommand) {
+        if (this.debug && console) {
+            console.log(`--- Start Add Inventory Action ---`);
+            console.log(`RGI: `, rgi);
+            console.log(`RGI: Buffer: `, buffer);
+            console.log(`RGI: Room: `, room);
+            console.log(`RGI: Universe: `, universe);
+            console.log(`RGI: Last Command: `, lastCommand);
+        }
+
         this.items.forEach(item => {
+            if (this.debug && console) {
+                console.log(`RGI: Adding Item: `, item);
+            }
+
             this.target.inventory.addItem(item);
         });
+
+        if (this.debug && console) {
+            console.log(`--- End Add Inventory Action ---`);
+        }
     }
 }

@@ -25,6 +25,7 @@ export default class RGI {
         if (this.debug && console) {
             console.log(`--- Start RGI Exec ---`);
             console.log(`RGI: Command: ${command}`);
+            console.log(`RGI: `, this);
             console.log(`RGI: Room: `, room);
             console.log(`RGI: Universe: `, universe);
         }
@@ -36,7 +37,11 @@ export default class RGI {
         } catch (error) {
             outputText();
 
-            const errorText = 'I don\'t know how to do that.';
+            let errorText = 'I don\'t know how to do that.';
+
+            if (this.debug && console) {
+                errorText += ` ${error}`;
+            }
 
             this.exec('error ' + errorText, room, universe, false);
 
