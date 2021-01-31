@@ -22,8 +22,8 @@
 [[Npc-Tron]]
 [[Door-North-IncipioMegaMallEntrance]]
 {{onNorth}}[ {
-	&#39;type&#39;: &#39;TextAction&#39;,
-	&#39;data&#39;: &#39;You walk down the path towards the megamall.&#39; 
+    &quot;type&quot;: &quot;TextAction&quot;,
+    &quot;data&quot;: &quot;You walk down the path towards the megamall.&quot; 
 } ]{{/onNorth}}</tw-passagedata><tw-passagedata pid="2" name="Item-Rock" tags="item" position="132,217" size="100,100">{{key}}rock{{/key}}
 {{displayName}}Rock{{/displayName}}
 {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}</tw-passagedata><tw-passagedata pid="3" name="Door-North-IncipioMegaMallEntrance" tags="door" position="659,204" size="100,100">{{displayName}}Northern Walkway{{/displayName}}
@@ -32,39 +32,39 @@
 {{description}}You stand at the doorway leading into the megamall.{{/description}}
 [[Door-South-IncipioPlayerHubParkCenter]]
 {{onSouth}}[ {
-	&#39;type&#39;: &#39;TextAction&#39;,
-	&#39;data&#39;: &#39;You walk along the path towards the center of the player hub.&#39;
-} ]{{/onSouth}}&quot;</tw-passagedata><tw-passagedata pid="5" name="Door-South-IncipioPlayerHubParkCenter" tags="door" position="420,433" size="100,100">{{displayName}}Southern Walkway{{/displayName}}
+	&quot;type&quot;: &quot;TextAction&quot;,
+	&quot;data&quot;: &quot;You walk along the path towards the center of the player hub.&quot;
+} ]{{/onSouth}}</tw-passagedata><tw-passagedata pid="5" name="Door-South-IncipioPlayerHubParkCenter" tags="door" position="420,433" size="100,100">{{displayName}}Southern Walkway{{/displayName}}
 {{description}}a walkway leading to the center of the player hub{{/description}}
 [[Room-IncipioPlayerHubParkCenter]]</tw-passagedata><tw-passagedata pid="6" name="Npc-Tron" tags="npc" position="168,410" size="100,100">{{key}}tron{{/key}}
 {{displayName}}Tron{{/displayName}}
 {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
 {{idleActions}} [ {
-	&#39;frequency&#39;: &#39;rare&#39;,
-	&#39;actions&#39;: [ {
-		&#39;type&#39;: &#39;TextAction&#39;,
-		&#39;data&#39;: &#39;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.&#39;
+	&quot;frequency&quot;: &quot;rare&quot;,
+	&quot;actions&quot;: [ {
+		&quot;type&quot;: &quot;TextAction&quot;,
+		&quot;data&quot;: &quot;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.&quot;
 	}, {
-		&#39;frequency&#39;: &#39;uncommon&#39;,
-		&#39;actions&#39;: [ {
-			&#39;type&#39;: &#39;TextAction&#39;,
-			&#39;data&#39;: &#39;${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.&#39;
+		&quot;frequency&quot;: &quot;uncommon&quot;,
+		&quot;actions&quot;: [ {
+			&quot;type&quot;: &quot;TextAction&quot;,
+			&quot;data&quot;: &quot;${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.&quot;
 	} ]
 } ]{{/idleActions}}
 {{onPlayerEnter}}[ { 
-	&#39;type&#39;: &#39;TextAction&#39;,
-	&#39;data&#39;: &#39;${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}&#39;
+	&quot;type&quot;: &quot;TextAction&quot;,
+	&quot;data&quot;: &quot;${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}&quot;
 } ]{{/onPlayerEnter}}
 {{onTell}} {
-	&#39;defaultResponseActions&#39;: [ { 
-		&#39;type&#39;: &#39;TextAction&#39;, 
-		&#39;data&#39;: &#39;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?&#39;
+	&quot;defaultResponseActions&quot;: [ { 
+		&quot;type&quot;: &quot;TextAction&quot;, 
+		&quot;data&quot;: &quot;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?&quot;
 	} ], 
-	&#39;conditionalResponses&#39;: [ { 
-		&#39;keyPhrases&#39; : [ &#39;help&#39; ], 
-		&#39;actions&#39; : [ {  
-			&#39;type&#39;: &#39;TextAction&#39;, 
-			&#39;data&#39;: &#39;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.&#39;
+	&quot;conditionalResponses&quot;: [ { 
+		&quot;keyPhrases&quot; : [ &quot;help&quot; ], 
+		&quot;actions&quot; : [ {  
+			&quot;type&quot;: &quot;TextAction&quot;, 
+			&quot;data&quot;: &quot;${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.&quot;
 		} ]
 	} ]
 } {{/onTell}}</tw-passagedata></tw-storydata>
