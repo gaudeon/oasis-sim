@@ -9,7 +9,7 @@
         "tags": [
             "room"
         ],
-        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{displayName}}Incipio Player Hub - Park Center{{/displayName}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
+        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{displayName}}Incipio Player Hub - Park Center{{/displayName}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ { \t'type': 'TextAction', \t'data': 'You walk down the path towards the megamall.'  } ]{{/onNorth}}",
         "childrenNames": [
             "[[Item-Rock]]",
             "[[Npc-Tron]]",
@@ -19,7 +19,7 @@
         "displayName": "Incipio Player Hub - Park Center",
         "description": "You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.",
         "Item-Rock-Location": "on the ground",
-        "onNorth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk down the path towards the megamall.\"\r\n} ]"
+        "onNorth": "[ {\r\n\t'type': 'TextAction',\r\n\t'data': 'You walk down the path towards the megamall.' \r\n} ]"
     },
     {
         "pid": 2,
@@ -64,13 +64,13 @@
         "tags": [
             "room"
         ],
-        "content": "{{displayName}}Incipio Mega Mall - Entrance{{/displayName}} {{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
+        "content": "{{displayName}}Incipio Mega Mall - Entrance{{/displayName}} {{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ { \t'type': 'TextAction', \t'data': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}'",
         "childrenNames": [
             "[[Door-South-IncipioPlayerHubParkCenter]]"
         ],
         "displayName": "Incipio Mega Mall - Entrance",
         "description": "You stand at the doorway leading into the megamall.",
-        "onSouth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk along the path towards the center of the player hub.\"\r\n} ]"
+        "onSouth": "[ {\r\n\t'type': 'TextAction',\r\n\t'data': 'You walk along the path towards the center of the player hub.'\r\n} ]"
     },
     {
         "pid": 5,
@@ -93,19 +93,19 @@
         "pid": 6,
         "position": {
             "x": 168,
-            "y": 408
+            "y": 410
         },
         "name": "Npc-Tron",
         "tags": [
             "npc"
         ],
-        "content": "{{key}}tron{{/key}} {{displayName}}Tron{{/displayName}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{idleActions}} [ { \t'frequency': 'rare', \t'actions': [ {  \t\t'type': 'TextAction', \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.'   \t}, { \t'frequency': 'uncommon', \t'actions': [ {  \t\t'type': 'TextAction', \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.'   \t} ] } ]{{/idleActions}} {{onPlayerEnter}}[ { \t'type': 'TextAction',  \t'data': '${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}' } ]{{/onPlayerEnter}} {{onTell}} {  \t'defaultResponseActions': [ { \t\t'type': 'TextAction', \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?' \t} ], \t'conditionalResponses': [ { \t\t'keyPhrases' : [ 'help' ], \t\t'actions' : [ {  \t\t\t'type': 'TextAction', \t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.'   \t\t} ] \t} ] } {{/onTell}}",
+        "content": "{{key}}tron{{/key}} {{displayName}}Tron{{/displayName}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{idleActions}} [ { \t'frequency': 'rare', \t'actions': [ { \t\t'type': 'TextAction', \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.' \t}, { \t\t'frequency': 'uncommon', \t\t'actions': [ { \t\t\t'type': 'TextAction', \t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.' \t} ] } ]{{/idleActions}} {{onPlayerEnter}}[ {  \t'type': 'TextAction', \t'data': '${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}' } ]{{/onPlayerEnter}} {{onTell}} { \t'defaultResponseActions': [ {  \t\t'type': 'TextAction',  \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?' \t} ],  \t'conditionalResponses': [ {  \t\t'keyPhrases' : [ 'help' ],  \t\t'actions' : [ {   \t\t\t'type': 'TextAction',  \t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.' \t\t} ] \t} ] } {{/onTell}}",
         "childrenNames": [],
         "key": "tron",
         "displayName": "Tron",
         "description": "an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}",
-        "idleActions": " [ {\r\n\t\"frequency\": \"rare\",\r\n\t\"actions\": [ { \r\n\t\t\"type\": \"TextAction\",\r\n\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.\"  \r\n\t}, {\r\n\t\"frequency\": \"uncommon\",\r\n\t\"actions\": [ { \r\n\t\t\"type\": \"TextAction\",\r\n\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.\"  \r\n\t} ]\r\n} ]",
-        "onPlayerEnter": "[ {\r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}\"\r\n} ]",
-        "onTell": "{ \r\n\t\"defaultResponseActions\": [ {\r\n\t\t\"type\": \"TextAction\",\r\n\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?\"\r\n\t} ],\r\n\t\"conditionalResponses\": [ {\r\n\t\t\"keyPhrases\" : [ \"help\" ],\r\n\t\t\"actions\" : [ { \r\n\t\t\t\"type\": \"TextAction\",\r\n\t\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.\"  \r\n\t\t} ]\r\n\t} ]\r\n}"
+        "idleActions": " [ {\r\n\t'frequency': 'rare',\r\n\t'actions': [ {\r\n\t\t'type': 'TextAction',\r\n\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.'\r\n\t}, {\r\n\t\t'frequency': 'uncommon',\r\n\t\t'actions': [ {\r\n\t\t\t'type': 'TextAction',\r\n\t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.'\r\n\t} ]\r\n} ]",
+        "onPlayerEnter": "[ { \r\n\t'type': 'TextAction',\r\n\t'data': '${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}'\r\n} ]",
+        "onTell": " {\r\n\t'defaultResponseActions': [ { \r\n\t\t'type': 'TextAction', \r\n\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?'\r\n\t} ], \r\n\t'conditionalResponses': [ { \r\n\t\t'keyPhrases' : [ 'help' ], \r\n\t\t'actions' : [ {  \r\n\t\t\t'type': 'TextAction', \r\n\t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.'\r\n\t\t} ]\r\n\t} ]\r\n} "
     }
 ]
