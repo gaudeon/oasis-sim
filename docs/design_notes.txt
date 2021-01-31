@@ -29,3 +29,18 @@ Shop in one of the giant virtual malls that cover the planet
 Have to pay to teleport to other locations
 
 Teleportation Vouchers
+
+Touching items will pick them up in the OASIS
+
+Oasis public school #1873 (OPS1873)
+
+Teleportation fares to teleport somewhere.
+
+currency - OASIS Credits
+
+------
+
+Wades first passphrase - you have been recruited by the star league to defend the frontier against zur and the kodan armada
+
+
+

@@ -166,7 +166,35 @@ Example Npc:
     Content:
         {{key}}tron{{/key}}
         {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
+        {{idleActions}} [ {
+            "frequency": "rare",
+            "actions": [ { 
+                "type": "TextAction",
+                "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello."  
+            }, {
+            "frequency": "uncommon",
+            "actions": [ { 
+                "type": "TextAction",
+                "data": "${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger."  
+            } ]
+        } ]
+        {{/idleActions}}
         {{onPlayerEnter}}[ {
             "type": "TextAction",
-            "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDesccription}"
+            "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337."
         } ]{{onPlayerEnter}}
+        {{onTell}}
+        { 
+            "defaultResponse": [ {
+                "type": "TextAction",
+                "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeeach}What can I do for you?"
+            } ],
+            "conditionalResponses": [ {
+                "keyPhrases" : [ "help" ],
+                "responsese" : [ { 
+                    "type": "TextAction",
+                    "data": "${style-npcHighlist}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and public areas to chat and socialize on this planet. In fact walk from here to the ${style-exitHighlight}north and we you find a mall. For anything else I recommend heading to teleporting elsewhere, if you have the credits of course.  
+                } ]
+            } ]
+        }
+        {{/onTell}}

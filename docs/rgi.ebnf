@@ -1,7 +1,8 @@
 player-command = player-verb-phrase | player-verb-noun-phrase ;
-admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase ;
-player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb | put-verb ) { article | preposition } noun { article | preposition };
-player-verb-string-phrase = help-verb string;
+admin-command = admin-verb-string-phrase | player-verb-phrase | player-verb-noun-phrase | player-verb-noun-string-phrase ;
+player-verb-noun-string-phrase = { article | preposition } ( say-verb ) { article | preposition } noun string ;
+player-verb-noun-phrase = { article | preposition } ( look-verb | get-verb | put-verb ) { article | preposition } noun { article | preposition } ;
+player-verb-string-phrase = help-verb string ;
 player-verb-phrase = look-verb | north-verb | south-verb | east-verb
             | west-verb | northeast-verb | northwest-verb | southeast-verb
             | southwest-verb | up-verb | down-verb | help-verb | history-verb
@@ -23,9 +24,10 @@ help-verb = "?" | "h" | "help" ;
 error-verb = "error" ;
 history-verb = "history" ;
 inventory-verb = "inventory" ;
-exits-verb = "exits";
+exits-verb = "exits" ;
 get-verb = "g" | "get" | "take" | "pick" ;
-put-verb = "p" | "put" | "drop" | "set";
+put-verb = "p" | "put" | "drop" | "set" ;
+tell-verb = "t" | "tell" | "announce" | "assert" | "claim" | "declare" | "disclose" | "express" | "reply" | "report" | "respond" | "say" | "speak" | "state" | "suggest" ;
 preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
             | "against" | "along" | "alongside" | "amid" | "apropos" | "apud"
             | "around" | "as" | "astride" | "at" | "atop" | "ontop" | "bar"
@@ -43,7 +45,7 @@ preposition = "aboard" | "about" | "above" | "absent" | "across" | "after"
 article = "the" " | " "a" " | " "an" ;
 noun = string ;
 string = { character } ;
-character = letter | digit | symbol | space;
+character = letter | digit | symbol | space ;
 letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
        | "H" | "I" | "J" | "K" | "L" | "M" | "N"
        | "O" | "P" | "Q" | "R" | "S" | "T" | "U"

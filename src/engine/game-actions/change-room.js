@@ -1,4 +1,5 @@
 import GameAction from '../game-action';
+import CallEventAction from './call-event';
 
 export default class ChangeRoomAction extends GameAction {
     constructor (data) {
@@ -34,10 +35,16 @@ export default class ChangeRoomAction extends GameAction {
             nextRoom = universe.findRoom(this.data.room);
         }
 
-        // call any actions related to player moving into this new room in based on the direction of the exit in the current room
+        // let the room know the player has exited in a given direction
         let direction = this._direction;
         direction = direction.replace(/^\w/, (c) => c.toUpperCase());
-        universe.events.emit(`on${direction}`, rgi, room, universe);
+        rgi.executeAction(new CallEventAction({
+            event:`on${direction}`,
+            eventSource: room,
+            eventData: {
+                direction
+            }
+        }), room, universe);
 
         rgi.scene.enterRoom(lastCommand, nextRoom);
 

@@ -13,6 +13,8 @@ export default class Room {
         this._doors = [];
         this._npcs = [];
 
+        this._events = new Phaser.Events.EventEmitter();
+
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
                 let matches = child.match(/^\[\[((door|item|npc)(?:-([^\-]+))+)\]\]$/i);
@@ -46,6 +48,8 @@ export default class Room {
     get description () { return this._description; }
 
     get universe () { return this._universe; }
+
+    get events () { return this._events; }
 
     // npcs
     get npcs () { return this._npcs }
@@ -226,14 +230,12 @@ export default class Room {
                 return;
             }
             
-            this.universe.events.on(event, (rgi, room, universe) => {
-                if (room === this) {
-                    let actionConfigList = JSON.parse(node[event]);
+            this.events.on(event, (data, rgi, room, universe) => {
+                let actionConfigList = JSON.parse(node[event]);
 
-                    let actions = new AllGameActions().createActionsFromList(actionConfigList);
+                let actions = new AllGameActions().createActionsFromList(actionConfigList);
 
-                    rgi.executeActions(actions, room, universe);
-                }
+                rgi.executeActions(actions, room, universe);
             });
         });
     }

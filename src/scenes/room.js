@@ -2,6 +2,8 @@ import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 import CommandHistory from '../engine/command-history';
 import RGI from '../engine/rgi';
+import CallEvent from '../engine/game-actions/call-event';
+import CallEventAction from '../engine/game-actions/call-event';
 
 export default class RoomScene extends Phaser.Scene {
     constructor (config, key = 'Room') {
@@ -84,6 +86,11 @@ export default class RoomScene extends Phaser.Scene {
         // output look description of room
         this.rgi.exec('look', room, this.universe, false, 'room');
 
-        this.universe.events.emit("onPlayerEnter", this.rgi, this.room, this.universe);
+        // let the room know the player has entered
+        this.rgi.executeAction(new CallEventAction({
+            event: 'onPlayerEnter',
+            eventSource: room,
+            eventData: {}
+        }), this.room, this.universe);
     }
 };

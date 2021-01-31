@@ -16,6 +16,9 @@ export default class Parser {
             case 'verb-noun':
                 commands = this.processPhraseVerbNoun(lexemePhrase);
                 break;
+            case 'verb-noun-string':
+                commands = this.processPhraseVerbNounString(lexemePhrase);
+                break;
             default:
                 throw new Error('Provided lexeme phrase does not have a supported pattern');
         }
@@ -42,6 +45,14 @@ export default class Parser {
     processPhraseVerbNoun (lexemePhrase) {
         let verb = lexemePhrase.tokenSentence[0];
         verb.source = lexemePhrase.tokenSentence[1];
+
+        return [verb];
+    }
+
+    processPhraseVerbNounString (lexemePhrase) {
+        let verb = lexemePhrase.tokenSentence[0];
+        verb.source = lexemePhrase.tokenSentence[1];
+        verb.stringData = lexemePhrase.tokenSentence[2];
 
         return [verb];
     }

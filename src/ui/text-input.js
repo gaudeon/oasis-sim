@@ -217,9 +217,9 @@ export default class TextInput extends Phaser.GameObjects.Container {
             } else if (this.isPageDownKey(keyCode)) {
                  this.emit('ShiftBufferDownPressed', this._inputValue, this);
             } else if (this.isHomeKey(keyCode)) {
-                 this.emit('ResetBufferPressed', this._inputValue, this);
-            } else if (this.isEndKey(keyCode)) {
                  this.emit('GotoBufferTopPressed', this._inputValue, this);
+            } else if (this.isEndKey(keyCode)) {
+                 this.emit('ResetBufferPressed', this._inputValue, this);
             } else if (this._commandHistory.length && this.isUpKey(keyCode) && this._commandHistoryIndex > 0) {
                     this._commandHistoryIndex--;
                     this.resetInput(this._commandHistory.history[this._commandHistoryIndex], this._commandHistoryIndex);

@@ -2,6 +2,7 @@ import AllVerbs from './lexemes/all-verbs';
 import PhraseVerb from './phrases/phrase-verb';
 import PhraseVerbString from './phrases/phrase-verb-string';
 import PhraseVerbNoun from './phrases/phrase-verb-noun';
+import PhraseVerbNounString from './phrases/phrase-verb-noun-string';
 
 export default class Lexer {
     constructor (rgi, debug = false) {
@@ -13,6 +14,14 @@ export default class Lexer {
     }
 
     tokenize (command, room, universe, source = 'admin') {
+        if (this.debug && console) {
+            console.log(`--- Start Lexer Tokenize --- `);
+            console.log(`Lexer command: `, command);
+            console.log(`Lexer room: `, command);
+            console.log(`Lexer universe: `, command);
+            console.log(`Lexer source: `, command);
+        }
+
         let words = this.cleanPrepositions(this.cleanArticles(command.replace(/\s+$/, '').split(/\s+/)));
 
         if (!words.length) { // no command found
@@ -83,11 +92,17 @@ export default class Lexer {
             throw new Error('No valid lexeme phrase found.');
         }
 
+        if (this.debug && console) {
+            console.log(`Lexer found lexemePhrase: `, lexemePhrase);
+            console.log(`--- End Lexer Tokenize --- `);
+        }
+
         return lexemePhrase;
     }
 
     get lexemePhrases () {
         return [
+            new PhraseVerbNounString(),
             new PhraseVerbNoun(),
             new PhraseVerbString(),
             new PhraseVerb()

@@ -4,6 +4,7 @@ import NullAction from './game-actions/null';
 import RemoveInventoryAction from './game-actions/remove-inventory';
 import RunCommandAction from './game-actions/run-command';
 import TextAction from './game-actions/text';
+import CallEventAction from './game-actions/call-event';
 
 export default class AllGameActions {
     constructor () {
@@ -16,7 +17,8 @@ export default class AllGameActions {
             'NullAction': NullAction,
             'RemoveInventoryAction': RemoveInventoryAction,
             'RunCommandAction': RunCommandAction,
-            'TextAction': TextAction
+            'TextAction': TextAction,
+            'CallEvent': CallEventAction
         };
     }
 

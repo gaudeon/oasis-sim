@@ -82,22 +82,38 @@ export default class RGI {
         }
 
         actions.forEach((action) => {
-            if (action instanceof Promise) {
-                action.then(realAction => {
-                    if (realAction instanceof GameAction) {
-                        realAction.run(this, this.textBuffer, room, universe, lastCommand);
-                    } else {
-                        throw new Error('Not a valid game action', action);
-                    }
-                })
-            } else {
-                if (action instanceof GameAction) {
-                    action.run(this, this.textBuffer, room, universe, lastCommand);
+            this.executeAction(action, room, universe, lastCommand);
+        });
+    }
+
+    executeAction (action, room, universe, lastCommand) {
+        if (this.debug && console) {
+            console.log(`--- Start RGI Execute Action ---`);
+            console.log(`Execute Action action: `, action);
+            console.log(`Execute Action room: `, room);
+            console.log(`Execute Action universe: `, universe);
+            console.log(`Execute Action lastCommand: `, lastCommand);
+        }
+
+        if (action instanceof Promise) {
+            action.then(realAction => {
+                if (realAction instanceof GameAction) {
+                    realAction.run(this, this.textBuffer, room, universe, lastCommand);
                 } else {
                     throw new Error('Not a valid game action', action);
                 }
+            })
+        } else {
+            if (action instanceof GameAction) {
+                action.run(this, this.textBuffer, room, universe, lastCommand);
+            } else {
+                throw new Error('Not a valid game action', action);
             }
-        });
+        }
+
+        if (this.debug && console) {
+            console.log(`--- End RGI executeAction ---`);
+        }
     }
 
     outputCommand (command) {
