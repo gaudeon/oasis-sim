@@ -3,7 +3,9 @@ export default class Door {
         this._universe = universe;
         this._node = node;
 
-        this._name = node.name;
+        this._name = node.name || 'undefined';
+
+        this._displayName || 'undefined';
 
         let direction;
         if (this._name) {
@@ -28,6 +30,8 @@ export default class Door {
     get node () { return this._node; }
 
     get name () { return this._name; }
+
+    get displayName () { return this._displayName; }
 
     get direction () { return this._direction; }
 

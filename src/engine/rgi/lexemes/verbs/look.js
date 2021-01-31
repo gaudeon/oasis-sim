@@ -2,6 +2,8 @@ import Verb from '../verb';
 import TextAction from '../../../game-actions/text';
 import Player from '../../../../objects/player';
 import Room from '../../../../objects/room';
+import Npc from '../../../../objects/npc';
+import Item from '../../../../objects/item';
 
 export default class LookVerb extends Verb {
     constructor () {
@@ -22,9 +24,13 @@ export default class LookVerb extends Verb {
             case 'PhraseVerbNoun':
                 if (typeof this.source !== 'undefined') {
                     if (this.source instanceof Player) {
-                        actions = this.lookAtPlayer(universe.player);
+                        actions = this.lookAtPlayer(this.source)
                     } else if (this.source instanceof Room) {
-                        actions = this.lookAtRoom(room);
+                        actions = this.lookAtRoom(this.source);
+                    } else if (this.source instanceof Item) {
+                        actions = this.lookAtItem(this.source);
+                    } else if (this.source instanceof Npc) {
+                        actions = this.lookAtNpc(this.source);
                     } else if (typeof this.source.description !== 'undefined') {
                         actions = [new TextAction('{{defaultDescription}}You see ' + this.source.description + '.')];
                     }
@@ -54,6 +60,18 @@ export default class LookVerb extends Verb {
 
     lookAtRoom (room) {
         let briefTextAction = new TextAction('{{defaultDescription}}' + room.commandLook());
+
+        return [briefTextAction];
+    }
+
+    lookAtItem (item) {
+        let briefTextAction = new TextAction('{{defaultDescription}}' + item.commandLook());
+
+        return [briefTextAction];
+    }
+
+    lookAtNpc (npc) {
+        let briefTextAction = new TextAction('{{defaultDescription}}' + npc.commandLook());
 
         return [briefTextAction];
     }

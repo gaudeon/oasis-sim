@@ -6,7 +6,9 @@ export default class Item {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = node.name;
+        this._name = node.name || 'undefined';
+
+        this._displayName = node.displayName || 'undefined';
 
         this._description = interpolateDescription(node.description);
 
@@ -35,6 +37,8 @@ export default class Item {
 
     get node () { return this._node; }
 
+    get displayName () { return this._displayName; }
+
     get name () { return this._name; }
 
     get description () { return this._description; }
@@ -50,6 +54,11 @@ export default class Item {
      // items
     findItemByName (name) { return this._inventory.findItem(name) }
 
+    // the room description
+    getGeneralDescription () {
+        return '{{itemHighlight}}'+ this.displayName + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
+    }
+
     // the room inventory
     getInventoryDescription () {
         let itemDescriptions = [];
@@ -61,5 +70,16 @@ export default class Item {
         });
 
         return itemDescriptions;
+    }
+
+    // commands methods
+    commandLook () {
+        let description = '{{defaultDescription}}' + this.getGeneralDescription();
+
+        if (this.items.length > 0) {
+            description = description + `\n\n\${this.displayName} contains:\n\n` + this.getInventoryDescription();
+        }
+
+        return description;
     }
 }

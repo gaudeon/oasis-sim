@@ -8,6 +8,7 @@ export default class Room {
         this._node = node;
 
         this._name = node.name || 'undefined';
+        this._displayName = node.displayName || 'undefined';
         this._description = node.description || 'undefined';
 
         this._doors = [];
@@ -42,6 +43,8 @@ export default class Room {
 
     // room info
     get node () { return this._node; }
+
+    get displayName () { return this._displayName; }
 
     get name () { return this._name; }
 
@@ -130,7 +133,7 @@ export default class Room {
 
     // the room description
     getGeneralDescription () {
-        return this.description;
+        return this.displayName + '\n\n' + this.description;
     }
 
     // all descriptive details about a room

@@ -9,13 +9,14 @@
         "tags": [
             "room"
         ],
-        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
+        "content": "{{isStartingRoom}}1{{/isStartingRoom}} {{displayName}}Incipio Player Hub - Park Center{{/displayName}} {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}} [[Item-Rock]] {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}} [[Npc-Tron]] [[Door-North-IncipioMegaMallEntrance]] {{onNorth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk down the path towards the megamall.' } ]{{/onNorth}}",
         "childrenNames": [
             "[[Item-Rock]]",
             "[[Npc-Tron]]",
             "[[Door-North-IncipioMegaMallEntrance]]"
         ],
         "isStartingRoom": "1",
+        "displayName": "Incipio Player Hub - Park Center",
         "description": "You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.",
         "Item-Rock-Location": "on the ground",
         "onNorth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk down the path towards the megamall.\"\r\n} ]"
@@ -30,9 +31,10 @@
         "tags": [
             "item"
         ],
-        "content": "{{key}}rock{{/key}} {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}",
+        "content": "{{key}}rock{{/key}} {{displayName}}Rock{{/displayName}} {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}",
         "childrenNames": [],
         "key": "rock",
+        "displayName": "Rock",
         "description": "a ${style-itemHighlight}rock${style-defaultDescription}"
     },
     {
@@ -45,10 +47,11 @@
         "tags": [
             "door"
         ],
-        "content": "{{description}}a walkway leading to the megamall{{/description}} [[Room-IncipioMegaMallEntrance]]",
+        "content": "{{displayName}}Northern Walkway{{/displayName}} {{description}}a walkway leading to the megamall{{/description}} [[Room-IncipioMegaMallEntrance]]",
         "childrenNames": [
             "[[Room-IncipioMegaMallEntrance]]"
         ],
+        "displayName": "Northern Walkway",
         "description": "a walkway leading to the megamall"
     },
     {
@@ -61,10 +64,11 @@
         "tags": [
             "room"
         ],
-        "content": "{{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
+        "content": "{{displayName}}Incipio Mega Mall - Entrance{{/displayName}} {{description}}You stand at the doorway leading into the megamall.{{/description}} [[Door-South-IncipioPlayerHubParkCenter]] {{onSouth}}[ {  \t'type': 'TextAction',  \t'data': 'You walk along the path towards the center of the player hub.' } ]{{/onSouth}}",
         "childrenNames": [
             "[[Door-South-IncipioPlayerHubParkCenter]]"
         ],
+        "displayName": "Incipio Mega Mall - Entrance",
         "description": "You stand at the doorway leading into the megamall.",
         "onSouth": "[ { \r\n\t\"type\": \"TextAction\", \r\n\t\"data\": \"You walk along the path towards the center of the player hub.\"\r\n} ]"
     },
@@ -78,10 +82,11 @@
         "tags": [
             "door"
         ],
-        "content": "{{description}}a walkway leading to the center of the player hub{{/description}} [[Room-IncipioPlayerHubParkCenter]]",
+        "content": "{{displayName}}Southern Walkway{{/displayName}} {{description}}a walkway leading to the center of the player hub{{/description}} [[Room-IncipioPlayerHubParkCenter]]",
         "childrenNames": [
             "[[Room-IncipioPlayerHubParkCenter]]"
         ],
+        "displayName": "Southern Walkway",
         "description": "a walkway leading to the center of the player hub"
     },
     {

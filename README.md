@@ -75,6 +75,7 @@ Example Item:
 
     Content:
         {{key}}rock{{/key}}
+        {{displayName}}Rock{{/displayName}}
         {{description}}a ${style-itemHighlight}rock${style-defaultDescription}{{/description}}
 
 #### door
@@ -94,13 +95,14 @@ They hav ethe following content format:
 
 Example Door:
 
-    Title: Door-South-IncipioPlayerHubParkCenter
+    Title: Door-North-IncipioMegaMallEntrance
 
     Tag: door
 
     Content:
-        {{description}}a walkway leading to the center of the player hub{{/description}}
-        [[Room-IncipioPlayerHubParkCenter]]
+        {{displayName}}Northern Walkway{{/displayName}}
+        {{description}}a walkway leading to the megamall{{/description}}
+        [[Room-IncipioMegaMallEntrance]]
 
 #### room
 
@@ -132,14 +134,15 @@ Example Room:
 
     Content:
         {{isStartingRoom}}1{{/isStartingRoom}}
+        {{displayName}}Incipio Player Hub - Park Center{{/displayName}}
         {{description}}You appear at Incipio PlayerHub #1337. Your are at the center of the small sparsely detailed park.{{/description}}
         [[Item-Rock]]
         {{Item-Rock-Location}}on the ground{{/Item-Rock-Location}}
         [[Npc-Tron]]
         [[Door-North-IncipioMegaMallEntrance]]
         {{onNorth}}[ { 
-        	"type": "TextAction", 
-        	"data": "You walk down the path towards the megamall."
+            "type": "TextAction", 
+            "data": "You walk down the path towards the megamall."
         } ]{{/onNorth}}
 
 #### npc
@@ -165,6 +168,7 @@ Example Npc:
 
     Content:
         {{key}}tron{{/key}}
+        {{displayName}}Tron{{/displayName}}
         {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}}
         {{idleActions}} [ {
             "frequency": "rare",
@@ -177,23 +181,22 @@ Example Npc:
                 "type": "TextAction",
                 "data": "${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger."  
             } ]
-        } ]
-        {{/idleActions}}
+        } ]{{/idleActions}}
         {{onPlayerEnter}}[ {
-            "type": "TextAction",
-            "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337."
-        } ]{{onPlayerEnter}}
+            "type": "TextAction", 
+            "data": "${style-npcHighlight}Tron${style-defaultDescription} says ${style-npcSpeech}Hello User ${data-PlayerName}. Welcome to Incipio PlayerHub #1337.${style-defaultDescription}"
+        } ]{{/onPlayerEnter}}
         {{onTell}}
         { 
-            "defaultResponse": [ {
+            "defaultResponseActions": [ {
                 "type": "TextAction",
-                "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeeach}What can I do for you?"
+                "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}What can I do for you?"
             } ],
             "conditionalResponses": [ {
                 "keyPhrases" : [ "help" ],
-                "responsese" : [ { 
+                "actions" : [ { 
                     "type": "TextAction",
-                    "data": "${style-npcHighlist}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and public areas to chat and socialize on this planet. In fact walk from here to the ${style-exitHighlight}north and we you find a mall. For anything else I recommend heading to teleporting elsewhere, if you have the credits of course.  
+                    "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere."  
                 } ]
             } ]
         }

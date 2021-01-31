@@ -8,9 +8,9 @@ export default class Npc {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = node.name;
+        this._name = node.name || 'undefined';
 
-        this._diplayName = node.displayName;
+        this._displayName = node.displayName || 'undefined';
 
         this._description = interpolateDescription(node.description);
 
@@ -43,7 +43,7 @@ export default class Npc {
 
     get node () { return this._node; }
 
-    get displayName () { return this._diplayName; }
+    get displayName () { return this._displayName; }
 
     get name () { return this._name; }
 
@@ -70,6 +70,11 @@ export default class Npc {
         this.setupRoomEvents(this._room);
     }
 
+    // the npc description
+    getGeneralDescription () {
+        return '{{npcHighlight}}'+ this.displayName + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
+    }
+
     // items
     findItemByName (name) { return this._inventory.findItem(name) }
 
@@ -86,6 +91,14 @@ export default class Npc {
         return itemDescriptions;
     }
 
+    // command handling
+    commandLook () {
+        let description = '{{defaultDescription}}' + this.getGeneralDescription();
+
+        return description;
+    }
+
+    // events
     get eventHandlers() {
        return {
             onPlayerEnter: this.handleOnPlayerEnter,
