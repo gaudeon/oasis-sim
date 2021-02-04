@@ -26,7 +26,7 @@ export default class GetVerb extends Verb {
 
             this.source.containerOrientation = ''; // TODO: make handling container orientation more robust
 
-            let addItemAction = new AddInventoryAction({ target: universe.player.avatar, items: [this.source] });
+            let addItemAction = new AddInventoryAction({ target: universe.player, items: [this.source] });
             actions.push(addItemAction);
 
             let getTextAction = new TextAction('{{itemHighlight}}You obtained ' + this.source.description + '.');

@@ -190,7 +190,7 @@ export default class Lexer {
                     console.log(`Lexer: subject matched an item in the room`);
                 }
             } else {
-                let playerItem = universe.player.avatar.findItemByName(word);
+                let playerItem = universe.player.findItemByName(word);
 
                 if (playerItem !== undefined) {
                     match = playerItem;

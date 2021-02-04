@@ -1,6 +1,5 @@
 import TextBuffer from '../ui/text-buffer';
 import Inventory from '../objects/inventory';
-import Avatar from '../objects/player/avatar';
 import Player from '../objects/player';
 import Universe from '../objects/universe';
 
@@ -36,9 +35,7 @@ export default class LoginScene extends Phaser.Scene {
     _setupPlayer(player_id, player_password) {
         const inventory = new Inventory();
 
-        const avatar = new Avatar(player_id, inventory);
-
-        const player = new Player(avatar);
+        const player = new Player(player_id, inventory);
 
         this.events.on('shutdown', () => {
             // when we move on to the next scene store the current state of the player in the game data registry

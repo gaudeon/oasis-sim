@@ -16,7 +16,7 @@ export default function interpolateDescription(text, universe) {
 
         switch(data) {
             case 'PlayerName':
-                value = universe.player.avatar.name;
+                value = universe.player.name;
                break; 
         }
 
