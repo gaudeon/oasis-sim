@@ -26,6 +26,17 @@ export default class AllGameActions {
         return this.verbMap().values();
     }
 
+    createAction (type, data) {
+        let gameAction;
+
+        if (this.gameActionMap[type] !== undefined) {
+            let GameAction = this.gameActionMap[type];
+            gameAction = new GameAction(data);
+        }
+
+        return gameAction;
+    }
+
     createActionsFromList (actionConfigList) {
         if (!Array.isArray(actionConfigList)) {
             throw new Error("actionConfigList is not a list");
@@ -34,11 +45,8 @@ export default class AllGameActions {
         let actions = [];
 
         actionConfigList.forEach(config => {
-            if (this.gameActionMap[config.type] !== undefined) {
-                let GameAction = this.gameActionMap[config.type];
-                let gameAction = new GameAction(config.data);
-                actions.push(gameAction);
-            }
+            let gameAction = this.createAction(config.type, config.data);
+            actions.push(gameAction);
         });
 
         return actions;

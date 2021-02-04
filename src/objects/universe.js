@@ -4,6 +4,7 @@ import Room from './room';
 import Item from './item';
 import Door from './door';
 import Npc from './npc';
+import EventTrigger from './event-trigger';
 
 export default class Universe {
     constructor (player) {
@@ -16,6 +17,7 @@ export default class Universe {
         this.items = {};
         this.doors = {};
         this.npcs = {};
+        this.eventTriggers = {};
         this.startingRoomId = undefined;
 
         this.buildNodeNameIndex();
@@ -28,9 +30,12 @@ export default class Universe {
     findRoom(id) { return this.rooms[id] !== undefined ? this.rooms[id] : this.loadNode(id) }
 
     findItem(id) { return this.items[id] !== undefined ? this.items[id] : this.loadNode(id) }
+
     findDoor(id) { return this.doors[id] !== undefined ? this.doors[id] : this.loadNode(id) }
 
     findNpc(id) { return this.npcs[id] !== undefined ? this.npcs[id] : this.loadNode(id) }
+
+    findEventTrigger(id) { return this.eventTriggers[id] !== undefined ? this.eventTriggers[id] : this.loadNode(id) }
 
     buildNodeNameIndex () {
         Map.forEach(node => {
@@ -65,6 +70,9 @@ export default class Universe {
                 break;
             case 'npc':
                 result = this.npcs[node.name] = new Npc(this, new Inventory(), node);
+                break;
+            case 'event':
+                result = this.eventTriggers[node.name] = new EventTrigger(this, node);
                 break;
             default:
                 throw('Could not identify type of node for ' + node.name, node);

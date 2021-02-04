@@ -7,18 +7,19 @@ export default class Room {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = node.name || 'undefined';
+        this._name = this._id = node.name || 'undefined';
         this._displayName = node.displayName || 'undefined';
         this._description = node.description || 'undefined';
 
         this._doors = [];
         this._npcs = [];
+        this._eventTriggers = {};
 
         this._events = new Phaser.Events.EventEmitter();
 
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
-                let matches = child.match(/^\[\[((door|item|npc)(?:-([^\-]+))+)\]\]$/i);
+                let matches = child.match(/^\[\[((door|item|npc|event)(?:-([^\-]+))+)\]\]$/i);
                 const id = matches[1];
                 const type = matches[2];
 
@@ -34,15 +35,31 @@ export default class Room {
                         npc.room = this;
                         this._npcs.push(npc);
                         break;
+                    case 'event':
+                        let eventTrigger = universe.findEventTrigger(id);
+
+                        if (eventTrigger.event === undefined) {
+                            throw new Error(`event is undefined in event trigger ${eventTrigger.id} for room ${this.id}`)
+                        }
+
+                        if (this._eventTriggers[eventTrigger.event] === undefined) {
+                            this._eventTriggers[eventTrigger.event] = [];
+                        }
+
+                        this._eventTriggers[eventTrigger.event].push(eventTrigger);
+
+                        break;
                 }
             });
         }
 
-        this._setupEvents(node);
+        this._setupEvents();
     }
 
-    // room info
+    // model info
     get node () { return this._node; }
+
+    get id () { return this._id; }
 
     get displayName () { return this._displayName; }
 
@@ -53,6 +70,8 @@ export default class Room {
     get universe () { return this._universe; }
 
     get events () { return this._events; }
+
+    get eventTriggers () { return this._eventTriggers; }
 
     // npcs
     get npcs () { return this._npcs }
@@ -225,18 +244,14 @@ export default class Room {
     }
 
     // event handling
-    _setupEvents(node) {
-        const handledEvents = ['onNorth', 'onSouth', 'onEast', 'onWest', 'onNortheast', 'onNorthwest', 'onSoutheast', 'onSouthwest', 'onUp', 'onDown'];
+    _setupEvents() {
+        // 'onNorth', 'onSouth', 'onEast', 'onWest', 'onNortheast', 'onNorthwest', 'onSoutheast', 'onSouthwest', 'onUp', 'onDown'
 
-        handledEvents.forEach(event => {
-            if (node[event] === undefined) {
-                return;
-            }
-            
+        Object.keys(this.eventTriggers).forEach(event => {
             this.events.on(event, (data, rgi, room, universe) => {
-                let actionConfigList = JSON.parse(node[event]);
-
-                let actions = new AllGameActions().createActionsFromList(actionConfigList);
+                let actions = _.map(this.eventTriggers[event], eventTrigger => {
+                    return new AllGameActions().createAction(eventTrigger.type, eventTrigger.data);
+                });
 
                 rgi.executeActions(actions, room, universe);
             });
