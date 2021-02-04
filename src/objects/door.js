@@ -1,11 +1,14 @@
 export default class Door {
     constructor (universe, node) {
         this._universe = universe;
+
         this._node = node;
 
-        this._name = node.name || 'undefined';
+        this._id = node.name;
 
-        this._displayName || 'undefined';
+        this._key = node.door;
+
+        this._name = node.displayName || 'undefined';
 
         let direction;
         if (this._name) {
@@ -29,9 +32,11 @@ export default class Door {
 
     get node () { return this._node; }
 
-    get name () { return this._name; }
+    get id () { return this._id; }
 
-    get displayName () { return this._displayName; }
+    get key () { return this._key; }
+
+    get name () { return this._name; }
 
     get direction () { return this._direction; }
 

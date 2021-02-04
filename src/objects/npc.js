@@ -8,13 +8,13 @@ export default class Npc {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = node.name || 'undefined';
+        this._id = node.name;
 
-        this._displayName = node.displayName || 'undefined';
+        this._key = node.npc;
 
-        this._description = interpolateDescription(node.description);
+        this._name = node.displayName || 'undefined';
 
-        this._key = node.key;
+        this._description = interpolateDescription(node.description || 'undefined');
 
         this._room = undefined;
 
@@ -43,7 +43,9 @@ export default class Npc {
 
     get node () { return this._node; }
 
-    get displayName () { return this._displayName; }
+    get id () { return this._id; }
+
+    get key () { return this._key; }
 
     get name () { return this._name; }
 
@@ -55,7 +57,6 @@ export default class Npc {
 
     get items () { return this._inventory.items; }
 
-    get key () { return this._key; }
 
     // room related
     get room () { return this._room; }
@@ -72,7 +73,7 @@ export default class Npc {
 
     // the npc description
     getGeneralDescription () {
-        return '{{npcHighlight}}'+ this.displayName + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
+        return '{{npcHighlight}}'+ this.name + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
     }
 
     // items
@@ -159,7 +160,7 @@ export default class Npc {
 
     handleOnTell(data, rgi, room, universe) {
         if (rgi.debug && console) {
-            console.log(`--- START ${this.displayName} Tell Responses ---`);
+            console.log(`--- START ${this.name} Tell Responses ---`);
             console.log(`data: `, data);
             console.log(`rgi: `, rgi);
             console.log(`room: `, room);
@@ -217,13 +218,13 @@ export default class Npc {
                 console.log(`no conditionalResponse or defaultResponseActions found!`);
             }
 
-            actions = [new TextAction(`{{npcHighlight}}${this.displayName} {{defaultDisplay}} doesn't seem to respond to you.`), room, universe];
+            actions = [new TextAction(`{{npcHighlight}}${this.name} {{defaultDisplay}} doesn't seem to respond to you.`), room, universe];
         }
 
         rgi.executeActions(actions, room, universe);
 
         if (rgi.debug && console) {
-            console.log(`--- END ${this.displayName} Tell Responses ---`);
+            console.log(`--- END ${this.name} Tell Responses ---`);
         }
     }
 }

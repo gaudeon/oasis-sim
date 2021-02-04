@@ -6,13 +6,13 @@ export default class Item {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = node.name || 'undefined';
+        this._id = node.name;
 
-        this._displayName = node.displayName || 'undefined';
+        this._key = node.item;
 
-        this._description = interpolateDescription(node.description);
+        this._name = node.displayName || 'undefined';
 
-        this._key = node.key;
+        this._description = interpolateDescription(node.description || 'undefined');
 
         if (node.childrenNames) {
             node.childrenNames.forEach(child => {
@@ -37,7 +37,9 @@ export default class Item {
 
     get node () { return this._node; }
 
-    get displayName () { return this._displayName; }
+    get id () { return this._id; }
+
+    get key () { return this._key; }
 
     get name () { return this._name; }
 
@@ -49,14 +51,12 @@ export default class Item {
 
     get items () { return this._inventory.items; }
 
-    get key () { return this._key; }
-
      // items
     findItemByName (name) { return this._inventory.findItem(name) }
 
     // the room description
     getGeneralDescription () {
-        return '{{itemHighlight}}'+ this.displayName + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
+        return '{{itemHighlight}}'+ this.name + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
     }
 
     // the room inventory
@@ -77,7 +77,7 @@ export default class Item {
         let description = '{{defaultDescription}}' + this.getGeneralDescription();
 
         if (this.items.length > 0) {
-            description = description + `\n\n\${this.displayName} contains:\n\n` + this.getInventoryDescription();
+            description = description + `\n\n\${this.name} contains:\n\n` + this.getInventoryDescription();
         }
 
         return description;

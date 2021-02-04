@@ -7,9 +7,13 @@ export default class Room {
         this._inventory = inventory;
         this._node = node;
 
-        this._name = this._id = node.name || 'undefined';
-        this._displayName = node.displayName || 'undefined';
-        this._description = node.description || 'undefined';
+        this._id = node.name;
+
+        this._key = node.room;
+
+        this._name = node.displayName;
+
+        this._description = node.description;
 
         this._doors = [];
         this._npcs = [];
@@ -61,7 +65,7 @@ export default class Room {
 
     get id () { return this._id; }
 
-    get displayName () { return this._displayName; }
+    get key () { return this._key; }
 
     get name () { return this._name; }
 
@@ -77,7 +81,8 @@ export default class Room {
     get npcs () { return this._npcs }
 
     findNpcByName (name) {
-       return (_.filter(this._npcs, npc => { return npc.name.match(new RegExp('^npc-' + name, 'i')); }))[0];
+        console.log(this.npcs);    
+        return (_.filter(this._npcs, npc => { return npc.key.match(new RegExp(name, 'i')); }))[0];
     }
 
     getNpcsDescription (firstNewLine = false) {
@@ -96,7 +101,7 @@ export default class Room {
     get exits () { return this.doors; }
 
     findDoorByDirection (direction) {
-        return (_.filter(this.doors, door => { return door.name.match(new RegExp('^door-' + direction + '-', 'i')); }))[0];
+        return (_.filter(this.doors, door => { return door.direction === direction; }))[0];
     }
 
     get north () { return this.findDoorByDirection('north'); }
@@ -152,7 +157,7 @@ export default class Room {
 
     // the room description
     getGeneralDescription () {
-        return this.displayName + '\n\n' + this.description;
+        return this.name + '\n\n' + this.description;
     }
 
     // all descriptive details about a room
