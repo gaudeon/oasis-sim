@@ -1,5 +1,5 @@
 import GameAction from '../game-action';
-import interpolateDescription from "../../utils/interpolate-description";
+import interpolateStyles from "../../utils/interpolate-styles";
 
 export default class TextAction extends GameAction {
     constructor (data) {
@@ -22,7 +22,7 @@ export default class TextAction extends GameAction {
             console.log(`RGI: Last Command: `, lastCommand);
         }
 
-        let text = interpolateDescription(this.data, universe);
+        let text = interpolateStyles(this.data, universe);
 
         buffer.addText("\n\r{{defaultDescription}}" + text);
 

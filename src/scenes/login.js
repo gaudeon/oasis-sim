@@ -1,7 +1,6 @@
 import TextBuffer from '../ui/text-buffer';
 import TextInput from '../ui/text-input';
 
-
 export default class LoginScene extends Phaser.Scene {
     constructor (config, key = 'Login') {
         super({ key: key });

@@ -10,7 +10,7 @@ export default class RoomScene extends Phaser.Scene {
         super({ key: key });
     }
 
-    init (room = '', lastCommand) {
+    init () {
         // load player
         if (this.registry.has('player')) {
             this.player = this.registry.get('player');
@@ -35,13 +35,8 @@ export default class RoomScene extends Phaser.Scene {
             this.registry.set('universe', this.universe);
         });
 
-        // set the starting room if we don't have one defined
-        if (typeof this.universe.findRoom(room) !== 'object') { 
-            room = this.universe.startingRoomId;
-        }
-
         // retrieve the room
-        this.room = this.universe.findRoom(room);
+        this.room = this.universe.startingRoom;
 
         this.textInput = new TextInput(this, 25, this.sys.game.config.height - 30);
         this.textInput.on('EnterPressed', text => { this.rgi.exec(text, this.room, this.universe, true, 'player'); });
@@ -63,7 +58,7 @@ export default class RoomScene extends Phaser.Scene {
         const DEBUG_RGI = false; // set to true to see command processing
         this.rgi = new RGI(this.textBuffer, this.commandHistory, DEBUG_RGI);
 
-        this.lastCommand = lastCommand;
+        this.lastCommand = '';
     }
 
     create () {

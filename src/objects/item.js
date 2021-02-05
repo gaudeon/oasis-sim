@@ -1,83 +1,33 @@
-import interpolateDescription from "../utils/interpolate-description";
-
 export default class Item {
-    constructor (universe, inventory, node) {
+    constructor (model, inventory, universe) {
         this._universe = universe;
+
+        this._model = model;
+
         this._inventory = inventory;
-        this._node = node;
 
-        this._id = node.name;
-
-        this._key = node.item;
-
-        this._name = node.displayName || 'undefined';
-
-        this._description = interpolateDescription(node.description || 'undefined');
-
-        if (node.childrenNames) {
-            node.childrenNames.forEach(child => {
-                let matches = child.match(/^\[\[((door|item|npc)(?:-([^\-]+))+)\]\]$/i);
-                const id = matches[1];
-                const type = matches[2];
-
-                switch (type.toLowerCase()) {
-                    case 'door': // FORMAT: Door-<direction>-<id>
-                        this._doors.push(universe.findDoor(id));
-                        break;
-                    case 'item': // FORMAT: Item-<id>
-                        this._inventory.addItem(universe.findItem(id));
-                        break;
-                    case 'npc': // FORMATE: Npc-<id>
-                        this._npcs.push(universe.findNpc(id));
-                        break;
-                }
-            });
-        }
+        // run through items this item has to start and add them to the inventory
+        this.model.items.forEach(item => {
+            this._inventory.addItem(universe.findItem(item.id));
+        });
     }
-
-    get node () { return this._node; }
-
-    get id () { return this._id; }
-
-    get key () { return this._key; }
-
-    get name () { return this._name; }
-
-    get description () { return this._description; }
 
     get universe () { return this._universe; }
 
-    get inventory () { return this._inventory; }
+    get model () { return this._model; }
 
-    get items () { return this._inventory.items; }
-
-     // items
-    findItemByName (name) { return this._inventory.findItem(name) }
-
-    // the room description
-    getGeneralDescription () {
-        return '{{itemHighlight}}'+ this.name + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
-    }
-
-    // the room inventory
-    getInventoryDescription () {
-        let itemDescriptions = [];
-
-        this.items.forEach(item => {
-            let itemLocation = this.node[item.name + '-Location'];
-
-            itemDescriptions.push('{{defaultDescription}} There is ' + item.description + (itemLocation ? ' ' + itemLocation : '') + '.');
-        });
-
-        return itemDescriptions;
-    }
+    get inventory () { this._inventory; }
 
     // commands methods
     commandLook () {
-        let description = '{{defaultDescription}}' + this.getGeneralDescription();
+        let description = this.model.description;
 
-        if (this.items.length > 0) {
-            description = description + `\n\n\${this.name} contains:\n\n` + this.getInventoryDescription();
+        if (this.inventory.items.length > 0) {
+            description = description + `\n\n\${this.name} contains:\n\n`;
+
+            this.inventory.items.forEach(item => {
+                description = description + `\n${item.model.name}\n`;
+            });
         }
 
         return description;

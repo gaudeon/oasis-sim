@@ -1,8 +1,8 @@
 import TextBuffer from '../ui/text-buffer';
+import UniverseModel from '../models/universe';
 import Inventory from '../objects/inventory';
 import Player from '../objects/player';
 import Universe from '../objects/universe';
-
 
 export default class LoginScene extends Phaser.Scene {
     constructor (config, key = 'Oasis') {
@@ -46,7 +46,9 @@ export default class LoginScene extends Phaser.Scene {
     }
 
     _setupUniverse (player) {
-        const universe = new Universe(player);
+        const universeModel = new UniverseModel();
+
+        const universe = new Universe(universeModel, player);
 
         this.events.on('shutdown', () => {
             // when we move on to the next scene store the current state of the universe in the game data registry

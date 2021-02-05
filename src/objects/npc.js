@@ -1,62 +1,27 @@
-import interpolateDescription from "../utils/interpolate-description";
 import AllGameActions from "../engine/all-game-actions";
 import TextAction from '../engine/game-actions/text';
 
 export default class Npc {
-    constructor (universe, inventory, node) {
+    constructor (model, inventory, universe) {
         this._universe = universe;
+
+        this._model = model;
+
         this._inventory = inventory;
-        this._node = node;
 
-        this._id = node.name;
-
-        this._key = node.npc;
-
-        this._name = node.displayName || 'undefined';
-
-        this._description = interpolateDescription(node.description || 'undefined');
-
-        this._room = undefined;
-
-        if (node.childrenNames) {
-            node.childrenNames.forEach(child => {
-                let matches = child.match(/^\[\[((door|item|npc)(?:-([^\-]+))+)\]\]$/i);
-                const id = matches[1];
-                const type = matches[2];
-
-                switch (type.toLowerCase()) {
-                    case 'door': // FORMAT: Door-<direction>-<id>
-                        this._doors.push(universe.findDoor(id));
-                        break;
-                    case 'item': // FORMAT: Item-<id>
-                        this._inventory.addItem(universe.findItem(id));
-                        break;
-                    case 'npc': // FORMATE: Npc-<id>
-                        this._npcs.push(universe.findNpc(id));
-                        break;
-                }
-            });
-        }
+        // run through items this npc has to start and add them to the inventory
+        this._model.items.forEach(item => {
+            this._inventory.addItem(universe.findItem(item.id));
+        });
 
         this._trackedRoomEvents = [];
     }
 
-    get node () { return this._node; }
-
-    get id () { return this._id; }
-
-    get key () { return this._key; }
-
-    get name () { return this._name; }
-
-    get description () { return this._description; }
-    
     get universe () { return this._universe; }
 
+    get model () { return this._model; }
+
     get inventory () { return this._inventory; }
-
-    get items () { return this._inventory.items; }
-
 
     // room related
     get room () { return this._room; }
@@ -71,30 +36,9 @@ export default class Npc {
         this.setupRoomEvents(this._room);
     }
 
-    // the npc description
-    getGeneralDescription () {
-        return '{{npcHighlight}}'+ this.name + '\n\n{{defaultDescription}}' + this.description.trim().replace(/^\w/, (c) => c.toUpperCase());
-    }
-
-    // items
-    findItemByName (name) { return this._inventory.findItem(name) }
-
-    // the room inventory
-    getInventoryDescription () {
-        let itemDescriptions = [];
-
-        this.items.forEach(item => {
-            let itemLocation = this.node[item.name + '-Location'];
-
-            itemDescriptions.push('{{defaultDescription}} There is ' + item.description + (itemLocation ? ' ' + itemLocation : '') + '.');
-        });
-
-        return itemDescriptions;
-    }
-
     // command handling
     commandLook () {
-        let description = '{{defaultDescription}}' + this.getGeneralDescription();
+        let description = '{{defaultDescription}}' + this.fullDescription;
 
         return description;
     }
@@ -111,13 +55,12 @@ export default class Npc {
         const handledEvents = Object.keys(this.eventHandlers);
 
         handledEvents.forEach(event => {
-            if (this._node[event] === undefined) {
+
+            eventTriggers = this.model.findEventTriggersByEvent(event);
+
+            if (eventTriggers.length === 0) {
                 return;
             }
-
-            if (typeof this._node[event] !== "Object") {
-                this._node[event] = JSON.parse(this._node[event]);
-            } 
 
             let eventFunc = (data, rgi, room, universe) => { 
                 this.findEventHandler(event).call(this, data, rgi, room, universe)
@@ -151,9 +94,12 @@ export default class Npc {
     }
 
     handleOnPlayerEnter(data, rgi, room, universe) {
-        let actionConfigList = this._node.onPlayerEnter;
+        let eventTriggers = this.model.findEventTriggersByEvent('onPlayerEnter');
 
-        let actions = new AllGameActions().createActionsFromList(actionConfigList);
+        let actions = [];
+        eventTriggers.forEach(eventTrigger => {
+            actions.push(new AllGameActions().createAction(eventTrigger.model.type, eventTrigger.model.data));
+        });
 
         rgi.executeActions(actions, room, universe);
     }
@@ -167,16 +113,24 @@ export default class Npc {
             console.log(`universe: `, universe);
         }
 
+        let eventTriggers = this.model.findEventTriggersByEvent('onTell');
+
+        let defaultResponses = _.filter(eventTriggers, eventTrigger => { return !!eventTrigger.model.node.defaultResponse });
+        let conditionalResponses = _.filter(eventTriggers, eventTrigger => { return !!!eventTrigger.model.node.defaultResponse });
+
         let actions = [];
+        if (conditionalResponses.length > 0) {
+            if (rgi.debug && console) {
+                console.log(`conditionalResponses found: `, defaultResponses);
+            }
 
-        if (this._node.onTell.conditionalResponses !== undefined && Array.isArray(this._node.onTell.conditionalResponses)) {
-
-            let matchedResponse = (_.filter(this._node.onTell.conditionalResponses, (response) => {
-                if (response.keyPhrases === undefined || !Array.isArray(response.keyPhrases)) {
+            let matchedResponses = (_.filter(conditionalResponses, response => {
+                const keyPhrases =response.model.node.keyPhrases;
+                if (keyPhrases === undefined || !Array.isArray(keyPhrases)) {
                     return false;
                 }
 
-                let matches = _.reduce(response.keyPhrases, (sum, phrase) => {
+                let matches = _.reduce(keyPhrases, (sum, phrase) => {
                     let phraseRegEx = new RegExp(phrase,'i');
 
                     if (rgi.debug && console) {
@@ -195,22 +149,29 @@ export default class Npc {
                 return matches > 0;
             }))[0];
 
-            if (matchedResponse !== undefined) {
-                actions = new AllGameActions().createActionsFromList(matchedResponse.actions);
+            matchedResponses.forEach(response => {
+                actions.push(new AllGameActions().createAction(response.model.type,response.model.data));
 
                 if (rgi.debug && console) {
                     console.log(`conditionalResponse found: `, matchedResponse);
                     console.log(`conditionalResponse actions: `, actions);
                 }
-            }
+            });
         }
 
-        if (actions.length == 0 && this._node.onTell.defaultResponseActions !== undefined && Array.isArray(this._node.onTell.defaultResponseActions)) {
+        if (actions.length == 0 && defaultResponses.length > 0) {
             if (rgi.debug && console) {
-                console.log(`defaultResponseActions found: `, this._node.onTell.defaultResponseActions);
+                console.log(`defaultResponses found: `, defaultResponses);
             }
 
-            actions = new AllGameActions().createActionsFromList(this._node.onTell.defaultResponseActions);
+            defaultResponses.forEach(response => {
+                actions.push(new AllGameActions().createAction(response.model.type,response.model.data));
+
+                if (rgi.debug && console) {
+                    console.log(`defaultResponse found: `, response);
+                    console.log(`conditionalResponse actions: `, actions);
+                }
+            });
         } 
         
         if (actions.length == 0) {

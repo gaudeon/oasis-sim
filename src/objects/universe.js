@@ -1,4 +1,3 @@
-import Map from '../config/map';
 import Inventory from './inventory';
 import Room from './room';
 import Item from './item';
@@ -7,72 +6,71 @@ import Npc from './npc';
 import EventTrigger from './event-trigger';
 
 export default class Universe {
-    constructor (player) {
+    constructor (model, player) {
         this._player = player;
+
+        this._model = model;
 
         this._events = new Phaser.Events.EventEmitter();
 
-        this.nodeNameIndex = {};
-        this.rooms = {};
-        this.items = {};
-        this.doors = {};
-        this.npcs = {};
-        this.eventTriggers = {};
-        this.startingRoomId = undefined;
-
-        this.buildNodeNameIndex();
+        this.objectIndex = {};
     }
 
-    get player () { return this._player; }
+    get player () { return this._player }
 
-    get events () { return this._events; }
+    get model () { return this._model }
 
-    findRoom(id) { return this.rooms[id] !== undefined ? this.rooms[id] : this.loadNode(id) }
+    get events () { return this._events }
 
-    findItem(id) { return this.items[id] !== undefined ? this.items[id] : this.loadNode(id) }
+    get startingRoom () { return this.findRoom(this.model.startingRoomId) }
 
-    findDoor(id) { return this.doors[id] !== undefined ? this.doors[id] : this.loadNode(id) }
+    findRoom(id) { return this.findObject(id) }
 
-    findNpc(id) { return this.npcs[id] !== undefined ? this.npcs[id] : this.loadNode(id) }
+    findItem(id) { return this.findObject(id) }
 
-    findEventTrigger(id) { return this.eventTriggers[id] !== undefined ? this.eventTriggers[id] : this.loadNode(id) }
+    findDoor(id) { return this.findObject(id) }
 
-    buildNodeNameIndex () {
-        Map.forEach(node => {
-            // index both the id and the [[id]] version
-            this.nodeNameIndex[node.name] = this.nodeNameIndex[`[[${node.name}]]`] = node;
+    findNpc(id) { return this.findObject(id) }
 
-            if (node.isStartingRoom) {
-                this.startingRoomId = node.name;
-            }
-        });
-    }
+    findEventTrigger(id) { return this.findObject(id) }
 
-    loadNode (id) {
-        let result = undefined;
+    findObject(id) {
+        id = this.cleanId(id);
 
-        if (this.nodeNameIndex[id] === undefined) {
-            return result;
+        let theObject = this.objectIndex[id];
+
+        if (theObject === undefined) {
+            theObject = this.objectIndex[id] = this.loadObject(id);
         }
 
-        let node = this.nodeNameIndex[id];
-        let type = node.tags[0];
+        return theObject;
+    }
 
-        switch (type.toLowerCase()) {
+    loadObject (id) {
+        id = this.cleanId(id);
+
+        let model = this.model.findModel(id);
+
+        if (this.objectIndex[id] !== undefined) {
+            return this.objectIndex[id];
+        }
+
+        let result = undefined;
+        switch (model.type.toLowerCase()) {
             case 'room':
-                result = this.rooms[node.name] = new Room(this, new Inventory(), node);
+                result = new Room(model, new Inventory(), this);
                 break;
             case 'item':
-                result = this.items[node.name] = new Item(this, new Inventory(), node);
+                result = new Item(model, new Inventory(), this);
                 break;
             case 'door':
-                result = this.doors[node.name] = new Door(this, node);
+                result = new Door(model, this);
                 break;
             case 'npc':
-                result = this.npcs[node.name] = new Npc(this, new Inventory(), node);
+                result = new Npc(model, new Inventory(), this);
                 break;
             case 'event':
-                result = this.eventTriggers[node.name] = new EventTrigger(this, node);
+                result = new EventTrigger(model, this);
                 break;
             default:
                 throw('Could not identify type of node for ' + node.name, node);
@@ -80,4 +78,6 @@ export default class Universe {
 
         return result;
     }
+
+    cleanId(id) { return id.replace(/^\[\[/,'').replace(/\]\]$/); }
 }

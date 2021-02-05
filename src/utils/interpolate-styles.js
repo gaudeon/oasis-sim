@@ -1,4 +1,4 @@
-export default function interpolateDescription(text, universe) {
+export default function interpolateStyles(text, universe) {
     if (text === undefined || typeof text !== "string") {
         throw new Error("text is not a string");
     }

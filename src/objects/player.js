@@ -9,19 +9,14 @@ export default class Player {
 
     get inventory () { return this._inventory; }
 
-    get items () { return this._inventory.items; }
-
-    findItemByName (name) {
-       return this._inventory.findItem(name);
-    }
-
+    // command methods 
     commandLook () {
         let description = {};
 
         if (this.items.length) {
             description.items = '{{defaultDescription}}You are carrying: \n';
 
-            this.items.forEach((item) => {
+            this.inventory.items.forEach((item) => {
                 let article = '\t\t\t\t';
 
                 description.items = description.items + article + ' ' + item.description + '\n';
