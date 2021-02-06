@@ -2,8 +2,8 @@
     {
         "pid": 1,
         "position": {
-            "x": 478,
-            "y": 244
+            "x": 597,
+            "y": 337
         },
         "name": "Room-IncipioPlayerHubParkCenter",
         "tags": [
@@ -41,8 +41,8 @@
     {
         "pid": 3,
         "position": {
-            "x": 866,
-            "y": 203
+            "x": 940,
+            "y": 232
         },
         "name": "Door-North-IncipioMegaMallEntrance",
         "tags": [
@@ -59,8 +59,8 @@
     {
         "pid": 4,
         "position": {
-            "x": 886,
-            "y": 591
+            "x": 1090,
+            "y": 519
         },
         "name": "Room-IncipioMegaMallEntrance",
         "tags": [
@@ -79,8 +79,8 @@
     {
         "pid": 5,
         "position": {
-            "x": 430,
-            "y": 605
+            "x": 863,
+            "y": 654
         },
         "name": "Door-South-IncipioPlayerHubParkCenter",
         "tags": [
@@ -97,29 +97,30 @@
     {
         "pid": 6,
         "position": {
-            "x": 177,
-            "y": 552
+            "x": 324,
+            "y": 610
         },
         "name": "Npc-Tron",
         "tags": [
             "npc"
         ],
-        "content": "{{npc}}tron{{/npc}} {{displayName}}Tron{{/displayName}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} {{idleActions}} [ { \t'frequency': 'rare', \t'actions': [ { \t\t'type': 'TextAction', \t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.' \t}, { \t\t'frequency': 'uncommon', \t\t'actions': [ { \t\t\t'type': 'TextAction', \t\t\t'data': '${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.' \t} ] } ]{{/idleActions}} [[Event-onPlayerEnter-Npc-Tron]] [[Event-onTell-defaultResponse-Npc-Tron]] [[Event-onTell-conditionalResponse-help-Npc-Tron]]",
+        "content": "{{npc}}tron{{/npc}} {{displayName}}Tron{{/displayName}} {{description}}an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}{{/description}} [[Event-onIdle-say-hello-Npc-Tron]] [[Event-onIdle-stranger-Npc-Tron]] [[Event-onPlayerEnter-Npc-Tron]] [[Event-onTell-defaultResponse-Npc-Tron]] [[Event-onTell-conditionalResponse-help-Npc-Tron]]",
         "childrenNames": [
+            "[[Event-onIdle-say-hello-Npc-Tron]]",
+            "[[Event-onIdle-stranger-Npc-Tron]]",
             "[[Event-onPlayerEnter-Npc-Tron]]",
             "[[Event-onTell-defaultResponse-Npc-Tron]]",
             "[[Event-onTell-conditionalResponse-help-Npc-Tron]]"
         ],
         "npc": "tron",
         "displayName": "Tron",
-        "description": "an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}",
-        "idleActions": " [ {\r\n\t\"frequency\": \"rare\",\r\n\t\"actions\": [ {\r\n\t\t\"type\": \"TextAction\",\r\n\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.\"\r\n\t}, {\r\n\t\t\"frequency\": \"uncommon\",\r\n\t\t\"actions\": [ {\r\n\t\t\t\"type\": \"TextAction\",\r\n\t\t\t\"data\": \"${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.\"\r\n\t} ]\r\n} ]"
+        "description": "an adult male in a blue glowing digital light suit. His name is ${style-npcHighlight}Tron${style-defaultDescription}"
     },
     {
         "pid": 7,
         "position": {
-            "x": 625,
-            "y": 43
+            "x": 727,
+            "y": 80
         },
         "name": "Event-onNorth-Room-IncipioPlayerHubParkCenter",
         "tags": [
@@ -134,8 +135,8 @@
     {
         "pid": 8,
         "position": {
-            "x": 968,
-            "y": 753
+            "x": 1261,
+            "y": 781
         },
         "name": "Event-onSouth-Room-IncipioMegaMallEntrance",
         "tags": [
@@ -166,8 +167,8 @@
     {
         "pid": 10,
         "position": {
-            "x": 198,
-            "y": 814
+            "x": 139,
+            "y": 901
         },
         "name": "Event-onTell-defaultResponse-Npc-Tron",
         "tags": [
@@ -183,8 +184,8 @@
     {
         "pid": 11,
         "position": {
-            "x": 385,
-            "y": 810
+            "x": 315,
+            "y": 934
         },
         "name": "Event-onTell-conditionalResponse-help-Npc-Tron",
         "tags": [
@@ -196,5 +197,39 @@
         "keyPhrases": "[ \"help\" ]",
         "type": "TextAction",
         "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere."
+    },
+    {
+        "pid": 12,
+        "position": {
+            "x": 502,
+            "y": 856
+        },
+        "name": "Event-onIdle-say-hello-Npc-Tron",
+        "tags": [
+            "event"
+        ],
+        "content": "{{event}}onIdle{{/event}} {{frequency}}rare{{/frequency}} {{type}}TextAction{{/type}} {{data}}${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello.{{/data}} ",
+        "childrenNames": [],
+        "event": "onIdle",
+        "frequency": "rare",
+        "type": "TextAction",
+        "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Hey User, if you happen upon Flynn or my old User in your adventures tell them I said hello."
+    },
+    {
+        "pid": 13,
+        "position": {
+            "x": 641,
+            "y": 680
+        },
+        "name": "Event-onIdle-stranger-Npc-Tron",
+        "tags": [
+            "event"
+        ],
+        "content": "{{event}}onIdle{{/event}} {{frequency}}uncommon{{/frequency}} {{type}}TextAction{{/type}} {{data}}${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger.{{/data}}",
+        "childrenNames": [],
+        "event": "onIdle",
+        "frequency": "uncommon",
+        "type": "TextAction",
+        "data": "${style-npcHighlight}Tron ${style-defaultDescription} looks off in the distance at the floating ads and tall buildings, slightly shakes his head and says ${style-npcSpeech}stranger and stranger."
     }
 ]
