@@ -1,3 +1,5 @@
+import TextAction from '../engine/game-actions/text';
+
 export default class Player {
     constructor (name, inventory) {
         this._name = name;
@@ -11,20 +13,20 @@ export default class Player {
 
     // command methods 
     commandLook () {
-        let description = {};
+        let description = '';
 
         if (this.items.length) {
-            description.items = '{{defaultDescription}}You are carrying: \n';
+            description = description + '{{defaultDescription}}You are carrying: \n';
 
             this.inventory.items.forEach((item) => {
                 let article = '\t\t\t\t';
 
-                description.items = description.items + article + ' ' + item.description + '\n';
+                description = description + article + ' ' + item.description + '\n';
             });
         } else {
-            description.items = '{{defaultDescription}}You are not carrying anything.';
+            description = description + '{{defaultDescription}}You are not carrying anything.';
         }
 
-        return description;
+        return [new TextAction(description)];
     };
 }

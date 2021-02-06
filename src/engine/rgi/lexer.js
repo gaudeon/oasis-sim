@@ -166,7 +166,7 @@ export default class Lexer {
                 console.log(`Lexer: subject matched the room`);
             }
         } else if (word.match(/^(north|south|east|west|northeast|northwest|southeast|southwest|up|down)$/)) {
-            let door = room.findDoorByDirection(word);
+            let door = room.findDoor(word);
 
             if (door !== undefined) {
                 match = door;
@@ -180,7 +180,11 @@ export default class Lexer {
                 console.log(`Lexer: subject was not player/room/exit looking for an item or npc`);
             }
 
-            let roomItem = room.findItemByName(word);
+            let roomItem = room.inventory.findItem(word);
+
+            if (this.debug && console) {
+                console.log(`Lexer: searching for item in room: `, roomItem);
+            }
 
             if (roomItem !== undefined) {
                 match = roomItem;
@@ -190,7 +194,11 @@ export default class Lexer {
                     console.log(`Lexer: subject matched an item in the room`);
                 }
             } else {
-                let playerItem = universe.player.findItemByName(word);
+                let playerItem = universe.player.inventory.findItem(word);
+
+                if (this.debug && console) {
+                    console.log(`Lexer: searching for item on player: `, playerItem);
+                }
 
                 if (playerItem !== undefined) {
                     match = playerItem;
@@ -200,7 +208,11 @@ export default class Lexer {
                         console.log(`Lexer: subject matched an item on the player`);
                     }
                 } else {
-                    let npc = room.findNpcByName(word);
+                    let npc = room.findNpc(word);
+
+                    if (this.debug && console) {
+                        console.log(`Lexer: searching for npc: `, npc);
+                    }
 
                     if (npc !== undefined) {
                         match = npc;

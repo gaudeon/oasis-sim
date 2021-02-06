@@ -1,3 +1,5 @@
+import TextAction from '../engine/game-actions/text';
+
 export default class Item {
     constructor (model, inventory, universe) {
         this._universe = universe;
@@ -16,11 +18,11 @@ export default class Item {
 
     get model () { return this._model; }
 
-    get inventory () { this._inventory; }
+    get inventory () { return this._inventory; }
 
     // commands methods
     commandLook () {
-        let description = this.model.description;
+        let description = '{{defaultDescription}} You see ' + this.model.description;
 
         if (this.inventory.items.length > 0) {
             description = description + `\n\n\${this.name} contains:\n\n`;
@@ -30,6 +32,6 @@ export default class Item {
             });
         }
 
-        return description;
+        return [new TextAction(description)];
     }
 }

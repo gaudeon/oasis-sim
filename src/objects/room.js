@@ -1,5 +1,6 @@
 import ChangeRoomAction from '../engine/game-actions/change-room';
 import AllGameActions from '../engine/all-game-actions';
+import TextAction from '../engine/game-actions/text';
 
 export default class Room {
     constructor (model, inventory, universe) {
@@ -16,6 +17,13 @@ export default class Room {
             this._inventory.addItem(universe.findItem(item.id));
         });
 
+        // run through npcs and set them in this room
+        this._model.npcs.forEach(npcModel => {
+            let npc = universe.findNpc(npcModel.id);
+
+            npc.room = this;
+        });
+
         this._setupEvents();
     }
 
@@ -26,6 +34,18 @@ export default class Room {
     get inventory () { return this._inventory; }
 
     get events () { return this._events; }
+
+    findNpc (name) { 
+        const npcModel = this.model.findNpcByName(name);
+
+        return this.universe.findNpc(npcModel.id);
+    }
+
+    findDoor (direction) {
+        const doorModel = this.model.findDoorByDirection(direction);
+
+        return this.universe.findDoor(doorModel.id);
+    }
 
     // command methods
     commandLook () {
@@ -43,7 +63,7 @@ export default class Room {
             description = description + ' ' + npc;
         });
 
-        return description;
+        return [new TextAction(description)];
     };
 
     commandExits (firstNewLine = false) {

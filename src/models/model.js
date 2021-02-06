@@ -87,7 +87,7 @@ export default class Model {
 
     // search methods
     findNpcByName (name) {
-        return (_.filter(this._npcs, npc => { return npc.key.match(new RegExp(name, 'i')); }))[0];
+        return (_.filter(this.npcs, npc => { return npc.key.match(new RegExp(name, 'i')); }))[0];
     }
 
     findDoorByDirection (direction) {
@@ -95,11 +95,11 @@ export default class Model {
     }
 
     findItemByName (name) {
-        return (_.filter(this._items, item => { return item.key.match(new RegExp(name, 'i')); }))[0];
+        return (_.filter(this.items, item => { return item.key.match(new RegExp(name, 'i')); }))[0];
     }
 
     findEventTriggersByEvent (event) {
-        return (_.filter(this._eventTriggers, eventTrigger => { return eventTrigger.key.match(new RegExp(event, 'i')); }))[0];
+        return _.filter(this.eventTriggers, eventTrigger => { return eventTrigger.key.match(new RegExp(event, 'i')); });
     }
 
     // children descriptions accessors

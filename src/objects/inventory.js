@@ -11,13 +11,13 @@ export default class Inventory {
 
     removeItem (removeItem) {
         _.remove(this._items, item => {
-            return item.key === removeItem.key;
+            return item.model.key === removeItem.model.key;
         });
     }
 
     findItem (name) {
        return (_.filter(this._items, item => { 
-           return item.key.match(new RegExp(name, 'i')); 
+           return item.model.key.match(new RegExp(name, 'i')); 
        }))[0];
     }
 }

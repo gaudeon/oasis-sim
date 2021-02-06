@@ -88,4 +88,4 @@ export default class RoomScene extends Phaser.Scene {
             eventData: {}
         }), this.room, this.universe);
     }
-};
+}

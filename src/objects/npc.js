@@ -38,9 +38,9 @@ export default class Npc {
 
     // command handling
     commandLook () {
-        let description = '{{defaultDescription}}' + this.fullDescription;
+        let description = '{{defaultDescription}} You see ' + this.model.description;
 
-        return description;
+        return [new TextAction(description)];
     }
 
     // events
@@ -51,12 +51,12 @@ export default class Npc {
        }; 
     }
 
-    setupRoomEvents(room) {
+    setupRoomEvents(theRoom) {
         const handledEvents = Object.keys(this.eventHandlers);
 
         handledEvents.forEach(event => {
 
-            eventTriggers = this.model.findEventTriggersByEvent(event);
+            let eventTriggers = this.model.findEventTriggersByEvent(event);
 
             if (eventTriggers.length === 0) {
                 return;
@@ -71,7 +71,7 @@ export default class Npc {
                 func: eventFunc
             });
             
-            room.events.on(event, eventFunc);
+            theRoom.events.on(event, eventFunc);
         });
     }
 
@@ -98,7 +98,7 @@ export default class Npc {
 
         let actions = [];
         eventTriggers.forEach(eventTrigger => {
-            actions.push(new AllGameActions().createAction(eventTrigger.model.type, eventTrigger.model.data));
+            actions.push(new AllGameActions().createAction(eventTrigger.type, eventTrigger.data));
         });
 
         rgi.executeActions(actions, room, universe);
@@ -115,17 +115,22 @@ export default class Npc {
 
         let eventTriggers = this.model.findEventTriggersByEvent('onTell');
 
-        let defaultResponses = _.filter(eventTriggers, eventTrigger => { return !!eventTrigger.model.node.defaultResponse });
-        let conditionalResponses = _.filter(eventTriggers, eventTrigger => { return !!!eventTrigger.model.node.defaultResponse });
+        let defaultResponses = _.filter(eventTriggers, eventTrigger => { return !!eventTrigger.node.defaultResponse });
+        let conditionalResponses = _.filter(eventTriggers, eventTrigger => { return !!!eventTrigger.node.defaultResponse });
 
         let actions = [];
         if (conditionalResponses.length > 0) {
             if (rgi.debug && console) {
-                console.log(`conditionalResponses found: `, defaultResponses);
+                console.log(`conditionalResponses found: `, conditionalResponses);
             }
 
-            let matchedResponses = (_.filter(conditionalResponses, response => {
-                const keyPhrases =response.model.node.keyPhrases;
+            let matchedResponses = _.filter(conditionalResponses, response => {
+                const keyPhrases = JSON.parse(response.node.keyPhrases);
+
+                if (rgi.debug && console) {
+                    console.log(`conditionalResponse keyPhrases: `, keyPhrases);
+                }
+
                 if (keyPhrases === undefined || !Array.isArray(keyPhrases)) {
                     return false;
                 }
@@ -146,14 +151,22 @@ export default class Npc {
                     return sum;
                 }, 0);
 
+                if (rgi.debug && console) {
+                    console.log(`count of matches for key phrases in conditional response: `, matches);
+                }
+
                 return matches > 0;
-            }))[0];
+            });
+
+            if (rgi.debug && console) {
+                console.log(`matched responses found: `, matchedResponses);
+            }
 
             matchedResponses.forEach(response => {
-                actions.push(new AllGameActions().createAction(response.model.type,response.model.data));
+                actions.push(new AllGameActions().createAction(response.type,response.data));
 
                 if (rgi.debug && console) {
-                    console.log(`conditionalResponse found: `, matchedResponse);
+                    console.log(`conditionalResponse found: `, response);
                     console.log(`conditionalResponse actions: `, actions);
                 }
             });
@@ -165,11 +178,11 @@ export default class Npc {
             }
 
             defaultResponses.forEach(response => {
-                actions.push(new AllGameActions().createAction(response.model.type,response.model.data));
+                actions.push(new AllGameActions().createAction(response.type,response.data));
 
                 if (rgi.debug && console) {
                     console.log(`defaultResponse found: `, response);
-                    console.log(`conditionalResponse actions: `, actions);
+                    console.log(`defaultResponse actions: `, actions);
                 }
             });
         } 

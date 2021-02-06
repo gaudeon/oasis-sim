@@ -23,16 +23,12 @@ export default class LookVerb extends Verb {
             // if we are supposed to have a noun, attempt to find it's description
             case 'PhraseVerbNoun':
                 if (typeof this.source !== 'undefined') {
-                    if (this.source instanceof Player) {
-                        actions = this.lookAtPlayer(this.source)
-                    } else if (this.source instanceof Room) {
-                        actions = this.lookAtRoom(this.source);
-                    } else if (this.source instanceof Item) {
-                        actions = this.lookAtItem(this.source);
-                    } else if (this.source instanceof Npc) {
-                        actions = this.lookAtNpc(this.source);
+                    if (typeof this.source.commandLook === 'function') {
+                        actions = this.source.commandLook();
                     } else if (typeof this.source.description !== 'undefined') {
                         actions = [new TextAction('{{defaultDescription}}You see ' + this.source.description + '.')];
+                    } else {
+                        throw new Error(`Invalid source ${typeof this.source}`);
                     }
                 }
 
@@ -44,36 +40,10 @@ export default class LookVerb extends Verb {
 
             // otherwise just assume we are looking at the room
             default:
-                actions = this.lookAtRoom(room);
+                actions = room.commandLook();
         }
 
         return actions;
-    }
-
-    lookAtPlayer (player) {
-        let description = player.commandLook();
-
-        let itemsTextAction = new TextAction('{{itemHighlight}}' + description.items);
-
-        return [itemsTextAction];
-    }
-
-    lookAtRoom (room) {
-        let briefTextAction = new TextAction('{{defaultDescription}}' + room.commandLook());
-
-        return [briefTextAction];
-    }
-
-    lookAtItem (item) {
-        let briefTextAction = new TextAction('{{defaultDescription}}' + item.commandLook());
-
-        return [briefTextAction];
-    }
-
-    lookAtNpc (npc) {
-        let briefTextAction = new TextAction('{{defaultDescription}}' + npc.commandLook());
-
-        return [briefTextAction];
     }
 
     helpText () {
