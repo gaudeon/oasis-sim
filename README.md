@@ -22,8 +22,6 @@ Besides a linux os with Node/Npm...
 
 ## TODO 
 
-- abstract out model from objects
-- convert npc events to use event triggers
 - implement support for npc idle actions (also a form of event trigger)
 
 ## Importing map into Twine
