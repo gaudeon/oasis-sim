@@ -135,7 +135,7 @@ export default class Room {
             this.events.on(event, (data, rgi, room, universe) => {
                 let actions = [];
                 _.filter(this.model.eventTriggers, eventTrigger => eventTrigger.key === event).forEach(eventTrigger => {
-                    actions.push(new AllGameActions().createAction(eventTrigger.type, eventTrigger.data));
+                    actions.push(new AllGameActions().createAction(eventTrigger.action_type, eventTrigger.action_data));
                 });
 
                 rgi.executeActions(actions, room, universe);

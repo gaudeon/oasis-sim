@@ -6,12 +6,12 @@ export default class EventTriggerModel extends Model {
 
         this._key = node.event;
 
-        this._type = node.type;
+        this._action_type = node.type;
 
-        this._data = node.data;
+        this._action_data = node.data;
     }
 
-    get type () { return this._type; }
+    get action_type () { return this._action_type; }
 
-    get data () { return this._data; }
+    get action_data () { return this._action_data; }
 }

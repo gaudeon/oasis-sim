@@ -20,10 +20,6 @@ Besides a linux os with Node/Npm...
 
 - TwineJSON story format to save Map to src/config/map.json - [Link](https://github.com/cauli/TwineJson)
 
-## TODO 
-
-- implement support for npc idle actions (also a form of event trigger)
-
 ## Importing map into Twine
 
 Import file src/config/map.twine.html

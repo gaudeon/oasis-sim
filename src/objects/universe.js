@@ -73,7 +73,10 @@ export default class Universe {
                 result = new EventTrigger(model, this);
                 break;
             default:
-                throw('Could not identify type of node for ' + node.name, node);
+                if (console) {
+                    console.log(model);
+                }
+                throw new Error('Could not identify type of model for ' + model.id);
         }
 
         return result;

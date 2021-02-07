@@ -107,7 +107,8 @@ export default class RGI {
             if (action instanceof GameAction) {
                 action.run(this, this.textBuffer, room, universe, lastCommand);
             } else {
-                throw new Error('Not a valid game action', action);
+                console.log(action);
+                throw new Error('Not a valid game action');
             }
         }
 

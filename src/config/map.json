@@ -168,7 +168,7 @@
         "pid": 10,
         "position": {
             "x": 139,
-            "y": 901
+            "y": 900
         },
         "name": "Event-onTell-defaultResponse-Npc-Tron",
         "tags": [
@@ -185,18 +185,18 @@
         "pid": 11,
         "position": {
             "x": 315,
-            "y": 934
+            "y": 933
         },
         "name": "Event-onTell-conditionalResponse-help-Npc-Tron",
         "tags": [
             "event"
         ],
-        "content": "{{event}}onTell{{/event}} {{keyPhrases}}[ 'help' ]{{/keyPhrases}} {{type}}TextAction{{/type}} {{data}}${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere.{{/data}}",
+        "content": "{{event}}onTell{{/event}} {{keyPhrases}}[ 'help' ]{{/keyPhrases}} {{type}}TextAction{{/type}} {{data}}${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or a teleport voucher, I recommend teleporting elsewhere.{{/data}}",
         "childrenNames": [],
         "event": "onTell",
         "keyPhrases": "[ \"help\" ]",
         "type": "TextAction",
-        "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or teleoprt voucher, I recommend teleporting elsewhere."
+        "data": "${style-npcHighlight}Tron ${style-defaultDescription}says ${style-npcSpeech}Incipio is a pretty straight forward world, there are megamalls and some public areas to socialize with others on this planet. In fact walk from here to the ${style-exitHighlight}north${style-npcSpeech} and we you find a mall. For anything else, and if you have the credits or a teleport voucher, I recommend teleporting elsewhere."
     },
     {
         "pid": 12,
@@ -219,7 +219,7 @@
         "pid": 13,
         "position": {
             "x": 641,
-            "y": 680
+            "y": 679
         },
         "name": "Event-onIdle-stranger-Npc-Tron",
         "tags": [

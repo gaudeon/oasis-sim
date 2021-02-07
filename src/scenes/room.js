@@ -59,6 +59,9 @@ export default class RoomScene extends Phaser.Scene {
         this.rgi = new RGI(this.textBuffer, this.commandHistory, DEBUG_RGI);
 
         this.lastCommand = '';
+
+        // tracks how long we have waited before next onIdle event
+        this.idleEventTime = 0;
     }
 
     create () {
@@ -87,5 +90,20 @@ export default class RoomScene extends Phaser.Scene {
             eventSource: room,
             eventData: {}
         }), this.room, this.universe);
+    }
+
+    update (time, delta) {
+        this.idleEventTime += delta;
+
+        if (this.idleEventTime > 5000) {
+            // let the room know the player has entered
+            this.rgi.executeAction(new CallEventAction({
+                event: 'onIdle',
+                eventSource: this.room,
+                eventData: {}
+            }), this.room, this.universe);
+
+            this.idleEventTime = 0;
+        }
     }
 }

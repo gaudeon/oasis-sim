@@ -1,5 +1,7 @@
 import AllGameActions from "../engine/all-game-actions";
 import TextAction from '../engine/game-actions/text';
+import EventTriggerModel from '../models/event-trigger';
+import EventTrigger from './event-trigger';
 
 export default class Npc {
     constructor (model, inventory, universe) {
@@ -47,7 +49,8 @@ export default class Npc {
     get eventHandlers() {
        return {
             onPlayerEnter: this.handleOnPlayerEnter,
-            onTell: this.handleOnTell
+            onTell: this.handleOnTell,
+            onIdle: this.handleOnIdle
        }; 
     }
 
@@ -98,7 +101,7 @@ export default class Npc {
 
         let actions = [];
         eventTriggers.forEach(eventTrigger => {
-            actions.push(new AllGameActions().createAction(eventTrigger.type, eventTrigger.data));
+            actions.push(new AllGameActions().createAction(eventTrigger.action_type, eventTrigger.action_data));
         });
 
         rgi.executeActions(actions, room, universe);
@@ -163,7 +166,7 @@ export default class Npc {
             }
 
             matchedResponses.forEach(response => {
-                actions.push(new AllGameActions().createAction(response.type,response.data));
+                actions.push(new AllGameActions().createAction(response.action_type,response.action_data));
 
                 if (rgi.debug && console) {
                     console.log(`conditionalResponse found: `, response);
@@ -178,7 +181,7 @@ export default class Npc {
             }
 
             defaultResponses.forEach(response => {
-                actions.push(new AllGameActions().createAction(response.type,response.data));
+                actions.push(new AllGameActions().createAction(response.action_type,response.action_data));
 
                 if (rgi.debug && console) {
                     console.log(`defaultResponse found: `, response);
@@ -200,5 +203,103 @@ export default class Npc {
         if (rgi.debug && console) {
             console.log(`--- END ${this.name} Tell Responses ---`);
         }
+    }
+
+    handleOnIdle(data, rgi, room, universe) {
+        if (rgi.debug && console) {
+            console.log(`--- START ${this.name} Idle Responses ---`);
+            console.log(`data: `, data);
+            console.log(`rgi: `, rgi);
+            console.log(`room: `, room);
+            console.log(`universe: `, universe);
+        }
+
+        let actions = [];
+        if (this.idleEventTriggers.length > 0) {
+            if (rgi.debug && console) {
+                console.log(`Idle Responses found: `, this.idleEventTriggers);
+            }
+
+            let maxValue = _.reduce(this.idleEventTriggers, (max, eventTrigger) => { return max > eventTrigger.max ? max : eventTrigger.max; }, 0);
+
+            let randValue = Math.floor(Math.random() * maxValue);
+
+            if (rgi.debug && console) {
+                console.log(`maxValue and randValue of idle response: `, maxValue, randValue);
+            } 
+
+            let idleEvent = _.find(this.idleEventTriggers, idleEventTrigger => {
+                if (rgi.debug && console) {
+                    console.log(`testing idleEvent: `, idleEventTrigger, randValue >= idleEventTrigger.min && randValue <= idleEventTrigger.max);
+                } 
+
+                return randValue >= idleEventTrigger.min && randValue <= idleEventTrigger.max;
+            });
+
+             if (rgi.debug && console) {
+                console.log(`idleEvent found: `, idleEvent);
+            } 
+
+            actions.push(new AllGameActions().createAction(idleEvent.eventTrigger.model.action_type, idleEvent.eventTrigger.model.action_data));
+        }
+
+        rgi.executeActions(actions, room, universe);
+
+        if (rgi.debug && console) {
+            console.log(`--- END ${this.name} Idle Responses ---`);
+        }
+    }
+
+    get idleChance () {
+        return {
+            rare: 5,
+            uncommon: 15,
+            common: 50,
+            frequent: 150,
+            none: 780
+        };
+    }
+
+    get idleEventTriggers () {
+
+        if (Array.isArray(this._idleEventTriggers)) {
+            return this._idleEventTriggers;
+        }
+
+        this._idleEventTriggers = [];
+
+        let currentLimit = 0;
+
+        let eventTriggers = this.model.findEventTriggersByEvent('onIdle');
+        
+        eventTriggers.forEach(eventTriggerModel => {
+            let eventTrigger = this.universe.findEventTrigger(eventTriggerModel.id);
+            let frequency = eventTrigger.model.node.frequency && eventTrigger.model.node.frequency.match(/^(frequent|common|uncommon|rare)$/) ? eventTrigger.model.node.frequency : 'uncommon'; 
+
+            this._idleEventTriggers.push({
+                min: currentLimit,
+                max: currentLimit + this.idleChance[frequency] - 1,
+                eventTrigger: eventTrigger
+            });
+
+            currentLimit = currentLimit + this.idleChance[frequency];
+        });
+
+        this._idleEventTriggers.push({
+            min: currentLimit,
+            max: currentLimit + this.idleChance['none'] - 1,
+            eventTrigger: this.nullEventTrigger
+        });
+
+        return this._idleEventTriggers;
+    }
+
+    get nullEventTrigger () {
+        return new EventTrigger(new EventTriggerModel({
+            event: 'onIdle',
+            type: 'NullAction',
+            tags: ['event'],
+            frequency: 'none'
+        }, this.model.universe), this.universe);
     }
 }
